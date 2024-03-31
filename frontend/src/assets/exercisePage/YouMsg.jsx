@@ -1,4 +1,24 @@
+import { useEffect, useState } from "react";
+import Msg from "./Msg.module.css"
+
+
 export default function YouMsg({ message}) {
+
+
+  const [audio, setAudio] = useState(new Audio(message.voiceURL)); // 오디오 객체
+  const [play, setPlay] = useState(false);                        // Play 
+  const [source, setSource] = useState(); 
+
+
+  useEffect(() => {
+    if(play){
+      audio.play();
+    } else {
+      audio.pause();
+    }
+  }, [play])
+
+
     // 상대방 채팅의 경우 상대방의 이름과 프사가 보여야 한다.
     const formattedTime = new Date(message.createdAt).toLocaleTimeString([], {
       hour: "2-digit",
@@ -20,10 +40,15 @@ export default function YouMsg({ message}) {
             </p>
             <div className="flex">
               <div className={"other-message"}>
-              {message.voiceURL !== ''? 
-                  <audio controls autoPlay>
-                    <source src={message.voiceURL} type="audio/mpeg" />
-                  </audio>: message.textContent}
+        {/* isTyping = 애니메이션을 할까말까 boolean값, curretTypingId는 제일 최근에 쳤던 메세지 ID */}
+        {message.voiceURL !== ''? 
+          <>
+          <audio style={{display: "none"}} controls autoPlay>
+            <source src={message.voiceURL} type="audio/mpeg" />
+          </audio>
+            음성메세지 
+            <button className="btn glass" onClick={()=>setPlay((prev) => !prev)}>🎧</button>
+          </>: message.textContent}
               </div>
               <div className="text-xs mb-2 self-end">{formattedTime}</div>
             </div>

@@ -146,13 +146,13 @@ const SendingVoice = function(){
 
     const [galli, setGalli] = useState(false);
     const [galliName, setGalliName] = useState('');
-    const [galliList, setGalliList] = useState([]);
+    const [galliList, setGalliList] = useState([{profileUrl: '', nickname: ''}]);
     const [keyword, setKeyword] = useState('');
 
     const openGalliListModal = function(){
         setGalli(!galli);
         getGalleyList()
-            .then(res=>setGalliList(res))
+            .then(res=>{console.log(res); setGalliList(res)})
     }
     const handleInputChange = (e) => {
         const value = e.target.value;
@@ -161,13 +161,19 @@ const SendingVoice = function(){
         setKeyword(value);
       };
     const handleSearchClick = ()=>{
-        searchGalleyMemberList(keyword)
-        .then((res)=>{
-            setMemberList(res);
-        })  
-        .catch((err)=>{
-            console.log(err);
-        })
+        getGalleyList()
+            .then(res=>{
+                const result = [];
+                const regexPattern = new RegExp(keyword);
+                res.forEach(data=>{
+                    const wordsWithKeyword = regexPattern.test(data.nickname);
+                    if(wordsWithKeyword){
+                        result.push(data)
+                    }
+                })
+                setGalliList(result);
+            })
+        
     }
 
 

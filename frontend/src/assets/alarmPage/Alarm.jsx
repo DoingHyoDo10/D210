@@ -1,13 +1,14 @@
 import { useEffect, useState } from "react";
 import styles from "./Alarm.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getAlarmList } from "../../apis/alarm";
+import { getAlarmList, putAlarmCheck } from "../../apis/alarm";
 
 
 const Alarm = function(){
 
     useEffect(()=>{
-        getAlarmList();
+        getAlarmList()
+            .then(res=>setAlarmList(res));
     }, [])
     
     const navigate = useNavigate();    
@@ -18,50 +19,18 @@ const Alarm = function(){
 
     const[alarm, setAlarm] = useState(false);
     const[nowAlarm, setNowAlarm] = useState("")
+    const [alarmList, setAlarmList] = useState([]);
+    
 
-    const openAlarmModal = function(content){
+    const openAlarmModal = function(data){
         setAlarm(!alarm);
-        setNowAlarm(content);
+        setNowAlarm(data.notiContent);
+        if(!data.isChecked){
+            putAlarmCheck(data.id);
+            getAlarmList()
+            .then(res=>setAlarmList(res));
+        }
     }
-
-    const alarmList = [
-        {
-            content: "새로운 할리 수락 요청이 있습니다. ",
-            ok: "fasle"
-        },
-        {
-            content: "새로운 할리 수락 요청이 있습니다. ",
-            ok: "fasle"
-        },
-        {
-            content: "새로운 할리 수락 요청이 있습니다. ",
-            ok: "fasle"
-        },
-        {
-            content: "나의 할리 김고리노리도리님이 월간 미션을 변경하였습니다. 확인해보세요!",
-            ok: "fasle"
-        },
-        {
-            content: "나의 할리 김수안무거북이와두루미님이 월간 미션을 변경하였습니다. 확인해보세요!",
-            ok: "fasle"
-        },
-        {
-            content: "나의 할리 하하하하하하하하하하님이 월간 미션을 변경하였습니다. 확인해보세요!",
-            ok: "fasle"
-        },
-        {
-            content: "친구 신청이 있습니다.",
-            ok: "true"
-        },
-        {
-            content: "친구 신청이 있습니다.",
-            ok: "true"
-        },
-        {
-            content: "친구 신청이 있습니다.",
-            ok: "true"
-        },
-    ]
 
     return(
         <> 
@@ -90,9 +59,9 @@ const Alarm = function(){
                     {alarmList.map((data, index) => {
                         return(
                             <>
-                                <div key={index} className={`${styles.alarm_container} ${data.ok == "true" ? styles.select_alarm_container : ''}`} onClick={() => openAlarmModal(data.content)}>
+                                <div key={index} className={`${styles.alarm_container} ${data.isChecked == true ? styles.select_alarm_container : ''}`} onClick={() => openAlarmModal(data)}>
                                     <img src="/imgs/bell.png" alt="알람사진" className={styles.alarm_img_container} ></img>
-                                    <p className={styles.alarm_txt}> {data.content.length > 32 ? `${data.content.slice(0,31)}...`: data.content}</p>
+                                    <p className={styles.alarm_txt}> {data.notiContent.length > 32 ? `${data.notiContent.slice(0,31)}...`: data.notiContent}</p>
                                 </div>  
                             </>
                         )

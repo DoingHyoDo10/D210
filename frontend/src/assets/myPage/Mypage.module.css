@@ -13,9 +13,27 @@
     margin-bottom: 1rem;
 }
 
-.mypage_profile_img {
-    border-radius: 50%;
+.mypage_profile_img_container {
+    position: relative;
     width: 40%;
+    overflow: hidden;
+    border-radius: 50%;
+    box-shadow: 0 0.1rem 0.5rem 0 rgba(0, 0, 0, 0.2);
+}
+
+.mypage_profile_img_container::before {
+    content: '';
+    display: block;
+    padding-top: 100%;
+}
+
+.mypage_profile_img {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
 }
 
 .mypage_profile_nickname {

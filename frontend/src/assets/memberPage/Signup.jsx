@@ -14,13 +14,12 @@ const Signup = function () {
   const [nicknameError, setNicknameError] = useState('');
   const [nicknameErrorType, setNicknameErrorType] = useState(false);
   const [debounce, setDebounce] = useState(null);
-  const [selectedYear, setSelectedYear] = useState('');
   const startYear = 1900;
   const currentYear = new Date().getFullYear();
   const years = Array.from({length: currentYear - startYear + 1}, (val, index) => currentYear - index); // 연도 목록 생성: 1900년부터 현재까지
   const [userInfo, setUserInfo] = useState({
     nickname: '',
-    birthYear: 1990, // 임의의 초기값
+    birthYear: '', // 임의의 초기값
     gender: '', // 초기값
     location: '',
     eoa: '',
@@ -33,11 +32,6 @@ const Signup = function () {
     latitude: 0, // 사용안함
   });
   const [isLoading, setIsLoading] = useState(false);
-  
-  // selectedYear가 변경될 때마다 userInfo의 birthYear를 업데이트합니다.
-  useEffect(() => {
-    setUserInfo(prevInfo => ({...prevInfo, birthYear: parseInt(selectedYear)}));
-  }, [selectedYear]);
 
   // 유저가 입력 후 시간차를 두고 닉네임 중복 여부 확인
   useEffect(() => {
@@ -50,7 +44,7 @@ const Signup = function () {
   // 입력값마다 유효성 검사하고 버튼 활성화
   useEffect(() => {
     if (step === 2) {
-      if (selectedYear !== '') {
+      if (userInfo.birthYear !== '') {
         setIsButtonDisabled(false);
       } else {
         setIsButtonDisabled(true);
@@ -70,7 +64,7 @@ const Signup = function () {
         setIsButtonDisabled(true);
       }
     }
-  }, [step, selectedYear, userInfo.gender, userInfo.location]);
+  }, [step, userInfo.birthYear, userInfo.gender, userInfo.location]);
 
   // 닉네임의 유효성 검사를 실행하고 에러 메시지 상태를 업데이트
   const checkNickname = useCallback(async (nickname) => {
@@ -122,9 +116,8 @@ const Signup = function () {
 
   const handleInputChange = (e) => {
     const { name, value } = e.target;
-    if (name === 'selectedYear') {
-      // selectedYear의 경우 상태를 직접 업데이트합니다.
-      setSelectedYear(value);
+    if (name === 'birthYear') {
+      setUserInfo((prevInfo) => ({...prevInfo, [name]: parseInt(value)}));
     } else {
       setUserInfo((prevInfo) => ({...prevInfo, [name]: value.trim()}));
     }
@@ -202,7 +195,7 @@ const Signup = function () {
         <div className={styles.signup_sub_container}>
           <div className={styles.signup_title}>지역정보</div>
           <input className={styles.signup_input} type="text" placeholder='주소를 입력해주세요' name="location" onClick={daumPost} value={userInfo.location} readOnly/>
-          <img className={styles.signup_search_img} src="/imgs/search_gray.png" alt="dropdown_img" />
+          <img className={styles.signup_search_img} src="/imgs/search_gray.png" alt="search_img" />
         </div>
       )}
       {step >= 3 && (
@@ -219,7 +212,7 @@ const Signup = function () {
       {step >= 2 && (
         <div className={styles.signup_sub_container}>
           <div className={styles.signup_title}>출생연도</div>
-          <select className={styles.signup_input} name="selectedYear" value={selectedYear} onChange={handleInputChange}>
+          <select className={styles.signup_input} name="birthYear" value={userInfo.birthYear || ''} onChange={handleInputChange}>
             <option value="" disabled>출생연도를 선택해주세요</option>
             {years.map((year) => (
               <option key={year} value={year}>{year}</option>

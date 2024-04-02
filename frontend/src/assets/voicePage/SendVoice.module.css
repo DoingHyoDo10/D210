@@ -63,7 +63,8 @@
     box-shadow: 0.113rem 0.225rem 0.5rem 0 rgba(0, 0, 0, 0.3);
 }
 
-.mike{
+
+.voice_img{
     margin-top: -7%;
     height: 4rem;
     width: auto;
@@ -83,12 +84,6 @@
     box-shadow: 0.113rem 0.225rem 0.5rem 0 rgba(0, 0, 0, 0.3);
 }
 
-.file{
-    margin-top: -4.5%;
-    height: 4rem;
-    width: auto;
-}
-
 .btn_txt{
     font-size: 2.2rem;
 }
@@ -97,21 +92,141 @@
     width: 100%;
     height: 8rem;
     margin-top: 203%;
-    display: flex;
-    flex-direction: column;
-    position: fixed;
+    position: absolute;
+    bottom: 0;
+    bottom: -50px;
 }
-
 
 .walk_ori{
     position: absolute;
     margin-top: -4.3rem;
     height: 6rem;
-    margin-left: 5%;
+    margin-left: 40%;
     width: auto;
 }
 
 .ground{
     width: 100%;
     height: 5rem;
+}
+
+.modal_background{
+    top: 0;
+    bottom: 0;
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 10;
+    overflow: hidden;
+
+}
+
+.my_galli_list_modal_container{
+    width: 22rem;
+    height: 30rem;
+    top: 50%;
+    left: 50%;
+    z-index: 11;
+    position: absolute;
+    border-radius: 30px;
+    transform: translate(-50%, -50%);
+    background: #FFDD71;
+
+}
+
+.my_galli_list_title_container{
+    position: relative;
+    display: flex;
+    top: 10%;
+    left: 50%;
+    width: 22rem;
+    height: 10rem ;
+    transform: translate(-50%, -50%);
+}
+
+.my_galli_list_modal_title{
+    width: 13rem;
+    font-family: "bc_b";
+    font-size: 1.6rem;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    text-align: center;
+}
+
+.my_galli_list_modal_x{
+    position: absolute;
+    top: 40%;
+    left: 90%;
+    transform: translate(-50%, -50%);
+    width: auto;
+    height: 2rem;
+}
+
+.my_galli_list_list_container{
+    width: 20rem;
+    height: 21rem;
+    top: 61%;
+    left: 50%;
+    z-index: 11;
+    position: absolute;
+    border-radius: 30px;
+    transform: translate(-50%, -50%);
+    background: #FFFBF3;
+}
+
+.my_galli_list_names_container{
+    width: 20rem;
+    height: 19rem;
+    position: relative;
+    border-radius: 30px;
+    overflow-x: hidden;
+    overflow-y: auto;
+}
+
+.my_galli_list_name_container{
+    width: 18.7rem;
+    height: 4.5rem;
+    margin: 0.7rem;
+    position: relative;
+    border-radius: 20px;
+    align-items: center;
+    display: flex;
+    background: #FFF2CB;
+    box-shadow: 0.01rem 0.01rem 0.5rem 0 rgba(0, 0, 0, 0.2);
+}
+
+.my_galli_list_img_container{
+    width: 3.8rem;
+    height: 3.8rem;
+    border-radius: 50px;
+    margin-left: 2.5%;
+    object-fit: cover;
+}
+
+.my_galli_list_name_txt{
+    width: 7rem;
+    height: fit-content;
+    font-family: "bc_b";
+    margin-left: 2%;
+    font-size: 1rem;
+}
+
+.my_galli_list_btn_container{
+    width: 2rem;
+    height: 4.5rem;
+    font-family: "bc_b";
+    border-radius: 20px;
+    margin-left: 27%;
+    margin-right: 3%;
+    font-size: 1rem;
+    align-items: center;
+    display: flex;
+}
+
+.direct_btn{
+    height: 1.8rem;
+    width: auto;
 }

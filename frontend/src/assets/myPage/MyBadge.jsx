@@ -1,7 +1,7 @@
 const MyBadege = function () {
   return (
     <div>
-      내 목표 수정
+      내 배지
     </div>
   )
 }

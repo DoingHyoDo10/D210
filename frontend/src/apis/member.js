@@ -58,19 +58,20 @@ export const getMyInfo = async () => {
 
     return await instance.get(url)
         .then((res) => {
-            // console.log('myinfo : ', res)
+            // console.log('myinfo : ', res.data.data)
             return res.data.data
         })
         .catch((err) => {console.log(err)})
 }
 
 // 유저 추가정보 수정
-export const updateMyInfo = async () => {
-    const url = '/members/'
-
-    return await instance.put(url)
+export const updateMyInfo = async (data) => {
+    const url = '/members/detail'
+    console.log('api로 들어온 데이터', data);
+    return await instance.post(url, data)
         .then((res) => {
-            console.log(res)
+            console.log('유저정보수정api', res)
+            return res.data.data
         })
         .catch((err) => {console.log(err)})
 }
@@ -85,6 +86,33 @@ export const updateGoogleToken = async () => {
             const tokens = JSON.parse(localStorage.getItem('tokens'));
             tokens.Google_access_token = res.data.data;
             localStorage.setItem('tokens', JSON.stringify(tokens));
+        })
+        .catch((err) => {console.log(err)})
+}
+
+// 이미지 변환
+export const uploadImgFile = async (formData) => {
+    const url = '/test/uploadFile'
+
+    return await instance.post(url, formData, {
+        headers: {
+            'Content-Type': 'multipart/form-data'
+        }
+    })
+        .then((res) => {
+            return res.data.data
+        })
+        .catch((err) => {console.log(err)})
+}
+
+// 유저 프로필 조회
+export const getUserDetail = async (memberId) => {
+    const url = `/members/${memberId}`
+
+    return await instance.get(url)
+        .then((res) => {
+            // console.log('myinfo : ', res)
+            return res.data.data
         })
         .catch((err) => {console.log(err)})
 }

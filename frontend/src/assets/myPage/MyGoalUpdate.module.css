@@ -1,5 +1,6 @@
 .mygoalupdate_container {
   height: 100%;
+  overflow-y: auto;
 }
 
 .mygoalupdate_top_bar {
@@ -7,17 +8,98 @@
   justify-content: center;
   align-items: center;
   position: relative;
-  height: 5rem;
+  width: 100%;
+  height: 4rem;
 }
 
 .mygoalupdate_back_direct {
   position: absolute;
   left: 0.5rem;
   transform: rotate(180deg);
-  width: 2rem;
+  width: 1.5rem;
 }
 
 .mygoalupdate_title {
-  font-size: 2rem;
+  font-size: 1.7rem;
   line-height: 1;
+}
+
+.mygoalupdate_sub_container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+}
+
+.mygoalupdate_byage_container {
+  display: flex;
+  flex-direction: column;
+  width: 90%;
+  border-radius: 0.8rem;
+  margin-top: 1rem;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+}
+
+.mygoalupdate_byage_title_container {
+  display: flex;
+  align-items: center;
+  font-size: 1.3rem;
+  margin: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.mygoalupdate_info_img {
+  width: 8%;
+  margin-right: 0.5rem;
+}
+
+.mygoalupdate_underline {
+  width: 90%;
+  border: 2px solid #FFCB23;
+  border-radius: 1rem;
+  margin: 0 auto;
+}
+
+.mygoalupdate_byage_content_container {
+  margin: 1rem;
+  font-size: 1.2rem;
+}
+
+.mygoalupdate_field_container {
+  width: 90%;
+  margin-top: 1.5rem;
+}
+
+.mygoalupdate_sub_title {
+  font-size: 1.2rem;
+}
+
+.mygoalupdate_input {
+  width: 100%;
+  box-sizing: border-box;
+  appearance: none;
+  padding: 1rem;
+  margin-top: 0.5rem;
+  border: 1px solid #ccc;
+  border-radius: 0.8rem;
+}
+
+/* Chrome, Safari, Edge, Opera */
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.mygoalupdate_btn {
+  width: 90%;
+  background-color: #FFCB23;
+  padding: 1rem;
+  border: none;
+  border-radius: 2rem;
+  cursor: pointer;
+  margin: 1.5rem 0;
+  font-size: 1.2rem;
+  box-shadow: 0.01rem 0.01rem 0.5rem 0 rgba(0, 0, 0, 0.2);
 }

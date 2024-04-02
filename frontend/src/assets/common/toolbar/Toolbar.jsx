@@ -2,6 +2,7 @@ import styles from "./Toolbar.module.css";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getEggMoney } from "../../../apis/wallet";
 import { useEffect, useState } from "react";
+import { getUserDetail } from "../../../apis/member";
 
 
 const Toolbar = function(){
@@ -16,6 +17,7 @@ const Toolbar = function(){
     const navigate = useNavigate();
     const [egg, setEgg] = useState(0);
     const [money, setMoney] = useState(0);
+    const [memberInfo, setMemberInfo] = useState({});
 
     const moveToAlarmPage = function () {
         navigate("/Alarm")
@@ -46,6 +48,16 @@ const Toolbar = function(){
 
     const handleSidebarClickEvent = ()=>{
         setOpened(!opened);
+        if(!opened){
+            (async () => {
+                try {
+                  const data = await getUserDetail(JSON.parse(localStorage.getItem('tokens')).member_id);
+                  setMemberInfo(data);
+                } catch (err) {
+                  console.error('유저 정보를 가져오는 중 에러 발생:', err);
+                }
+              })();
+        }
     }
     const handleSidebarCloseEvent = ()=>{
         setOpened(false);
@@ -55,27 +67,27 @@ const Toolbar = function(){
         <> 
 
                 <div className={`${styles.sidebar_container} ${opened && styles.sidebar_container_opened}`}>
-                <div className={`${styles.hamburger_container}`} onClick={handleSidebarClickEvent}>
+                <div className={`${styles.hamburger_container} ${opened ? styles.hamburger_container_opened : styles.change_opacity_0}`} onClick={handleSidebarClickEvent}>
                     <div className={`${styles.hamburger} ${opened && styles.hamburger_1_opened}`}></div>
                     <div className={`${styles.hamburger} ${opened && styles.hamburger_2_opened}`}></div>
                     <div className={`${styles.hamburger} ${opened && styles.hamburger_3_opened}`}></div>
                 </div>
                 <div className={styles.profile_container}>
                     <div className={styles.profile_img_container}>
-                        <img src='/imgs/profile_img1.jpg' alt='프로필 이미지' className={styles.profile_img}></img>
+                        <img src={memberInfo.profileUrl} alt='프로필 이미지' className={styles.profile_img}></img>
                         <div className={styles.profile_detail_container}>
-                            <p className={styles.profile_name}>김이박최고다이순신</p>
-                            <p className={styles.profile_intro}>이것은 자기소개를 테스트하기 위한 자기소개입니다.</p>
+                            <p className={styles.profile_name}>{memberInfo.nickname}</p>
+                            <p className={styles.profile_intro}>{memberInfo.comment ? memberInfo.comment : '등록된 자기소개가 없습니다.'}</p>
                         </div>
                     </div>
                     <div className={styles.all_money_container}>
                         <div className={styles.egg_container}>
                             <img src="/imgs/egg.png" alt="황금알" className={styles.egg}></img>
-                            <p className={styles.egg_txt}>30000 에그</p>
+                            <p className={styles.egg_txt}>{egg} 에그</p>
                         </div>
                         <div className={styles.money_container}>
                             <img src="/imgs/money.png" alt="황금알" className={styles.money}></img>
-                            <p className={styles.money_txt}>300000 머니</p>
+                            <p className={styles.money_txt}>{money} 머니</p>
                         </div>
                     </div>
                 </div>
@@ -110,7 +122,8 @@ const Toolbar = function(){
 
         
             <div className={styles.tool_container}>          
-                <div className={`${styles.tool_hamburger_container}`} onClick={handleSidebarClickEvent}>
+
+                <div className={`${styles.tool_hamburger_container} ${opened ? styles.hamburger_container_opened : styles.change_opacity_1}`} onClick={handleSidebarClickEvent}>
                     <div className={`${styles.tool_hamburger} ${opened && styles.hamburger_1_opened}`}></div>
                     <div className={`${styles.tool_hamburger} ${opened && styles.hamburger_2_opened}`}></div>
                     <div className={`${styles.tool_hamburger} ${opened && styles.hamburger_3_opened}`}></div>

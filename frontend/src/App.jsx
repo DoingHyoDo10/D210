@@ -25,10 +25,39 @@ import MyBadege from "./assets/myPage/MyBadge";
 import MyGoalUpdate from "./assets/myPage/MyGoalUpdate";
 import SavedVoice from "./assets/voicePage/SavedVoice";
 import SendVoice from "./assets/voicePage/SendVoice";
+import SendingVoice from "./assets/voicePage/SendingVoice";
+import { useEffect, useState } from "react";
 
 function App() {
+  const [alramFlag, setAlarmFlag] = useState(false);
+  const [alarmInfo, setAlarmInfo] = useState(null);
+
+  const AlarmFlagHandler = () => {
+    setAlarmFlag(!alramFlag);
+  }
+
+  useEffect(()=>{
+    const localItem = JSON.parse(localStorage.getItem('tokens'));
+    // EventSource 생성 및 설정
+    if (localItem !== null) {
+      const source = new EventSource(`${import.meta.env.VITE_API_URI}/notifications/subscribe/${localItem.member_id}`);
+      console.log(source)
+      source.addEventListener('sse', event => {
+        const notificationData = JSON.parse(event.data);
+        setAlarmInfo(notificationData)
+        setAlarmFlag(true);
+      });
+
+      // 컴포넌트가 언마운트될 때 EventSource 종료
+      return () => {
+        source.close();
+      };
+    }
+  }, []);
+
   return (
     <BrowserRouter>
+    {alramFlag && <div className="modal-background"><div className="modal-content-box"><p>{alarmInfo.notiContent}</p> <button onClick={AlarmFlagHandler}>닫기</button></div></div>}
       <Routes>
         {/* 상하단바 보이는 페이지 */}
         <Route element={<Layout />}>
@@ -37,7 +66,6 @@ function App() {
           <Route path="/walking" element={<Walking />}></Route>
           <Route path="/friend" element={<Friend />}></Route>
           <Route path="/mypage" element={<Mypage />}></Route>
-          <Route path="/member/:id" element={<SocketPage4Member/>}></Route>
         </Route>
         {/* 상하단바 없는 페이지 */}
         <Route path="/" element={<Login />}></Route>
@@ -58,6 +86,8 @@ function App() {
         <Route path="/mygoal/update" element={<MyGoalUpdate />}></Route>
         <Route path="/voice/savedvoice" element={<SavedVoice />}></Route>
         <Route path="/voice/sendvoice" element={<SendVoice />}></Route>
+        <Route path="/member/:id" element={<SocketPage4Member/>}></Route>
+        <Route path="/voice/sendvoice/sendingvoice" element={<SendingVoice />}></Route>
       </Routes>
     </BrowserRouter>
   )

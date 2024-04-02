@@ -21,7 +21,6 @@ const Main = function(){
         getRealtimeExerciseData()
             .then((res)=>{
               setRealtimeExerciseData(res);
-              console.log(res)
             })
     }, [])
 
@@ -71,39 +70,43 @@ const Main = function(){
     const [criteriaData, setCriteriaData] = useState({steps:0, exerciseMinute:0});
     const [halliRequestList, setHalliRequestList] = useState([]);
 
-    const openHalliModal = function() {
-        setIsHalliOpen(!isHalliOpen);
+    const updateHalliGalliList = () => {
         getHalleyList()
-            .then((res)=>{
-                if(res){
-                    let data1 = [];
-                    let data2 = [];
-                    let data3 = [];
-                    res.forEach(element => {
-                        if(element.requestedTime != null){
-                            data1.push(element);
-                        }
-                        if(element.isAccepted){
-                            data2.push(element);
-                        } else{
-                            data3.push(element);
-                        }
-                    });
-                    setHalliRoadmapList(data1);
-                    setHalliList(data2);
-                    setHalliRequestList(data3);
-                    if(data2.length == 0){
-                        setHalli(false);
+        .then((res)=>{
+            if(res){
+                let data1 = [];
+                let data2 = [];
+                let data3 = [];
+                res.forEach(element => {
+                    if(element.requestedTime != null){
+                        data1.push(element);
                     }
-                    else{
-                        setHalli(true);
+                    if(element.isAccepted){
+                        data2.push(element);
+                    } else{
+                        data3.push(element);
                     }
-                }
-                else{
-                    setHalliList([])
+                });
+                setHalliRoadmapList(data1);
+                setHalliList(data2);
+                setHalliRequestList(data3);
+                if(data2.length == 0){
                     setHalli(false);
                 }
-            })
+                else{
+                    setHalli(true);
+                }
+            }
+            else{
+                setHalliList([])
+                setHalli(false);
+            }
+        })
+    }
+
+    const openHalliModal = function() {
+        setIsHalliOpen(!isHalliOpen);
+        updateHalliGalliList();
     }
 
     const openGalliModal = function(){
@@ -117,38 +120,7 @@ const Main = function(){
 
         }
         else if(index == 1){
-            // 할리 리스트 조회
-            getHalleyList()
-            .then((res)=>{
-                if(res){
-                    let data1 = [];
-                    let data2 = [];
-                    let data3 = [];
-                    res.forEach(element => {
-                        if(element.requestedTime != null){
-                            data1.push(element);
-                        }
-                        if(element.isAccepted){
-                            data2.push(element);
-                        } else{
-                            data3.push(element);
-                        }
-                    });
-                    setHalliRoadmapList(data1);
-                    setHalliList(data2);
-                    setHalliRequestList(data3);
-                    if(data2.length == 0){
-                        setHalli(false);
-                    }
-                    else{
-                        setHalli(true);
-                    }
-                }
-                else{
-                    setHalliList([])
-                    setHalli(false);
-                }
-            })
+            updateHalliGalliList();
         }
         else{
             // 갈리 리스트 조회
@@ -168,37 +140,7 @@ const Main = function(){
     }
 
     const openHalliListModal = function(){
-        getHalleyList()
-            .then((res)=>{
-                if(res){
-                    let data1 = [];
-                    let data2 = [];
-                    let data3 = [];
-                    res.forEach(element => {
-                        if(element.requestedTime != null){
-                            data1.push(element);
-                        }
-                        if(element.isAccepted){
-                            data2.push(element);
-                        } else{
-                            data3.push(element);
-                        }
-                    });
-                    setHalliRoadmapList(data1);
-                    setHalliList(data2);
-                    setHalliRequestList(data3);
-                    if(data2.length == 0){
-                        setHalli(false);
-                    }
-                    else{
-                        setHalli(true);
-                    }
-                }
-                else{
-                    setHalliList([])
-                    setHalli(false);
-                }
-            })
+        updateHalliGalliList();
         setIsHalliListOpen(!isHalliListOpen);   
     }
 

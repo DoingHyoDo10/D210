@@ -34,10 +34,14 @@ const Friend = function(){
         setTabIndex(index)
     }
 
+    const searchFriendByKeyword = () => {
+        searchMemberList(keyword)
+            .then(res=>setSearchedFriendList(res));
+    }
+
     const openFindFriendModal = function(){
         if(!findFriend){
-            searchMemberList('')
-                .then(res=>setSearchedFriendList(res));
+            searchFriendByKeyword();
         }
         else{
             getFriendList()
@@ -48,6 +52,7 @@ const Friend = function(){
                 .then(res=>setReceivedFriendList(res))
         }
         setFindFriend(!findFriend)
+        setKeyword('');
     }
 
     const onChangeHandler = (e)=>{
@@ -56,13 +61,21 @@ const Friend = function(){
 
     const sendFriendRequestHandler = (memberId)=>{
         sendFriendRequest(memberId)
-            .then(res=>{alert("친구 요청에 성공했습니다."); setSearchedFriendList([]); openFindFriendModal();});
+            .then(res=>{
+                alert("친구 요청에 성공했습니다!"); 
+                openFindFriendModal();
+            });
     }
 
     const putFriendRequestHandler = (memberId, isAccept) =>{
         putFriendRequest({memberId: memberId, isAccept: isAccept})
             .then(res=>{
-                alert("친구 요청 수락/거절에 성공했습니다."); 
+                if(isAccept){
+                    alert('친구 요청을 수락했습니다!')
+                }
+                else{
+                    alert('친구 요청을 거절했습니다...')
+                }
                 getFriendReceivedList()
                     .then(resp=>setReceivedFriendList(resp))
                 getFriendSentList()
@@ -70,6 +83,11 @@ const Friend = function(){
                 })
     }
 
+    const onKeyDownHandler = (e)=>{
+        if(e.key == 'Enter'){
+            searchFriendByKeyword();
+        }
+    }
     const tabArr=[{
         tabTitle:(
             <div className={tabIndex===0 ? styles.mode_choose : styles.mode_friend_list} onClick={()=>tabClickHandler(0)}>
@@ -159,8 +177,8 @@ const Friend = function(){
                         </div>                                
                         
                         <div className={styles.find_friend_search_container}>
-                            <input className={styles.find_friend_search_box} onChange={onChangeHandler}></input>
-                            <img className={styles.find_friend_search_icon} src="/imgs/search.png" alt="찾기 아이콘" onClick={()=>searchMemberList(keyword).then(res=>setSearchedFriendList(res))}></img>
+                            <input className={styles.find_friend_search_box} onChange={onChangeHandler} onKeyDown={onKeyDownHandler}></input>
+                            <img className={styles.find_friend_search_icon} src="/imgs/search.png" alt="찾기 아이콘" onClick={searchFriendByKeyword}></img>
                         </div>
 
                         <div className={styles.find_friend_list_container}>

@@ -37,7 +37,7 @@ export default function MyMsg({ message}) {
           <audio style={{display: "none"}} controls autoPlay>
             <source src={message.voiceURL} type="audio/mpeg" />
           </audio>
-            음성메세지 
+            {message.textContent !== ''? message.textContent : "음성메세지"}
             <button className="btn glass" onClick={()=>setPlay((prev) => !prev)}>🎧</button>
           </>: message.textContent}
       </div>

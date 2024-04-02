@@ -137,7 +137,7 @@ const SocketPage4Member = () => {
 
     // 메세지 스택에 저장 
     console.log("들어온 메세지:", receivedMsg);
-    if(Number(pageOwnerId) === Number(currentMember.member_id)){
+    if(Number(pageOwnerId) === Number(currentMember.member_id) && receivedMsg.voiceURL === ''){
       getSpeech(`${currentMember.member_nickname} 님의 응원메세지!:  `+receivedMsg.textContent);
     }
     setMessages((preMessages) => [...preMessages, receivedMsg]);
@@ -195,7 +195,7 @@ const SocketPage4Member = () => {
     return () => {
       setTimeout(() => {
         var messageInfo = {
-          messageType: "VOICE",
+          messageType: "TTS",
           textContent: currentMember.nickname +"님이 퇴장 하였습니다.",
           voiceURL: null,
           senderId: currentMember.member_id,

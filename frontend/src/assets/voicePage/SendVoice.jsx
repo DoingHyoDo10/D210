@@ -3,31 +3,92 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 
-const Store = function(){
-    const navigate = useNavigate();    
+const SendVoice = function(){
+    const navigate = useNavigate();
+    const [galli, setGalli] = useState(false);
 
-    const moveToVoicePage = function () {
+    const moveToVoicePage = function(){
         navigate("/voice")
     }
 
+    const moveToRealTimeVoicePage = function(){
+        navigate("/member/1")
+    }
+
+    const moveToNormalVoicePage = function(){
+        navigate("/voice/sendvoice/sendingvoice")
+    }
+
+    const openGalliListModal = function(){
+        setGalli(!galli);
+    }
+
+    const galliList = [
+        {
+            profileUrl: "/imgs/profile_img1.jpg",
+            nickname : "우주최강세현"
+        },
+        {
+            profileUrl: "/imgs/profile_img1.jpg",
+            nickname : "지구최강세현"
+        },
+        {
+            profileUrl: "/imgs/profile_img1.jpg",
+            nickname : "지상최강세현"
+        },
+        {
+            profileUrl: "/imgs/profile_img1.jpg",
+            nickname : "지하최강세현"
+        },
+    ]
+
+
     return(
-        <>
+        <>            
+            {galli && (
+                <>
+                    <div className={styles.modal_background}></div>
+                    <div className={styles.my_galli_list_modal_container}>
+                        <div className={styles.my_galli_list_title_container}>
+                            <p className={styles.my_galli_list_modal_title}>운동중인 <br></br>나의 갈리 목록</p>
+                            <img src="/imgs/x.png" alt="x" className={styles.my_galli_list_modal_x} onClick={openGalliListModal}></img>
+                        </div>
+                        <div className={styles.my_galli_list_list_container}>
+                            <div className={styles.my_galli_list_names_container}>
+                                {galliList.map((data, index) => {
+                                    console.log(data)
+                                    return(
+                                        <div key={index} className={styles.my_galli_list_name_container} onClick={()=>moveToRealTimeVoicePage()}>
+                                            <img src={data.profileUrl} alt="프로필 사진" className={styles.my_galli_list_img_container} ></img>
+                                            <p className={styles.my_galli_list_name_txt}>{data.nickname}</p>
+                                            <div className={styles.my_galli_list_btn_container}>
+                                                <img src="/imgs/direct.png" alt="화살표" className={styles.direct_btn}></img>
+                                            </div>
+                                        </div>  
+                                    )
+                                })}
+                            </div>
+                        </div>
+                    
+                    </div>
+                </>
+            )}
             <div className={styles.main_container}>
                 <div className={styles.title_container}>
                     <img src="/imgs/direct.png" alt="뒤로가기" className={styles.back_btn} onClick={moveToVoicePage}></img>
                     <p className={styles.title_txt}>응원 메시지 보내기</p>
                 </div>
                 <div className={styles.voice_btn_container}>
-                    <div className={styles.egg_container}>
-                        <p className={styles.btn_txt}>응원 메시지<br></br>보내기</p>
-                        <img src="/imgs/mike.png" alt="마이크" className={styles.mike}></img>
+                    <div className={styles.egg_container} onClick={openGalliListModal}>
+                        <p className={styles.btn_txt}> 실시간 응원 메시지<br></br>보내기</p>
+                        <img src="/imgs/mike.png" alt="마이크" className={styles.voice_img}></img>
                     </div>
-                    <div className={styles.item_container}>
-                        <p className={styles.btn_txt}>응원 메시지<br></br>보관함</p>
-                        <img src="/imgs/file.png" alt="파일" className={styles.file}></img>
+                    <div className={styles.item_container} onClick={moveToNormalVoicePage}>
+                        <p className={styles.btn_txt}>일반 응원 메시지<br></br>보내기</p>
+                        <img src="/imgs/mike.png" alt="마이크" className={styles.voice_img}></img>
                     </div>
                     <div className={styles.back}>
-                        <img src="/imgs/ch1_bol_longwalk.gif" alt="걷는 오리" className={styles.walk_ori}></img>
+                        <img src="/imgs/ch1_bol_jump.gif" alt="걷는 오리" className={styles.walk_ori}></img>
                         <img src="/imgs/ground.png" alt="땅 이미지" className={styles.ground}></img>
                     </div>
                 </div>
@@ -36,4 +97,4 @@ const Store = function(){
     )
 }
 
-export default Store;
+export default SendVoice;

@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 
 
-const Store = function(){
+const Voice = function(){
     const navigate = useNavigate();    
 
     const moveToMainPage = function () {
@@ -45,4 +45,4 @@ const Store = function(){
     )
 }
 
-export default Store;
+export default Voice;

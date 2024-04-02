@@ -14,4 +14,5 @@ public class PostMissionRequest {
     private Long exerciseMinute;
     private Integer questMoney;
     private Integer period;
+    private Integer dayoff;
 }

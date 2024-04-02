@@ -28,10 +28,11 @@ public class MissionService {
     private final MembersRepository membersRepository;
     @Transactional
     public String postMission(Members member, PostMissionRequest postMissionRequest){
-        Long memberId = postMissionRequest.getMemberId();
+        Long galleyId = postMissionRequest.getMemberId();
         Integer reward = postMissionRequest.getQuestMoney();
         Long exerciseMinute = postMissionRequest.getExerciseMinute();
         Integer period = postMissionRequest.getPeriod();
+        Integer dayoff = postMissionRequest.getDayoff();
 
         MemberAccount memberAccount = memberAccountRepository.findMemberAccountById(member.getMemberAccountId().getId())
                 .orElseThrow(()->new CustomException(ErrorType.NOT_FOUND_MEMBER_ACCOUNT));
@@ -39,17 +40,15 @@ public class MissionService {
         if(memberAccount.getMoney() < reward){
             throw new CustomException(ErrorType.NOT_ENOUGH_MONEY);
         }
+        memberAccount.setMoney(memberAccount.getMoney() - reward);
 
-        Members halley = membersRepository.findById(memberId)
+        Members galley = membersRepository.findById(galleyId)
                 .orElseThrow(()->new CustomException(ErrorType.NOT_FOUND_MEMBER));
 
-        HalleyGalley halleyGalley = halleyGalleyRepository.findHalleyGalleyByGalleyIdAndHalleyId(member, halley)
+        HalleyGalley halleyGalley = halleyGalleyRepository.findHalleyGalleyByGalleyIdAndHalleyId(galley, member)
                 .orElseThrow(()->new CustomException(ErrorType.NOT_FOUND_HALLEY_GALLEY));
 
-        Mission mission = missionRepository.findById(halleyGalley.getMissionId().getId())
-                .orElseThrow(()->new CustomException(ErrorType.NOT_FOUND_MISSION));
-
-        if(mission.getCreatedAt().getMonthValue()+1 < LocalDate.now().getMonthValue()){
+        if(halleyGalley.getMissionId() == null){
             Mission newMission = Mission
                     .builder()
                     .exerciseMinute(exerciseMinute)
@@ -59,15 +58,41 @@ public class MissionService {
             // 미션 저장
             missionRepository.save(newMission);
             // 할리갈리 보상 세팅
-            HalleyGalley halleyGalley1 = halleyGalleyRepository.findHalleyGalleyByGalleyIdAndHalleyId(member, halley)
+            HalleyGalley halleyGalley1 = halleyGalleyRepository.findHalleyGalleyByGalleyIdAndHalleyId(galley, member)
                     .orElseThrow(()->new CustomException(ErrorType.NOT_FOUND_HALLEY_GALLEY));
 
             halleyGalley1.updateReward(reward);
-            halleyGalley1.updateMissionId(mission);
+            halleyGalley1.updateDayoff(dayoff);
+            halleyGalley1.updateMissionId(newMission);
             halleyGalleyRepository.save(halleyGalley1);
-        }
-        else{
-            throw new CustomException(ErrorType.CANT_ADD_MISSION);
+            memberAccountRepository.save(memberAccount);
+
+        } else{
+            Mission mission = missionRepository.findById(halleyGalley.getMissionId().getId())
+                    .orElseThrow(()->new CustomException(ErrorType.NOT_FOUND_MISSION));
+
+            if(mission.getCreatedAt().getMonthValue()+1 < LocalDate.now().getMonthValue()){
+                Mission newMission = Mission
+                        .builder()
+                        .exerciseMinute(exerciseMinute)
+                        .period(period)
+                        .build();
+
+                // 미션 저장
+                missionRepository.save(newMission);
+                // 할리갈리 보상 세팅
+                HalleyGalley halleyGalley1 = halleyGalleyRepository.findHalleyGalleyByGalleyIdAndHalleyId(galley, member)
+                        .orElseThrow(()->new CustomException(ErrorType.NOT_FOUND_HALLEY_GALLEY));
+
+                halleyGalley1.updateReward(reward);
+                halleyGalley1.updateMissionId(mission);
+                halleyGalley1.updateDayoff(dayoff);
+                halleyGalleyRepository.save(halleyGalley1);
+                memberAccountRepository.save(memberAccount);
+            }
+            else{
+                throw new CustomException(ErrorType.CANT_ADD_MISSION);
+            }
         }
 
         return "";

@@ -1,7 +1,89 @@
-
-.main_container {
-    /* display: flex;
-    flex-direction: column; 
-    align-items: center; */
-    width: 100%;
+.walking_container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 1rem 0;
+    height: 100%;
+    overflow-y: auto;
 }
+
+.walking_title {
+    width: 13rem;
+    height: 3.5rem;
+    background: #FFFEFC;
+    border-radius: 0.938rem;
+    font-family: "bc_b";
+    font-size: 1.7rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0.113rem 0.225rem 0.5rem 0 rgba(0, 0, 0, 0.3);
+    margin-bottom: 1rem;
+}
+
+.walking_content_container {
+    width: 22.5rem;
+    height: 25rem;
+    border-top-right-radius: 0.938rem;
+    border-bottom-left-radius: 0.938rem;
+    border-bottom-right-radius: 0.938rem;
+    border-top-left-radius: 0.938rem;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    display: flex;
+    position: relative;
+    box-shadow: 0.113rem 0.225rem 0.5rem 0 rgba(0, 0, 0, 0.3);
+    flex-direction: column;
+    justify-content: end;
+}
+
+.walking_info_box {
+    width: 20rem;
+    height: 20rem;
+    display: block;
+    display: flex;
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    align-items: center;
+    font-family: "bc_b";
+}
+.info_box {
+    width: 5rem;
+    height: 5rem;
+    border-top-right-radius: 0.938rem;
+    border-bottom-left-radius: 0.938rem;
+    border-bottom-right-radius: 0.938rem;
+    border-top-left-radius: 0.938rem;
+    box-shadow: 0.113rem 0.225rem 0.5rem 0 rgba(0, 0, 0, 0.3);
+}
+
+.walking_graph_container{
+    height: 18rem;
+    width: 25rem;
+    margin-top: 4%;
+    /* top: 68.5%;
+    left: 50%;
+    position: absolute;
+    transform: translate(-50%, -50%); */
+}
+
+.go_exercise_btn {
+    margin-top: 4.5%;
+    margin-bottom: 4.5%;
+    width: 22.5rem;
+    height: 5.5rem;
+    border-radius: 1.5rem;
+    background: #FFCB23;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0.113rem 0.225rem 0.5rem 0 rgba(0, 0, 0, 0.3);
+}
+
+.go_exercise_btn_txt{
+    font-family: "bc_b";
+    font-size: 1.5rem;
+}
+

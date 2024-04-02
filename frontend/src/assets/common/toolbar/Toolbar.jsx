@@ -3,9 +3,12 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { getEggMoney } from "../../../apis/wallet";
 import { useEffect, useState } from "react";
 import { getUserDetail } from "../../../apis/member";
+import { useToolbar } from "../../../stores/toolbar";
 
 
 const Toolbar = function(){
+
+    const { state } = useToolbar();
 
     useEffect(()=>{
         getEggMoney()
@@ -13,11 +16,11 @@ const Toolbar = function(){
                 setEgg(res.egg);
                 setMoney(res.money);
             })
-    }, [])
+    }, [state])
     const navigate = useNavigate();
     const [egg, setEgg] = useState(0);
     const [money, setMoney] = useState(0);
-    const [memberInfo, setMemberInfo] = useState({});
+    const [memberInfo, setMemberInfo] = useState({profileUrl: '', nickname: '', comment: ''});
 
     const moveToAlarmPage = function () {
         navigate("/Alarm")
@@ -63,10 +66,11 @@ const Toolbar = function(){
         setOpened(false);
     }
 
+    const [] = useState()
+
     return(
         <> 
-
-                <div className={`${styles.sidebar_container} ${opened && styles.sidebar_container_opened}`}>
+            <div className={`${styles.sidebar_container} ${opened && styles.sidebar_container_opened}`}>
                 <div className={`${styles.hamburger_container} ${opened ? styles.hamburger_container_opened : styles.change_opacity_0}`} onClick={handleSidebarClickEvent}>
                     <div className={`${styles.hamburger} ${opened && styles.hamburger_1_opened}`}></div>
                     <div className={`${styles.hamburger} ${opened && styles.hamburger_2_opened}`}></div>
@@ -74,10 +78,10 @@ const Toolbar = function(){
                 </div>
                 <div className={styles.profile_container}>
                     <div className={styles.profile_img_container}>
-                        <img src={memberInfo.profileUrl} alt='프로필 이미지' className={styles.profile_img}></img>
+                        <img src={memberInfo != undefined ? memberInfo.profileUrl : ''} alt='프로필 이미지' className={styles.profile_img}></img>
                         <div className={styles.profile_detail_container}>
-                            <p className={styles.profile_name}>{memberInfo.nickname}</p>
-                            <p className={styles.profile_intro}>{memberInfo.comment ? memberInfo.comment : '등록된 자기소개가 없습니다.'}</p>
+                            <p className={styles.profile_name}>{memberInfo != undefined ? memberInfo.nickname : ''}</p>
+                            <p className={styles.profile_intro}>{memberInfo != undefined ? (memberInfo.comment ? memberInfo.comment : '등록된 자기소개가 없습니다.'): ''}</p>
                         </div>
                     </div>
                     <div className={styles.all_money_container}>
@@ -119,6 +123,7 @@ const Toolbar = function(){
                     </div>
                 </div>
             </div>
+
 
         
             <div className={styles.tool_container}>          

@@ -1,0 +1,332 @@
+@font-face {
+    font-family: "bc_b";
+    src: url(/public/fonts/BCcardB.ttf);
+}
+
+@font-face {
+    font-family: "bc_l";
+    src: url(/public/fonts/BCcardL.ttf);
+}
+
+.main_container {
+    position: relative;
+    display: flex;
+    flex-direction: column; /* 세로로 배치 */
+    align-items: center;
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+}
+
+
+.modal_background{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 10;
+    top: 0;
+
+}
+
+.mission_modal_container{
+    width: 22rem;
+    height: 25rem;
+    top: 50%;
+    left: 50%;
+    z-index: 11;
+    position: absolute;
+    border-radius: 30px;
+    transform: translate(-50%, -50%);
+    background: #FFDD71;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.mission_title_container{
+    position: relative;
+    display: flex;
+    width: 22rem;
+    height: 4rem;
+}
+
+.mission_modal_x{
+    position: absolute;
+    right: 5%;
+    top: 20%;
+    width: auto;
+    height: 2rem;
+}
+
+.mission_content{
+    width: 20rem;
+    height: 17rem;
+    margin-top: -1%;
+    border-radius: 30px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #FFFBF3;
+}
+
+.mission_img{
+    height: 10rem;
+    width: auto;
+    margin-top: -26%;
+}
+
+.mission_detail{
+    width: 18rem;
+    height: 10rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: "bc_b";
+    font-size: 1.7rem;
+    text-align: center;
+}
+
+.mission_ok_container{
+    width: 5.3rem;
+    height: 3.1rem;
+    margin-top: 2%;
+    border-radius: 1rem;
+    background: #FFF2CB;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0.2rem 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.2);
+}
+
+.title_container{
+    width: 100%;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    position: fixed;
+    background: white;
+    justify-content: center;
+}
+
+.back_btn{
+    position: absolute;
+    left: 3%;
+    top: 19%;
+    height: 2.1rem;
+    width: auto;
+    transform: rotate(180deg);
+}
+
+.title_txt{
+    font-family: "bc_b";
+    font-size: 1.5rem;
+}
+
+.profile_container{
+    width: 100%;
+    height: 16rem;
+    display: flex;
+    margin-top: 6%;
+    flex-direction: column; /* 세로로 배치 */
+    align-items: center;
+    justify-content: center;
+}
+
+.profile_txt{
+    font-family: "bc_b";
+    font-size: 1.5rem;
+    margin-top: 27%;
+    margin-bottom: 1%;
+}
+
+.profile_img{
+    height: 10rem;
+    width: 10rem;
+    border-radius: 8rem;
+}
+
+.profile_name_txt{
+    font-family: "bc_b";
+    font-size: 2rem;
+    margin-top: 2%;
+}
+
+.mission_container{
+    width: 22rem;
+    height: 34.5rem;
+    margin-top: 10%;
+    border-radius: 0.938rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mission_title{
+    font-size: 1.5rem;
+    text-align: left;
+    margin-top: 5%;
+    font-family: "bc_b";
+    margin-left: -48%
+}
+
+.mission_back{
+    width: 22rem;
+    height: 25rem;
+    margin-top: -2%;
+    background: #FFFEFC;
+    flex-direction: column; /* 세로로 배치 */
+    display: flex;
+    align-items: center;
+    box-shadow: 0.113rem 0.225rem 0.5rem 0 rgba(0, 0, 0, 0.3);
+    border-radius: 0.938rem;;
+}
+
+.content_txt{
+    font-size: 1.5rem;
+    font-family: "bc_b";
+    margin-left: -78%;
+}
+
+.bottom_line{
+    width: 20.4rem;
+    height: 0.5rem;
+    margin-top: -5%;
+    background: #FFCB23;
+    border-radius: 1rem;
+
+}
+
+.content_container{
+    width: 20.4rem;
+    height: 8rem;
+    display: flex;
+}
+
+.ch2_money{
+    margin-top: -15%;
+    margin-left: -5%;
+    height: 12rem;
+    width: auto;
+}
+
+.content_txt_container{
+    width: 14.4rem;
+    height: 10rem;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-left: -5%;
+}
+
+.time_container{
+    width: 14.4rem;
+    height: fit-content;
+    display: flex;
+}
+
+.input_time{
+    width: 2rem;
+    height: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    outline: none;
+    background: #FFF2CB;
+    font-family: "bc_b";
+    font-size: 1.5rem;
+    margin-left: 2%;
+    padding: 0.5rem;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+.day_money_container{
+    width: 14.4rem;
+    height: fit-content;
+    display: flex;
+}
+
+.input_money{
+    width: 6rem;
+    height: 1rem;
+    border-radius: 0.5rem;
+    border: none;
+    outline: none;
+    background: #FFF2CB;
+    font-family: "bc_b";
+    font-size: 1.5rem;
+    margin-left: 4%;
+    padding: 0.5rem;
+    box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.25);
+}
+
+.rest_container{
+    width: 14.4rem;
+    height: fit-content;
+    display: flex;
+}
+
+.content_detail_txt{
+    font-family: "bc_b";
+    font-size: 1.3rem;
+    margin-right: 1%;
+}
+
+.money_content_txt{
+    font-size: 1.5rem;
+    font-family: "bc_b";
+    margin-left: -78%;
+    margin-top: 3%;
+
+}
+
+.money_bottom_line{
+    width: 20.4rem;
+    height: 0.5rem;
+    margin-top: -5%;
+    background: #FFCB23;
+    border-radius: 1rem;
+}
+
+.money_content_container{
+    width: 20.4rem;
+    height: 8rem;
+    display: flex;
+}
+
+.money{
+    margin-top: 8%;
+    margin-left: 0%;
+    height: 5rem;
+    width: auto;
+}
+
+.money_content_txt_container{
+    width: 15.4rem;
+    height: 8rem;
+    display: flex;
+    flex-direction: column;
+    text-align: left;
+    margin-left: 2%;
+}
+
+.money_content_detail_txt{
+    font-family: "bc_b";
+    font-size: 1.3rem;
+}
+
+.mission_btn{
+    width: 22rem;
+    height: 4.5rem;
+    background: #FFCB23;
+    border-radius: 1rem;
+    margin-top: 5%;    
+    box-shadow: 0.113rem 0.225rem 0.5rem 0 rgba(0, 0, 0, 0.3);
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}

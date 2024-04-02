@@ -26,21 +26,31 @@ import MyGoalUpdate from "./assets/myPage/MyGoalUpdate";
 import SavedVoice from "./assets/voicePage/SavedVoice";
 import SendVoice from "./assets/voicePage/SendVoice";
 import SendingVoice from "./assets/voicePage/SendingVoice";
+import Mission from "./assets/halligalliPage/Mission";
 import { useEffect, useState } from "react";
+import { EventSourcePolyfill } from "event-source-polyfill";
 
 function App() {
-  const [alramFlag, setAlarmFlag] = useState(false);
+  const [alarmFlag, setAlarmFlag] = useState(false);
   const [alarmInfo, setAlarmInfo] = useState(null);
 
   const AlarmFlagHandler = () => {
-    setAlarmFlag(!alramFlag);
+    setAlarmFlag(!alarmFlag);
   }
 
   useEffect(()=>{
     const localItem = JSON.parse(localStorage.getItem('tokens'));
     // EventSource 생성 및 설정
     if (localItem !== null) {
-      const source = new EventSource(`${import.meta.env.VITE_API_URI}/notifications/subscribe/${localItem.member_id}`);
+      const source = new EventSourcePolyfill(
+        `https://j10d210.p.ssafy.io/api/notifications/subscribe`,
+        {
+          headers: {
+            Authorization: localItem.Authorization,
+          },
+          timeout: 600000000
+        }
+        );
       console.log(source)
       source.addEventListener('sse', event => {
         const notificationData = JSON.parse(event.data);
@@ -57,7 +67,21 @@ function App() {
 
   return (
     <BrowserRouter>
-    {alramFlag && <div className="modal-background"><div className="modal-content-box"><p>{alarmInfo.notiContent}</p> <button onClick={AlarmFlagHandler}>닫기</button></div></div>}
+    {alarmFlag && (
+                <>
+                    <div className='modal_background'></div>
+                    <div className='alarm_modal_container'>
+                        <div className='alarm_title_container'>
+                            <p className='alarm_modal_title'>알림</p>
+                        </div>
+                        <div className='alarm_content'>
+                            <img src="/imgs/alarm.png" alt="알림" className='alarm_img'></img>
+                            <p className='alarm_detail'>{alarmInfo.notiContent}</p>
+                        </div>
+                        <button className='alarm_btn' onClick={AlarmFlagHandler}>닫기</button>
+                    </div>
+                </>
+            )}
       <Routes>
         {/* 상하단바 보이는 페이지 */}
         <Route element={<Layout />}>
@@ -88,6 +112,7 @@ function App() {
         <Route path="/voice/sendvoice" element={<SendVoice />}></Route>
         <Route path="/member/:id" element={<SocketPage4Member/>}></Route>
         <Route path="/voice/sendvoice/sendingvoice" element={<SendingVoice />}></Route>
+        <Route path="/galli/mission" element={<Mission />}></Route>
       </Routes>
     </BrowserRouter>
   )

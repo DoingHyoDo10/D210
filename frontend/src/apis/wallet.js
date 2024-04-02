@@ -18,7 +18,7 @@ export const createWallet = async () => {
         .catch((err) => {console.log(err)})
 }
 
-// 에그머니 보유량 확인
+// 금고 조회
 export const getEggMoney = async () => {
   const url = '/wallets/egg-money'
 
@@ -72,4 +72,15 @@ export const approveMoneyCharge = async (info) => {
       .catch((err) => {
         return false
       })
+}
+
+// 머니를 현금으로 환전
+export const requestMoneyExchange = async (money) => {
+  const url = '/payment/exchange'
+
+  return await instance.put(url, {exchangeMoneyValue: money})
+      .then((res) => {
+        return res.data.putMoneyValue
+      })
+      .catch((err) => {console.log(err)})
 }

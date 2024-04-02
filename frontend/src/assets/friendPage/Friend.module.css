@@ -22,6 +22,7 @@
     top: 0;
     width: 100%;
     height: 100%;
+    max-width: 412px;
     position: absolute;
     background: rgba(0, 0, 0, 0.6);
     z-index: 10;
@@ -509,3 +510,28 @@
     font-size: 1.2rem;
 }
 
+.find_friend_default_container{
+    text-align: center;
+    width: 100%;
+}
+
+.find_friend_default_container h2{
+    margin-bottom: 0;
+}
+.find_friend_default_container img{
+    width: 7rem;
+    margin-top: -1rem;
+}
+
+.list_default{
+    text-align: center;
+    padding: 1rem;
+}
+
+.list_default h2{
+    margin-bottom: 0;
+}
+
+.list_default img{
+    width: 15rem;
+}

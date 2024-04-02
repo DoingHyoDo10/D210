@@ -49,7 +49,7 @@ export const getSpeech = (text) => {
             utterThis.voice = kor_voice;
         }else{
             return;
-        }
+        } 
 
         // utterance를 재생(speak)한다. 
         window.speechSynthesis.speak(utterThis);

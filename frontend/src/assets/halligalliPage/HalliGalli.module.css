@@ -13,27 +13,110 @@
     display: flex;
     flex-direction: column; /* 세로로 배치 */
     align-items: center;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     overflow-y: auto;
 }
 
-.title_container{
+
+.modal_background{
     width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 10;
+    top: 0;
+
+}
+
+.rest_modal_container{
+    width: 22rem;
+    height: 23rem;
+    top: 50%;
+    left: 50%;
+    z-index: 11;
+    position: absolute;
+    border-radius: 30px;
+    transform: translate(-50%, -50%);
+    background: #FFDD71;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+}
+
+.rest_title_container{
+    position: relative;
+    display: flex;
+    width: 22rem;
     height: 4rem;
+}
+
+.rest_modal_x{
+    position: absolute;
+    right: 5%;
+    top: 20%;
+    width: auto;
+    height: 2rem;
+}
+
+.rest_content{
+    width: 20rem;
+    height: 15rem;
+    margin-top: -2%;
+    border-radius: 30px;
+    overflow-y: auto;
+    overflow-x: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    background: #FFFBF3;
+}
+
+.rest_img{
+    height: 10rem;
+    width: auto;
+    margin-top: -26%;
+}
+
+.rest_detail{
+    width: 18rem;
+    height: 10rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    font-family: "bc_b";
+    font-size: 1.7rem;
+    text-align: center;
+}
+
+.rest_ok_container{
+    width: 5.3rem;
+    height: 3.1rem;
+    margin-top: 3%;
+    border-radius: 1rem;
+    background: #FFF2CB;
     display: flex;
     align-items: center;
-    position: fixed;
     justify-content: center;
+    font-size: 1.5rem;
+    box-shadow: 0.2rem 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.2);
+}
+
+.title_container{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    width: 100%;
+    height: 4rem;
 }
 
 .back_btn{
     position: absolute;
-    left: 3%;
-    top: 19%;
-    height: 2.1rem;
-    width: auto;
+    left: 0.5rem;
     transform: rotate(180deg);
+    width: 1.5rem;
 }
 
 .title_txt{
@@ -45,7 +128,7 @@
     width: 100%;
     height: 16rem;
     display: flex;
-    margin-top: 6%;
+    margin-top: -8%;
     flex-direction: column; /* 세로로 배치 */
     align-items: center;
     justify-content: center;
@@ -54,7 +137,7 @@
 .profile_txt{
     font-family: "bc_b";
     font-size: 1.5rem;
-    margin-top: 20%;
+    margin-top: 27%;
     margin-bottom: 1%;
 }
 
@@ -67,27 +150,39 @@
 .profile_name_txt{
     font-family: "bc_b";
     font-size: 2rem;
-    margin-top: 1%;
+    margin-top: 2%;
 }
 
 .mission_container{
     width: 22rem;
-    height: 28rem;
+    height: 34.5rem;
     margin-top: 10%;
-    border-radius: 0.938rem;;
+    border-radius: 0.938rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
 }
 
 .mission_title{
     font-size: 1.5rem;
     text-align: left;
-    margin-top: -1%;
+    margin-top: 5%;
     font-family: "bc_b";
+    margin-left: -48%
+}
+
+.mission_title_h{
+    font-size: 1.5rem;
+    text-align: left;
+    margin-top: 5%;
+    font-family: "bc_b";
+    margin-left: -6%
 }
 
 .mission_back{
     width: 22rem;
     height: 25rem;
-    margin-top: 0%;
+    margin-top: -3%;
     background: #FFFEFC;
     flex-direction: column; /* 세로로 배치 */
     display: flex;
@@ -107,6 +202,8 @@
     height: 0.5rem;
     margin-top: -5%;
     background: #FFCB23;
+    border-radius: 1rem;
+
 }
 
 .content_container{
@@ -147,6 +244,7 @@
     height: 0.5rem;
     margin-top: -5%;
     background: #FFCB23;
+    border-radius: 1rem;
 }
 
 .money_content_container{
@@ -175,37 +273,244 @@
     font-family: "bc_b";
     font-size: 1.3rem;
 }
-.calendar-wrapper {
+
+.mission_btn{
+    width: 22rem;
+    height: 4.5rem;
+    background: #FFCB23;
+    border-radius: 1rem;
+    margin-top: 5%;    
+    box-shadow: 0.113rem 0.225rem 0.5rem 0 rgba(0, 0, 0, 0.3);
+    font-size: 1.8rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.calendar_container{
+    width: 24.4rem;
+    height: 60rem;
+    margin-top: 10%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.mission_title2{
+    font-size: 1.5rem;
+    text-align: left;
+    margin-top: 5%;
+    margin-bottom: 3%;
+    font-family: "bc_b";
+    margin-left: -15%
+}
+
+.days_content_box_container{
+    width: 24.4rem;
+    height: 22rem;
+    margin-top: 10%;
+    border-radius: 1rem;
+    background: #FFFBF4;    
+    box-shadow: 0.113rem 0.225rem 0.5rem 0 rgba(0, 0, 0, 0.3);
+    margin-bottom: 10%;
+}
+
+.content_title_container{
+    width: 24.4rem;
+    height: fit-content;
+    display: flex;
+    align-items: center;
+}
+
+.calen_title{
+    font-size: 1.8rem;
+    margin-left: 4%;
+}
+
+.rest_btn_container{
+    width: 7rem;
+    height: 3rem;
+    background: #FFDD71;
+    border-radius: 1rem;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-left: 35%;
+    box-shadow: 0.2rem 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.2);
+}
+
+.ff_btn_container{
+    width: 24.4rem;
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 0%;
+}
+
+.walk_cnt_btn_container{
+    width: 7.4rem;
+    height: 7rem;
+    background: #E1D9CB;
+    border-radius: 1rem;
+    margin-right: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0.2rem 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.2);
+
+}
+
+.foot_icon{
+    height: 1.8rem;
+    width: auto;
+    margin-top: 2%;
+    margin-left: -50%;
+}
+
+.base_walk_cnt{
+    font-size: 1.15rem;
+    margin-top: 2%;
+}
+
+.record_walk_cnt{
+    font-size: 1.15rem;
+    margin-top: -20%;
+}
+
+.walk_time_btn_container{
+    width: 7.4rem;
+    height: 7rem;
+    background: #FFEFBC;
+    border-radius: 1rem;
+    margin-right: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0.2rem 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.2);
+
+}
+
+.clock_icon{
+    height: 1.8rem;
+    width: auto;
+    margin-top: 3%;
+    margin-left: -60%;
+}
+
+.base_time_cnt{
+    font-size: 1.15rem;
+    margin-top: 2%;
+}
+
+.record_time_cnt{
+    font-size: 1.15rem;
+    margin-top: -20%;
+}
+
+.walk_road_btn_container{
+    width: 7.4rem;
+    height: 7rem;
+    background: #E4EED0;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0.2rem 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.2);
+
+}
+
+.road_icon{
+    height: 1.8rem;
+    width: auto;
+    margin-top: 3%;
+    margin-left: -60%;
+}
+
+.base_road_cnt{
+    font-size: 1.15rem;
+    margin-top: 2%;
+}
+
+.record_road_cnt{
+    font-size: 1.15rem;
+    margin-top: -20%;
+}
+
+.sf_btn_container{
+    width: 24.4rem;
+    height: 6rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 7%;
+}
+
+.mission_money_btn_container{
+    width: 14.2rem;
+    height: 7rem;
+    background: #E4EED0;
+    border-radius: 1rem;
+    margin-right: 0.5rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0.2rem 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.2);
+}
+
+.base_money_cnt{
+    font-size: 1.2rem;
+    margin-top: 12%;
+}
+
+.record_money_cnt{
+    font-size: 1.5rem;
+    margin-top: -5%;
+}
+
+.mission_cp_btn_container{
+    width: 8.5rem;
+    height: 7rem;
+    background: #E1D9CB;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0.2rem 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.2);
+}
+
+.base_cp_cnt{
+    font-size: 1.2rem;
+    margin-top: 25%;
+}
+
+.record_cp_cnt{
+    font-size: 1.5rem;
+    margin-top: -10%;
+}
+
+.no_mission_container{
+    width: 100%;
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.no_mission_txt{
+    font-size: 2rem;
     text-align: center;
 }
 
-.calendar_container {
-    border: 1px solid #ccc;
-    max-width: 300px;
-    margin: auto;
-}
-
-.calendar_header {
-    padding: 10px;
-}
-
-.calendar_day_name {
-    display: inline-block;
-    width: 14.28%; /* 100% / 7 */
-    padding: 10px;
-}
-
-.calendar_row {
-    display: flex;
-}
-
-.calendar_day {
-    width: 14.28%; /* 100% / 7 */
-    padding: 10px;
-    cursor: pointer;
-    border: 1px solid #ccc;
-}
-
-.calendar_day_selected {
-    background-color: #f0f0f0;
+.no_mission_img{
+    height: 15rem;
+    width: auto;
+    margin-top: -20%;
 }

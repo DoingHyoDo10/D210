@@ -22,7 +22,7 @@ const UserInfoUpdate = function () {
         const { dailyCriteria, ...rest } = data;
         setNewInfo(rest);
         setOriginalNickname(rest.nickname);
-        console.log('data : ', rest)
+        console.log('기존 유저 정보 : ', rest)
       } catch (err) {
         console.error('userInfo 정보를 가져오는 중 에러 발생:', err);
       }
@@ -64,13 +64,22 @@ const UserInfoUpdate = function () {
       return; // 함수 종료
     }
 
+    let imgUrl = newInfo.profileUrl; 
+
     if (profileImage) {
       formData.append('file', profileImage);
+
+      try {
+        imgUrl = await uploadImgFile(formData);
+        console.log(imgUrl)
+      } catch (error) {
+        console.error('이미지 업로드 중 에러 발생:', error);
+        alert('이미지 업로드에 실패했습니다.');
+        return; // 이미지 업로드 실패 시 함수 종료
+      }
     }
 
     try {
-      const imgUrl = await uploadImgFile(formData);
-      console.log(imgUrl)
       const updatedInfo = {...newInfo, profileUrl: imgUrl};
       const response = await updateMyInfo(updatedInfo);
       console.log('유저정보수정화면', response)

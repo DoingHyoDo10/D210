@@ -18,29 +18,28 @@
 }
 
 .title_container{
-    width: 100%;
-    height: 5rem;
     display: flex;
+    justify-content: center;
     align-items: center;
-    position: fixed;
-    background-color: white;
+    position: relative;
+    width: 100%;
+    height: 4rem;
 }
 
 .back_btn{
-    height: 2.1rem;
-    margin-left: 3%;
-    width: auto;
+    position: absolute;
+    left: 0.5rem;
     transform: rotate(180deg);
+    width: 1.5rem;
 }
 
 .title_txt{
     font-family: "bc_b";
     font-size: 1.5rem;
-    margin-left: 17.5%;
 }
 
 .voice_list_container{
-    margin-top: 14%;
+    margin-top: -2%;
     width: 22.4rem;
     height: 49.5rem;
     border-radius: 1.5rem;

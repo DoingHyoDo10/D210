@@ -1,6 +1,5 @@
 import { useEffect } from "react";
 import { useNavigate } from 'react-router-dom';
-import styles from "./KakaoPayRedirect.module.css";
 import { approveMoneyCharge } from "../../apis/wallet";
 import useWalletStore from "../../stores/wallet";
 import Loading from "../common/loading/Loading";

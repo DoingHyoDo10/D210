@@ -16,7 +16,7 @@
   src: url(/public/fonts/BCcardL.ttf);
 }
 
-.modal-background{
+.modal_background{
   top: 0;
   bottom: 0;
   width: 100%;
@@ -27,7 +27,7 @@
   z-index: 10;
 }
 
-.modal-content-box{
+.alarm_modal_container{
   width: 22rem;
   height: 25rem;
   top: 50%;
@@ -40,4 +40,27 @@
   font-family: "bc_b";
   font-size: 1.6rem;
   text-align: center;
+}
+
+.alarm_title_container{
+  width: fit-content;
+  margin: auto;
+}
+
+.alarm_img{
+  width: 4rem;
+}
+
+.alarm_btn{
+  width: 6rem;
+  height: 3rem;
+  border-radius: 1rem;
+  margin-top: 2rem;
+}
+.alarm_content{
+  width: 90%;
+  height: 50%;
+  background-color: white;
+  margin: auto;
+  border-radius: 1rem;
 }

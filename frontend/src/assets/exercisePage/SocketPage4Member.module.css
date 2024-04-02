@@ -1,0 +1,138 @@
+@font-face {
+    font-family: "bc_b";
+    src: url(/public/fonts/BCcardB.ttf);
+}
+
+@font-face {
+    font-family: "bc_l";
+    src: url(/public/fonts/BCcardL.ttf);
+}
+
+@font-face {
+    font-family: "bp_r";
+    src: url(/public/fonts/BagelFat.ttf);
+    font-weight: normal;
+    font-style: normal;
+}
+
+.mode_tabs{
+    display: flex;
+    width: 22.5rem;
+    height: 3.125rem;
+}
+
+.mode_choose{
+    width: 13.5rem;
+    height: 3.125rem;
+    background:  #FFFFFC;
+    border-top-left-radius: 0.938rem;
+    border-top-right-radius: 0.938rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: -0.113rem -0.225rem 0.2rem rgba(0, 0, 0, 0.1);
+}
+
+.mode_other_list{
+    width: 10rem;
+    height: 3.125rem;
+    background: #FFF2CB;
+    border-top-left-radius: 0.938rem;
+    border-top-right-radius: 0.938rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: -0.113rem -0.225rem 0.2rem rgba(0, 0, 0, 0.1);
+}
+
+
+
+.main_container {
+    position: relative;
+    display: flex;
+    flex-direction: column; /* 세로로 배치 */
+    align-items: center;
+    justify-content: center;
+    /* height: 100vh; */
+    width: 100%;
+}
+
+.tab_container{
+    width: fit-content;
+    height: fit-content;
+    margin-top: 6%;
+}
+
+.socket_page_content {
+    width: 23.5rem;
+    height: 50 rem;
+    border-bottom-left-radius: 0.938rem;
+    border-bottom-right-radius: 0.938rem;
+    background: #FFFEFC;
+    overflow-y: scroll;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    box-shadow: 0.113rem 0.225rem 0.5rem 0 rgba(0, 0, 0, 0.3);
+}
+
+
+.socket_box {
+    justify-content: center;
+    width: 22.5rem;
+    height: 50rem;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.modal_background{
+    top: 0;
+    width: 100%;
+    height: 100%;
+    max-width: 412px;
+    position: absolute;
+    background: rgba(88, 85, 85, 0.6);
+    z-index: 10;
+
+}
+
+.lets_start_modal_container {
+    width: 22rem;
+    height: 25rem;
+    top: 50%;
+    left: 50%;
+    z-index: 11;
+    position: absolute;
+    border-radius: 30px;
+    transform: translate(-50%, -50%);
+    display: flex;
+    flex-direction: column-reverse;
+    color: #FFFEFC;
+}
+
+.lets_start_modal_title {
+    font-family: "bp_r";
+    width: 13rem;
+    font-size: 2rem;
+    top: 10%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    position: absolute;
+    text-align: center;
+}
+
+.lets_start_modal_text {
+    font-family: "bp_r";
+    align-self: center;
+    padding-bottom: 5rem;
+}
+
+.socket_graph_container {
+    height: 18rem;
+    width: 25rem;
+
+}

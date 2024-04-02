@@ -1,6 +1,7 @@
 import styles from "./SavedVoice.module.css"
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getVoiceMessageList } from "../../apis/voiceRecord";
 
 
 const SavedVoice = function(){
@@ -9,6 +10,7 @@ const SavedVoice = function(){
     const[voice, setVoice] = useState(false);    
     const[voiceSrc, setVoiceSrc] = useState("");
     const[voiceName, setVoiceName] = useState("");
+    const[voiceList, setVoiceList] = useState([]);
 
     const openVoiceModal = function(content, name){
         setVoice(!voice);
@@ -24,68 +26,12 @@ const SavedVoice = function(){
         setSelectedVoiceIndex(index);
     };
 
-    const voiceList = [
-        {
-            date: "2024.02.12",
-            sendName: "가나다라마바사아",
-            voice: "/imgs/music.mp3"
-        },
-        {
-            date: "2024.02.21",
-            sendName: "아기오리엄마오리",
-            voice: "/imgs/music.mp3"
-        },
-        {
-            date: "2024.02.24",
-            sendName: "키으쿵",
-            voice: "/imgs/music.mp3"
-        },
-        {
-            date: "2024.02.29",
-            sendName: "히히",
-            voice: "/imgs/music.mp3"
-        },
-        {
-            date: "2024.03.01",
-            sendName: "우주최강세현",
-            voice: "/imgs/music.mp3"
-        },
-        {
-            date: "2024.03.04",
-            sendName: "지구최강세현",
-            voice: "/imgs/music.mp3"
-        },
-        {
-            date: "2024.03.06",
-            sendName: "지상최강세현",
-            voice: "/imgs/music.mp3"
-        },
-        {
-            date: "2024.03.09",
-            sendName: "지하최강세현",
-            voice: "/imgs/music.mp3"
-        },
-        {
-            date: "2024.03.16",
-            sendName: "내핵최강세현",
-            voice: "/imgs/music.mp3"
-        },
-        {
-            date: "2024.03.16",
-            sendName: "내핵최강세현",
-            voice: "/imgs/music.mp3"
-        },
-        {
-            date: "2024.03.16",
-            sendName: "내핵최강세현",
-            voice: "/imgs/music.mp3"
-        },
-        {
-            date: "2024.03.16",
-            sendName: "내핵최강세현",
-            voice: "/imgs/music.mp3"
-        },
-    ]
+    useEffect(()=>{
+        const memberId = JSON.parse(localStorage.getItem('tokens')).member_id;
+        getVoiceMessageList(memberId)
+            .then(res=>setVoiceList(res))
+    }, [])
+
 
     return(
         <>
@@ -117,9 +63,9 @@ const SavedVoice = function(){
                     {voiceList.map((data, index) => {
                         return(
                             <div key={index} className={`${styles.voice_container} ${selectedVoiceIndex === index ? styles.select_voice_container : ''}`} onClick={() => {handleVoiceClick(index);}}>
-                                <p className={styles.voice_date}>{data.date}</p>
-                                <p className={styles.voice_sendname}>{data.sendName}</p>
-                                <img src="/imgs/play.png" alt="플레이" className={styles.voice_play} onClick={() => {openVoiceModal(data.voice, data.sendName)}}></img>
+                                <p className={styles.voice_date}>{data.createdAt}</p>
+                                <p className={styles.voice_sendname}>{data.senderNickname}</p>
+                                <img src="/imgs/play.png" alt="플레이" className={styles.voice_play} onClick={() => {openVoiceModal(data.voiceURL, data.senderNickname)}}></img>
                             </div>  
                         )
                     })}

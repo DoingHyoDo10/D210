@@ -28,6 +28,7 @@ import SendVoice from "./assets/voicePage/SendVoice";
 import SendingVoice from "./assets/voicePage/SendingVoice";
 import Mission from "./assets/halligalliPage/Mission";
 import { useEffect, useState } from "react";
+import { EventSourcePolyfill } from "event-source-polyfill";
 
 function App() {
   const [alarmFlag, setAlarmFlag] = useState(false);
@@ -41,7 +42,15 @@ function App() {
     const localItem = JSON.parse(localStorage.getItem('tokens'));
     // EventSource 생성 및 설정
     if (localItem !== null) {
-      const source = new EventSource(`${import.meta.env.VITE_API_URI}/notifications/subscribe/${localItem.member_id}`);
+      const source = new EventSourcePolyfill(
+        `https://j10d210.p.ssafy.io/api/notifications/subscribe`,
+        {
+          headers: {
+            Authorization: localItem.Authorization,
+          },
+          timeout: 600000000
+        }
+        );
       console.log(source)
       source.addEventListener('sse', event => {
         const notificationData = JSON.parse(event.data);

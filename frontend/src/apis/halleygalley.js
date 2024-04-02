@@ -6,6 +6,7 @@ export const getHalleyList = async () => {
     return await instance.get(url)
         .then((res) => {
             if(res.data.data.requestContent.length != 0){
+                console.log(res.data.data.requestContent)
                 return res.data.data.requestContent;
             }
             return false;
@@ -105,5 +106,18 @@ export const postMission = async (data) => {
         .then((res) => {
             return true;
         })
-        .catch((err) => {return false});
+        .catch((err) => {console.log(err)});
+
+}
+
+// 미션 달성
+export const putMission = async (data) => {
+    const url = '/halleygalley/accomplish-mission';
+
+    return await instance.put(url, {memberIdList: data})
+        .then((res) => {
+            return true;
+        })
+        .catch((err) => {console.log(err)});
+
 }

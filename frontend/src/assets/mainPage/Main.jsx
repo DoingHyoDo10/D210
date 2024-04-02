@@ -3,25 +3,28 @@ import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./Main.module.css";
 import { ResponsiveBar } from "@nivo/bar";
 import { color } from "d3-color";
-import { getGalleyList, getHalleyList, postGalleyRequest, getHalley, responseGalley } from "../../apis/halleygalley";
+import { getGalleyList, getHalleyList, postGalleyRequest, getHalley, responseGalley, postMission, putMission } from "../../apis/halleygalley";
 import { searchGalleyMemberList } from "../../apis/friend";
 import { getRealtimeExerciseData, getWeeklyExerciseData, getExerciseCriteria } from "../../apis/exercise";
 import { useStore } from "../../stores/member";
 import { useSignupStore } from "../../stores/member";
 import Lottie from 'react-lottie';
 import confetti from '../../lotties/confetti_full.json';
+import { useToolbar } from "../../stores/toolbar";
 
 const Main = function(){
     const {memberId, setMemberId} = useStore();
+    const {updateState} = useToolbar();
     useEffect(()=>{
         getExerciseCriteria()
-            .then(res=>setCriteriaData(res))
+            .then(res=>{setCriteriaData(res); console.log(res)})
         getWeeklyExerciseData()
             .then(res=>{setWeeklyExerciseData(res);})
         getRealtimeExerciseData()
             .then((res)=>{
               setRealtimeExerciseData(res);
             })
+        updateHalliGalliList();
     }, [])
 
     const navigate = useNavigate();
@@ -53,6 +56,13 @@ const Main = function(){
         })
     }
 
+    
+    const onKeyDownHandler = (e)=>{
+        if(e.key == 'Enter'){
+            handleSearchClick();
+        }
+    }
+
     const [tabIndex, settabIndex] = useState(0);
     const [halli, setHalli] = useState(true);
     const [galli, setGalli] = useState(true);
@@ -69,6 +79,8 @@ const Main = function(){
     const [weeklyExerciseData, setWeeklyExerciseData] = useState({avg:0, content:[{steps:0},{steps:0},{steps:0},{steps:0},{steps:0},{steps:0},{steps:0},]});
     const [criteriaData, setCriteriaData] = useState({steps:0, exerciseMinute:0});
     const [halliRequestList, setHalliRequestList] = useState([]);
+    const [maxHalliVal, setMaxHalliVal] = useState(0);
+    const [giveMeMoneyList, setGiveMeMoneyList] = useState({});
 
     const updateHalliGalliList = () => {
         getHalleyList()
@@ -78,7 +90,7 @@ const Main = function(){
                 let data2 = [];
                 let data3 = [];
                 res.forEach(element => {
-                    if(element.requestedTime != null){
+                    if(element.requestedTime != null && element.requestedTime != 0){
                         data1.push(element);
                     }
                     if(element.isAccepted){
@@ -90,6 +102,18 @@ const Main = function(){
                 setHalliRoadmapList(data1);
                 setHalliList(data2);
                 setHalliRequestList(data3);
+                calculateMaxValue(data1);
+                setGiveMeMoneyList(data1);
+                const hallyList = [];
+                data1.forEach(d=>{
+                    if(!d.getRewardAt && realtimeExerciseData.time >= d.requestedTime){
+                        hallyList.push(d.memberId);
+                    }
+                })
+                putMission(hallyList)
+                    .then(res=>{
+                        updateState();
+                    })
                 if(data2.length == 0){
                     setHalli(false);
                 }
@@ -111,7 +135,6 @@ const Main = function(){
 
     const openGalliModal = function(){
         setIsGalliOpen(!isGalliOpen);
-        handleSearchClick();
     }
 
     const tabClickHandler = function(index){
@@ -159,8 +182,14 @@ const Main = function(){
             .then(res=>{
                 openHalliModal();
             });
+    }
 
-        
+    const calculateMaxValue = (array)=>{
+        let maxVal = 0;
+        array.forEach(data=>{
+            maxVal = Math.max(maxVal, data.requestedTime)
+        })
+        setMaxHalliVal(maxVal);
     }
 
     //===========================================================================
@@ -176,8 +205,7 @@ const Main = function(){
     }
 
     const 프로그래스바2 = {
-        calculatedTime: realtimeExerciseData.time/criteriaData.exerciseMinute*300 < 70 ? 70 : realtimeExerciseData.time/criteriaData.exerciseMinute*300,
-        calculatedSteps: realtimeExerciseData.steps/criteriaData.steps*300 < 90 ? 90 : realtimeExerciseData.steps/criteriaData.steps*300,
+        calculatedTime: realtimeExerciseData.time/maxHalliVal*300 < 70 ? 70 : realtimeExerciseData.time/maxHalliVal*300,
     }
     
 
@@ -259,9 +287,9 @@ const Main = function(){
                                 { halliRoadmapList.length != 0 ?
                                     <div className={styles.halli_time_progress_container}>
                                         <div className={styles.halli_time_progress_base}>
-                                            {halliList.map((data, index) =>{
+                                            {halliRoadmapList.map((data, index) =>{
                                                 return (
-                                                    <div key={index} className={styles.halli_mission_container} style={{left: `${data.requestedTime/할리API요청결과.data.maxExerciseTime*16}rem`, backgroundImage: realtimeExerciseData.time >= data.requestedTime ? 'url(/public/imgs/yes_marker.png)' : 'url(/public/imgs/no_marker.png)'}}>
+                                                    <div key={index} className={styles.halli_mission_container} style={{left: `${data.requestedTime/maxHalliVal*16}rem`, backgroundImage: realtimeExerciseData.time >= data.requestedTime ? 'url(/imgs/yes_marker.png)' : 'url(/imgs/no_marker.png)'}}>
                                                         <div className={styles.halli_mission_profile}>
                                                             <img src={data.profileUrl}/>
                                                         </div>
@@ -279,7 +307,7 @@ const Main = function(){
                                             </div>
                                             <div className={styles.halli_time_number_base}>
                                                 <p className={styles.halli_time_min}>0분</p>
-                                                <p className={styles.halli_time_min2}></p>
+                                                {/* <p className={styles.halli_time_min2}>{maxHalliVal}</p> */}
                                             </div>
                                         </div>
                                     </div>  
@@ -420,25 +448,32 @@ const Main = function(){
                             <img src="/imgs/x.png" alt="x" className={styles.halli_modal_x} onClick={openHalliModal}></img>
                         </div>
                         <div className={styles.halli_list_container}>
-                                {halliRequestList.map((data, index) => {
-                                    console.log(data)
-                                    return(
-                                        <>
-                                            <div key={index} className={styles.halli_name_container}>
-                                                <img src={data.profileUrl} alt="프로필 사진" className={styles.halli_img_container} ></img>
-                                                <p className={styles.halli_name_txt}>{data.nickname}</p>
-                                                <div className={styles.halli_btn_container}>
-                                                    <div className={styles.halli_ok_btn}>
-                                                        <p className={styles.btn_txt} onClick={()=>responseToRequest({memberId: data.memberId, isAccept: true})}>수락</p>
+                                {halliRequestList.length != 0
+                                    ? halliRequestList.map((data, index) => {
+                                        console.log(data)
+                                        return(
+                                            <>
+                                                <div key={index} className={styles.halli_name_container}>
+                                                    <img src={data.profileUrl} alt="프로필 사진" className={styles.halli_img_container} ></img>
+                                                    <p className={styles.halli_name_txt}>{data.nickname}</p>
+                                                    <div className={styles.halli_btn_container}>
+                                                        <div className={styles.halli_ok_btn}>
+                                                            <p className={styles.btn_txt} onClick={()=>responseToRequest({memberId: data.memberId, isAccept: true})}>수락</p>
+                                                        </div>
+                                                        <div className={styles.halli_no_btn}>
+                                                            <p className={styles.btn_txt} onClick={()=>responseToRequest({memberId: data.memberId, isAccept: false})}>거절</p>
+                                                        </div>
                                                     </div>
-                                                    <div className={styles.halli_no_btn}>
-                                                        <p className={styles.btn_txt} onClick={()=>responseToRequest({memberId: data.memberId, isAccept: false})}>거절</p>
-                                                    </div>
-                                                </div>
-                                            </div>  
-                                        </>
-                                    )
-                                })}
+                                                </div>  
+                                            </>
+                                        )
+                                    })
+                                    : <div className={styles.main_default}>
+                                        <img className={styles.main_default_img1} src="imgs/ch1_bol_money.png" />
+                                        <img className={styles.main_default_img2} src="imgs/ch2_bol_hir.png" />
+                                        <h3>아직 요청받은 기록이 없어요...</h3>
+                                      </div>
+                                }
                         </div>
                        
                     </div>
@@ -455,30 +490,37 @@ const Main = function(){
                         </div>                                
                         
                         <div className={styles.galli_search_container}>
-                            <input className={styles.galli_search_box}  value={keyword} onChange={handleInputChange}></input>
+                            <input className={styles.galli_search_box}  value={keyword} onChange={handleInputChange} onKeyDown={onKeyDownHandler}></input>
                             <img className={styles.galli_search_icon} src="/imgs/search.png" alt="찾기 아이콘" onClick={handleSearchClick}></img>
                         </div>
 
                         <div className={styles.galli_list_container}>
                             <div className={styles.galli_names_container}>
 
-                                {memberList.map((data, index) => {
-                                    return(
-                                        <div key={index} className={styles.galli_name_container}>
-                                            <img src={data.profileUrl} alt="프로필 사진" className={styles.galli_img_container} ></img>
-                                            <p className={styles.galli_name_txt}>{data.nickname}</p>
-                                            <div className={styles.galli_btn_container}>
-                                                <div className={styles.galli_put_btn}>
-                                                    <p className={styles.btn_txt} onClick={()=>{
-                                                        postGalleyRequest({'memberId': data.memberId});
-                                                        setIsGalliOpen(false);
-                                                        setMemberList([]);
-                                                        }}>신청</p>
+                                {memberList.length != 0 
+                                    ? memberList.map((data, index) => {
+                                        return(
+                                            <div key={index} className={styles.galli_name_container}>
+                                                <img src={data.profileUrl} alt="프로필 사진" className={styles.galli_img_container} ></img>
+                                                <p className={styles.galli_name_txt}>{data.nickname}</p>
+                                                <div className={styles.galli_btn_container}>
+                                                    <div className={styles.galli_put_btn}>
+                                                        <p className={styles.btn_txt} onClick={()=>{
+                                                            postGalleyRequest({'memberId': data.memberId});
+                                                            setIsGalliOpen(false);
+                                                            setMemberList([]);
+                                                            }}>신청</p>
+                                                    </div>
                                                 </div>
-                                            </div>
-                                        </div>  
-                                    )
-                                })}
+                                            </div>  
+                                        )
+                                    })
+                                    : <div className={styles.main_default}>
+                                    <img className={styles.main_default_img1} src="imgs/ch2_bol_money.png" />
+                                    <img className={styles.main_default_img2} src="imgs/ch1_bol.png" />
+                                    <h3>닉네임으로 갈리를 검색해요</h3>
+                                  </div>
+                                }
                             </div>
                         </div>
                        
@@ -613,7 +655,7 @@ const Main = function(){
                             ]
                         }}
                         axisLeft={{
-                            tickValues: [0, 3000, 6000, 10000, 20000], // 0만 포함하도록 설정
+                            tickValues: [0, ...weeklyExerciseData.avg != 0 ? [3000, 6000, 10000, 20000] : []], // 0만 포함하도록 설정
                             format: value => value.toLocaleString(),
                             text: {
                                 fontSize: 10,

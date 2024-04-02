@@ -8,6 +8,14 @@ import Calendar from "../common/calendar/Calendar";
 
 const Halli = function(){
     const {memberId, setMemberId} = useStore();
+    // 현재 날짜 생성
+    var today = new Date();
+
+    // 이번 달의 마지막 날짜 구하기
+    var lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+    // 남은 일 수 계산
+    var remainingDays = lastDayOfMonth.getDate() - today.getDate();
     useEffect(()=>{
         getHalley(memberId)
             .then(res=>{setHalleyInfo(res)})
@@ -77,8 +85,8 @@ const Halli = function(){
 
                                     <img src="/imgs/money.png" alt="할리 돈 오리" className={styles.money}></img>
                                     <div className={styles.money_content_txt_container}>
-                                        <p className={styles.money_content_detail_txt} style={{marginTop: 25}}>총<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월 단위)</span> : {halleyInfo.reward}원</p>
-                                        <p className={styles.money_content_detail_txt} style={{marginTop: -5}}>일일<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월/해당 월 날짜 수)</span> : 10,000원</p>
+                                        <p className={styles.money_content_detail_txt} style={{marginTop: 25}}>총<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월 단위)</span> : {halleyInfo.reward * halleyInfo.period}원</p>
+                                        <p className={styles.money_content_detail_txt} style={{marginTop: -5}}>일일<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월/해당 월 날짜 수)</span> : {halleyInfo.reward}원</p>
                                     </div>
                                 </div>
                             </>

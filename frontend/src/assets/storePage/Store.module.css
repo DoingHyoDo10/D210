@@ -29,9 +29,9 @@
 
 .back_btn{
     position: absolute;
-  left: 0.5rem;
-  transform: rotate(180deg);
-  width: 1.5rem;
+    left: 0.5rem;
+    transform: rotate(180deg);
+    width: 1.5rem;
 }
 
 .title_txt{
@@ -42,7 +42,7 @@
 .egg_container{
     width: 22.4rem;
     height: 11rem;
-    margin-top: 16%;
+    margin-top: 0%;
     border-radius: 1.5rem;
     display: flex;
     flex-direction: column;

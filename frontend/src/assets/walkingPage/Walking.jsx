@@ -24,7 +24,7 @@ const Walking = function(){
         navigate(`/member/${currentMember.member_id}`)
     }
     const [realtimeExerciseData, setRealtimeExerciseData] = useState({});
-    const [data, setData] = useState([[
+    const [data, setData] = useState([
         {
           "id": "걸음수",
           "data": [
@@ -52,10 +52,9 @@ const Walking = function(){
             }
           ]
         }
-      ]]);
+      ]);
 
     useEffect(() => {
-     
 
         getRealtimeExerciseData()
         .then((res) => {
@@ -69,7 +68,7 @@ const Walking = function(){
               "id": "걸음수",
               "data": [
                 {
-                  "x": '진행 정도',  
+                  "x": "진행 정도",  
                   "y": realtimeExerciseData.steps
                 }
               ]
@@ -78,7 +77,7 @@ const Walking = function(){
               "id": "걸은 시간",
               "data": [
                 {
-                  "x": '진행 정도',  
+                  "x": "진행 정도",  
                   "y": realtimeExerciseData.time
                 }
               ]
@@ -87,7 +86,7 @@ const Walking = function(){
               "id": "거리",
               "data": [
                 {
-                  "x": '진행 정도',  
+                  "x": "진행 정도",  
                   "y": 34
                 }
               ]

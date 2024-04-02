@@ -1345,3 +1345,16 @@
     font-size: 1.2rem;
     box-shadow: 0.01rem 0.01rem 0.5rem 0 rgba(0, 0, 0, 0.2);
 }
+
+.main_default{
+    text-align: center;
+}
+
+.main_default_img1{
+    width: 8rem;
+    transform: scaleX(-1)
+}
+
+.main_default_img2{
+    width: 5rem;
+}

@@ -1,9 +1,16 @@
 import { useState, useEffect} from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./Friend.module.css";
+import { useStore } from "../../stores/mini"
+import Mini from "../common/miniprofile/Mini";
+
 import { searchMemberList, sendFriendRequest, getFriendList, getFriendSentList, getFriendReceivedList, putFriendRequest } from "../../apis/friend";
 
 const Friend = function(){
+
+    const {friendName, setFriendName} = useStore();
+    const {friendIntro, setFriendIntro} = useStore(); 
+    const {friendProfileImg, setFriendProfileImg, friendModalOpen, setFriendModalOpen} = useStore();
 
     const [tabIndex, setTabIndex] = useState(0);
     const [findFriend, setFindFriend] = useState(false);
@@ -103,7 +110,7 @@ const Friend = function(){
                     ? friendList.map((data, index) => {
                         return(
                             <div key={index} className={styles.friend_container}>
-                                <img src={data.profileUrl} alt="프로필 사진" className={styles.friend_img_container} ></img>
+                                <img src={data.profileUrl} alt="프로필 사진" className={styles.friend_img_container} onClick={() => {setFriendName(data.nickname), setFriendProfileImg(data.profileUrl), setFriendIntro(data.comment != '' ? data.comment : '한 줄 소개가 없습니다.'), setFriendModalOpen(!friendModalOpen)}}></img>
                                 <div className={styles.friend_info_container}>
                                     <p className={styles.friend_name_txt}>{data.nickname}</p>
                                     <p className={styles.friend_intro}>{data.comment}</p>
@@ -128,7 +135,7 @@ const Friend = function(){
                     ? sentFriendList.map((data, index) => {
                         return(
                             <div key={index} className={styles.send_friend_container}>
-                                <img src={data.profileUrl} alt="프로필 사진" className={styles.send_friend_img_container} ></img>
+                                <img src={data.profileUrl} alt="프로필 사진" className={styles.send_friend_img_container} onClick={() => {setFriendName(data.nickname), setFriendProfileImg(data.profileUrl), setFriendModalOpen(!friendModalOpen)}}></img>
                                 <div className={styles.send_friend_info_container}>
                                     <p className={styles.send_friend_name_txt}>{data.nickname}</p>
                                     <div className={styles.send_cancel_btn}>
@@ -155,7 +162,7 @@ const Friend = function(){
                     ? receivedFriendList.map((data, index) => {
                         return(
                             <div key={index} className={styles.receive_friend_container}>
-                                <img src={data.profileUrl} alt="프로필 사진" className={styles.receive_friend_img_container} ></img>
+                                <img src={data.profileUrl} alt="프로필 사진" className={styles.receive_friend_img_container} onClick={() => {setFriendName(data.nickname), setFriendProfileImg(data.profileUrl), setFriendModalOpen(!friendModalOpen)}}></img>
                                 <div className={styles.receive_friend_info_container}>
                                     <p className={styles.receive_friend_name_txt}>{data.nickname}</p>
                                     <div className={styles.receive_btn_container}>
@@ -179,6 +186,10 @@ const Friend = function(){
 
     return(
         <>
+            {friendModalOpen && 
+                <Mini></Mini>
+            }
+            
             {findFriend && (
                 <>
                     <div className={styles.modal_background}></div>
@@ -200,7 +211,7 @@ const Friend = function(){
                                     ? searchedFriendList.map((data, index) => {
                                         return(
                                             <div key={index} className={styles.find_friend_name_container}>
-                                                <img src={data.profileUrl} alt="프로필 사진" className={styles.find_friend_img_container} ></img>
+                                                <img src={data.profileUrl} alt="프로필 사진" className={styles.find_friend_img_container} onClick={() => {setFriendName(data.nickname), setFriendProfileImg(data.profileUrl), setFriendModalOpen(!friendModalOpen)}}></img>
                                                 <p className={styles.find_friend_name_txt}>{data.nickname}</p>
                                                 <div className={styles.find_friend_modal_btn_container}>
                                                     <div className={styles.find_friend_put_btn}>

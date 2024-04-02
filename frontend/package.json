@@ -10,10 +10,12 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@googlemaps/react-wrapper": "^1.1.35",
     "@nivo/bar": "^0.85.1",
     "@nivo/core": "^0.85.1",
     "@nivo/pie": "^0.85.1",
     "@nivo/radial-bar": "^0.85.1",
+    "@react-google-maps/api": "^2.19.3",
     "@stomp/stompjs": "^7.0.0",
     "@types/react-datepicker": "^6.2.0",
     "axios": "^1.6.8",

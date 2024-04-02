@@ -11,6 +11,10 @@ import './FileUploader.module.css';
 import axios from 'axios';
 import { getSpeech } from './getSpeech';
 import styles from "./SocketPage4Member.module.css"
+import { ResponsiveRadialBar } from '@nivo/radial-bar'
+import { MapComponent } from './MapComponent';
+import GeolocationComponent from './GeolocationComponent';
+
 
 let stompClient;
 var pageOwnerId;
@@ -37,9 +41,6 @@ const SocketPage4Member = () => {
   // C. 페이지 들어올 때 채팅창 스크롤이 항상 하단으로 가게 하기 위하여 사용 
   const chatContainerRef = useRef(null);
 
-  // D. 채팅 입력 받은 것 
-  const [inputChat, setInputChat] = useState("");
-
   // E. 모든 채팅 메세지 저장 
   const [messages, setMessages] = useState([]);
 
@@ -56,9 +57,46 @@ const SocketPage4Member = () => {
   // I. 현재 유저가 들어온 환경이 모바일인지 아닌지 
   const [isMobile, setIsMobile] = useState(false);
 
-  // G. Tab Bar 용
+  // J. Tab Bar 용
   const [tabIndex, setTabIndex] = useState(0);
-   
+  
+  // K. 모달 창 용
+  const [isModal, setIsModal] = useState(true)
+
+  // L. CountDown 
+  const [time, setTime] = useState(5);
+
+  // M. 운동 데이터 
+  const [data, setData] = useState([
+    {
+      "id": "걸음수",
+      "data": [
+        {
+          "x": '진행 정도',  
+          "y":  6432
+        }
+      ]
+    }
+  ]);
+
+  // N. 실시간 위도, 경도 
+  const [latitude, setLatitude] = useState(null);
+  const [longitude, setLongitude] = useState(null);
+
+  // O. 에러 핸들링
+  const [error, setError] = useState(null);
+
+  // Q. 페이지 주인 위치 
+  const [position, setPosition] = useState({ lat: 36.110336, lng: 128.4112384 });
+
+
+  // ⭐ 카운트 다운 함수 
+  useEffect(() => {
+    time > 0 && setTimeout(() => setTime(time -1), 1000)
+  }, [time]);
+
+  
+
 
   //⭐ CHAT FOCUS ALWAYS ON BOTTOM
 
@@ -107,7 +145,7 @@ const SocketPage4Member = () => {
       console.log("👩🏻‍🎤 최초 연결 시작 🎸");
 
       stompClient.subscribe("/sub/member/" + pageOwnerId, onMessageReceivedFromSocket, clientHeader);
-
+      stompClient.subscribe("/sub/gps/" + pageOwnerId, getGpsAboutPageOwner, clientHeader);
   }
 
   // A-3. 연결 오류가 났을 시 할 행동 
@@ -145,6 +183,18 @@ const SocketPage4Member = () => {
     setMessages((preMessages) => [...preMessages, receivedMsg]);
   }
 
+  const getGpsAboutPageOwner = (payload) => {
+    var receivedGPS = JSON.parse(payload.body);
+
+    console.log("주인의 GPS", receivedGPS);
+    
+    const NowGPS =  {lat: receivedGPS.latitude, lng: receivedGPS.longitude};
+
+    console.log(NowGPS)
+
+    setPosition({...NowGPS})
+  }
+
   // B-3 페이지 오너 정보 가져오기 
   const getPageOwner = async () =>{
     axios.get(`https://j10d210.p.ssafy.io/api/members/${pageOwnerId}`, clientHeader)
@@ -175,7 +225,9 @@ const SocketPage4Member = () => {
 
     // C-1 첫 입장 시 스크롤을 맨 밑으로 떙긴다. 
     setTimeout(() => {
-      window.scrollTo(0, document.body.scrollHeight);
+      if (chatContainerRef.current) {
+        chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
+      }
     },0);
 
     // C-2 이전 메세지 불러오기 
@@ -193,26 +245,18 @@ const SocketPage4Member = () => {
 
     }
 
+    setTimeout(() => {
+      setIsModal(false);
+
+    }, 6500)
+
 
     return () => {
       setTimeout(() => {
-        var messageInfo = {
-          messageType: "TTS",
-          textContent: currentMember.nickname +"님이 퇴장 하였습니다.",
-          voiceURL: null,
-          senderId: currentMember.member_id,
-          receiverId: pageOwnerId,
-          senderNickname: currentMember.member_nickname,
-          senderProfileUrl: currentMember.member_profile_url,
-          isOpened: false
-        }
-        stompClient.send("/pub/api/socket/quit", clientHeader, JSON.stringify(messageInfo));
-
         stompClient.disconnect();
       },0)
 
     }
-
   },[pageOwnerId])
 
   useEffect(() => {
@@ -223,14 +267,13 @@ const SocketPage4Member = () => {
 
 
   // E. 기타 
-
-  // 버튼 누를 시 맨 밑으로 
-  const goBottomChat = () => {
+  useEffect(() => {
+    // 메시지 배열이 업데이트될 때마다 스크롤을 가장 아래로 이동
     if (chatContainerRef.current) {
-      chatContainerRef.current.scrollTop =
-        chatContainerRef.current.scrollHeight;
+      chatContainerRef.current.scrollTop = chatContainerRef.current.scrollHeight;
     }
-  };
+  }, [messages]);
+
 
   const handleEndTyping = (id) => {
     setMessages((prevMessages) =>
@@ -249,34 +292,76 @@ const SocketPage4Member = () => {
 
   };
 
-
+  // F. tab 변경 
   const tabClickHandler = (index) => {
     setTabIndex(index);
+  }
+
+  // G. 위치 확인 
+
+  const getLocation = async () => {
+    if (navigator.geolocation) {
+        navigator.geolocation.getCurrentPosition(
+            (position) => {
+                setLatitude(position.coords.latitude);
+                setLongitude(position.coords.longitude);
+                setError(null);
+
+                var GpsDTO = {
+                  senderId: currentMember.member_id,
+                  receiverId: pageOwnerId,
+                  latitude: position.coords.latitude,
+                  longitude: position.coords.longitude
+                }
+
+                stompClient.send("/pub/api/socket/enter", clientHeader, JSON.stringify(GpsDTO));
+            },
+            (error) => {
+                setError(error.message);
+            }
+        );
+    } else {
+        setError("Geolocation is not supported by this browser.");
+    }
+
+};
+
+
+
+  if(currentMember.member_id === pageOwnerId){
+    useEffect(() => {
+      console.log("geoLocation 실행!")
+        getLocation()
+    }, [tabIndex])
   }
 
   
   const tabArr=[
     {
       tabTitle:(
-        <div className={tabIndex===0 ? styles.mode_choose : styles.mode_friend_list} onClick={()=>tabClickHandler(0)}>
+        <div className={tabIndex===0 ? styles.mode_choose : styles.mode_other_list} onClick={()=>tabClickHandler(0)}>
           <p className={styles.mode_friend_list_txt}>현재 페이스</p>
         </div>
       ),  
       tabCont:(
-        <div>
-
+        <div className={styles.socket_page_content}>
+          <div className={styles.socket_box}>
+                <MyResponsiveRadialBar2 data={data}/>
+                <div style={{position: 'absolute', left: "45%", top: "32%"}}> 페이스 <br /> __"__ </div>
+                <div style={{position: 'relative', left:"2%", bottom: "30%"}} >
+                  <MapComponent location={position}/>
+                </div>
+          
+          </div>
+          
         </div>
       )
-
-
-
-
     },
     
     
     {
     tabTitle:(
-      <div className={tabIndex===0 ? styles.mode_choose : styles.mode_friend_list} onClick={()=>tabClickHandler(1)}>
+      <div className={tabIndex===1 ? styles.mode_choose : styles.mode_other_list} onClick={()=>tabClickHandler(1)}>
         <p className={styles.mode_friend_list_txt}>채팅</p>
       </div>
     ),        
@@ -310,21 +395,36 @@ const SocketPage4Member = () => {
   
       </div>
   )
-
-
   }]
 
   return (
-    <div className={styles.main_container}>
-      <div className={styles.tab_container}>
-        <div className={styles.mode_tabs}>
-            {tabArr.map((mode, index)=>{
-                return <div key={index}>{mode.tabTitle}</div>
-            })}
+    <>
+      {isModal && (
+        <div className={styles.modal_background}>
+          <div className={styles.lets_start_modal_container}>
+            <p className={styles.lets_start_modal_title}>잠시 후! <br/> 오늘의 달리기가 <br/> 시작됩니다. </p> 
+            <div className="countdown text-9xl" style={{alignSelf: 'center', paddingBottom: "5rem", fontFamily: "bp_r"}}>
+              {time !== 0? (<span style={{"--value": time}}></span>) : "시작!"}
+            </div>
+          </div>
         </div>
+      )}
+      
+      <audio style={{display: "none"}} controls autoPlay>
+        <source src='https://d210.s3.ap-northeast-2.amazonaws.com/WALK_WALK.mp3' type='audio/mpeg'/>
+      </audio>
+
+      <div className={styles.main_container}>
+        <div className={styles.tab_container}>
+          <div className={styles.mode_tabs}>
+              {tabArr.map((mode, index)=>{
+                  return <div key={index}>{mode.tabTitle}</div>
+              })}
+          </div>
             {tabArr[tabIndex].tabCont}
+        </div>
       </div>
-  </div>
+    </>
   );
 };
 
@@ -391,6 +491,50 @@ const FileUploader = ({currentMember, pageOwnerId, clientHeader}) => {
    </form>
  )
 }
+
+
+const MyResponsiveRadialBar2 = ({ data }) => (
+  <ResponsiveRadialBar
+      data={data}
+      valueFormat=" >-0,.2~r"
+      startAngle={0}
+      endAngle={359}
+      padding={0.6}
+      cornerRadius={7}
+      margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
+      colors={['#FFCB23']} 
+      tracksColor={["#F9DD84"]}
+      enableRadialGrid={false}
+      enableCircularGrid={false}
+      radialAxisStart={null}
+      circularAxisOuter={null}
+      maxValue={10000}
+      legends={[
+          {
+              anchor: 'right',
+              direction: 'column',
+              justify: false,
+              translateX: 1000,
+              translateY: 1000,
+              itemsSpacing: 6,
+              itemDirection: 'left-to-right',
+              itemWidth: 100,
+              itemHeight: 18,
+              itemTextColor: '#999',
+              symbolSize: 18,
+              symbolShape: 'square',
+              effects: [
+                  {
+                      on: 'hover',
+                      style: {
+                          itemTextColor: '#000'
+                      }
+                  }
+              ]
+          }
+      ]}
+  />
+)
 
 
 export default SocketPage4Member;

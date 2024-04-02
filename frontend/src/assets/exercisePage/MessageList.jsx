@@ -12,6 +12,8 @@ import Message from './Message';
           currentTypingId={index}
           pageOwnerId={pageOwnerId}
           currentMember={currentMember}
+          index={index}
+          length={messages.length}
         />
       ))}
     </Stack>

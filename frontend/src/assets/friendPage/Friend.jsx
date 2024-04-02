@@ -110,7 +110,7 @@ const Friend = function(){
                     ? friendList.map((data, index) => {
                         return(
                             <div key={index} className={styles.friend_container}>
-                                <img src={data.profileUrl} alt="프로필 사진" className={styles.friend_img_container} onClick={() => {setFriendName(data.nickname), setFriendProfileImg(data.profileUrl), setFriendModalOpen(!friendModalOpen)}}></img>
+                                <img src={data.profileUrl} alt="프로필 사진" className={styles.friend_img_container} onClick={() => {setFriendName(data.nickname), setFriendProfileImg(data.profileUrl), setFriendIntro(data.comment != '' ? data.comment : '한 줄 소개가 없습니다.'), setFriendModalOpen(!friendModalOpen)}}></img>
                                 <div className={styles.friend_info_container}>
                                     <p className={styles.friend_name_txt}>{data.nickname}</p>
                                     <p className={styles.friend_intro}>{data.comment}</p>

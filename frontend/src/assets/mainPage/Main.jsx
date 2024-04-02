@@ -56,6 +56,13 @@ const Main = function(){
         })
     }
 
+    
+    const onKeyDownHandler = (e)=>{
+        if(e.key == 'Enter'){
+            handleSearchClick();
+        }
+    }
+
     const [tabIndex, settabIndex] = useState(0);
     const [halli, setHalli] = useState(true);
     const [galli, setGalli] = useState(true);
@@ -483,7 +490,7 @@ const Main = function(){
                         </div>                                
                         
                         <div className={styles.galli_search_container}>
-                            <input className={styles.galli_search_box}  value={keyword} onChange={handleInputChange}></input>
+                            <input className={styles.galli_search_box}  value={keyword} onChange={handleInputChange} onKeyDown={onKeyDownHandler}></input>
                             <img className={styles.galli_search_icon} src="/imgs/search.png" alt="찾기 아이콘" onClick={handleSearchClick}></img>
                         </div>
 

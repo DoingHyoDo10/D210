@@ -20,9 +20,7 @@ function Mini() {
             </div>
             <p className={styles.strick_txt}>스트릭</p>
             <div className={styles.strick_line}></div>
-            <div className={styles.calen_container}>
-                <Calendar></Calendar>
-            </div>
+            <p className={styles.strick_day}>2일째</p>
             <div className={styles.delete_friend_btn}>
                 <p>친구 삭제</p>
             </div>

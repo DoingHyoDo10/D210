@@ -22,3 +22,15 @@ export async function getExerciseData(memberId, date) {
   console.log('조회 성공 func: ', exerciseData);
   return exerciseData;
 }
+
+// 영수증 조회 함수
+export async function getReceiptData(receiptId) {
+  try {
+      const receiptData = await contract.getReceipt(receiptId);
+      console.log('영수증 조회 성공 func:', receiptData);
+      return receiptData;
+  } catch (error) {
+      console.error('영수증 조회 실패:', error);
+      throw new Error('영수증 조회 중 오류가 발생했습니다.');
+  }
+}

@@ -49,25 +49,22 @@ public class PaymentService {
     private final PaymentRepository paymentRepository;
     private final MembersRepository membersRepository;
     private final MemberAccountRepository memberAccountRepository;
-    private final WalletHistoryRepository walletHistoryRepository;
-
     private final WalletsService walletsService;
 
     private final String kakaoPayReadyUrl = "https://open-api.kakaopay.com/online/v1/payment/ready";
     private final String kakaoPayApproveUrl = "https://open-api.kakaopay.com/online/v1/payment/approve";
 
-    public PaymentService(RestTemplateBuilder restTemplateBuilder, PaymentRepository paymentRepository, MembersRepository membersRepository, MemberAccountRepository memberAccountRepository, WalletHistoryRepository walletHistoryRepository, WalletsService walletsService) {
+    public PaymentService(RestTemplateBuilder restTemplateBuilder, PaymentRepository paymentRepository, MembersRepository membersRepository, MemberAccountRepository memberAccountRepository, WalletsService walletsService) {
         this.restTemplate = restTemplateBuilder.build();
         this.paymentRepository = paymentRepository;
         this.membersRepository = membersRepository;
         this.memberAccountRepository = memberAccountRepository;
-        this.walletHistoryRepository = walletHistoryRepository;
         this.walletsService = walletsService;
     }
 
     // 결제 준비
     // 모바일 혹은 pc로 카톡 결제 후 DB에 결제 내역 저장
-    public PaymentReadyResponse preparePayment(@AuthenticationPrincipal UserDetailsImpl userDetails, PaymentReadyRequest paymentReadyRequest) {
+    public PaymentReadyResponse preparePayment(UserDetailsImpl userDetails, PaymentReadyRequest paymentReadyRequest) {
 
         // 사용자 정보 가져오기(Token 유효성 검사)
         Members member = findByEmailAndDeletedAtIsNull(userDetails.getMember().getEmail());
@@ -82,8 +79,6 @@ public class PaymentService {
 
         HttpEntity<PaymentReadyRequest> request = new HttpEntity<>(paymentReadyRequest, headers);
         ResponseEntity<PaymentReadyResponse> response = restTemplate.postForEntity(kakaoPayReadyUrl, request, PaymentReadyResponse.class);
-
-        log.info("======================KakaoPay Payment Response: Status Code = {}, Body = {}", response.getStatusCode(), response.getBody());
 
         // 결제 정보 생성 및 DB 저장
         Payment payment = new Payment();

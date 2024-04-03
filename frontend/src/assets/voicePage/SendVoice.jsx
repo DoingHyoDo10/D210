@@ -79,11 +79,11 @@ const SendVoice = function(){
                     <p className={styles.title_txt}>응원 메시지 보내기</p>
                 </div>
                 <div className={styles.voice_btn_container}>
-                    <div className={styles.egg_container} onClick={openGalliListModal}>
+                    <div className={styles.send_container} onClick={openGalliListModal}>
                         <p className={styles.btn_txt}> 실시간 응원 메시지<br></br>보내기</p>
                         <img src="/imgs/mike.png" alt="마이크" className={styles.voice_img}></img>
                     </div>
-                    <div className={styles.item_container} onClick={moveToNormalVoicePage}>
+                    <div className={styles.contain_container} onClick={moveToNormalVoicePage}>
                         <p className={styles.btn_txt}>일반 응원 메시지<br></br>보내기</p>
                         <img src="/imgs/mike.png" alt="마이크" className={styles.voice_img}></img>
                     </div>

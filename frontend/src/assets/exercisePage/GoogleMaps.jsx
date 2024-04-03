@@ -12,12 +12,26 @@ export const GoogleMaps = ({location, className}) => {
 
   // 지도 초기화 하는 useEffect
   useEffect(() => {
+
+    const script = document.createElement('script');
+    script.src = `https://maps.googleapis.com/maps/api/js?key=AIzaSyA7cuC-dzEXgBRPgwQiQp_jBVRaZtphYK0&callback=initMap&v=weekly`;
+    script.async = true;
+    script.defer = true;
+    document.body.appendChild(script);
+
+
     if (ref.current && !map) { // Check if map is not initialized yet
       const newMap = new window.google.maps.Map(ref.current, {
         center: DEFAULT_CENTER,
         zoom: DEFAULT_ZOOM,
       });
       setMap(newMap); // Set the map state
+
+
+      return () => {
+        document.body.removeChild(script);
+      }
+
     }
   }, [ref, map]); // Include map and mapCenter in dependency array
 

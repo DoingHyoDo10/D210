@@ -14,11 +14,6 @@ const Rank = function(){
     const [weekly, setWeekly] = useState();
     const [monthly, setMonthly] = useState();
     const [streak, setStreak] = useState();
-    // const [dailyContent, setDailyContent] = useState([]);
-    // const [weeklyContent, setWeeklyContent] = useState([]);
-    // const [monthlyContent, setMonthlyContent] = useState([]);
-    // const [streakContent, setStreakContent] = useState([]);
-
 
     const tabClickHandler = function(index){
         setTabIndex(index)
@@ -29,16 +24,12 @@ const Rank = function(){
             try {
                 const resDaily = await getDailyRank();
                 setDaily(resDaily);
-                // setDailyContent(resDaily.content);
                 const resWeekly = await getWeeklyRank();
                 setWeekly(resWeekly);
-                // setWeeklyContent(resWeekly.content);
                 const resMonthly = await getMonthlyRank();
                 setMonthly(resMonthly);
-                // setMonthlyContent(resMonthly.content);
                 const resStreak = await getStreakRank();
                 setStreak(resStreak);
-                // setStreakContent(resStreak.content);
             } catch (error) {
                 console.error('랭킹 정보를 가져오는 중 에러 발생 : ', error)
             }

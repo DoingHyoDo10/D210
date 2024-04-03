@@ -86,8 +86,8 @@ const Galli = function(){
                         <div className={styles.money_content_container}>
                             <img src="/imgs/money.png" alt="할리 돈 오리" className={styles.money}></img>
                             <div className={styles.money_content_txt_container}>
-                                <p className={styles.money_content_detail_txt} style={{marginTop: 25}}>총<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월 단위)</span> : {galleyInfo.reward * remainingDays}원</p>
-                                <p className={styles.money_content_detail_txt} style={{marginTop: -5}}>일일<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월/해당 월 날짜 수)</span> : {galleyInfo.reward}원</p>
+                                <p className={styles.money_content_detail_txt} style={{marginTop: 25}}>총<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월 단위)</span> : {`${galleyInfo.reward * remainingDays}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</p>
+                                <p className={styles.money_content_detail_txt} style={{marginTop: -5}}>일일<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월/해당 월 날짜 수)</span> : {`${galleyInfo.reward}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</p>
                             </div>
                         </div>
                     </div>

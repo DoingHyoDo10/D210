@@ -75,8 +75,8 @@ const Halli = function(){
                                 <div className={styles.content_container}>
                                     <img src="/imgs/ch2_bol_money.png" alt="할리 돈 오리" className={styles.ch2_money}></img>
                                     <div className={styles.content_txt_container}>
-                                        <p className={styles.content_detail_txt} style={{marginTop: 25}}>일일 목표 시간 : {halleyInfo.requestedTime}분</p>
-                                        <p className={styles.content_detail_txt} style={{marginTop: -5}}>총 휴일권 : {halleyInfo.dayoff}개</p>
+                                        <p className={styles.content_detail_txt} style={{marginTop: 25}}>일일 목표 시간 : {`${halleyInfo.requestedTime}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}분</p>
+                                        <p className={styles.content_detail_txt} style={{marginTop: -5}}>총 휴일권 : {`${halleyInfo.dayoff}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}개</p>
                                     </div>
                                 </div>
                                 <p className={styles.money_content_txt}>금액</p>
@@ -85,8 +85,8 @@ const Halli = function(){
 
                                     <img src="/imgs/money.png" alt="할리 돈 오리" className={styles.money}></img>
                                     <div className={styles.money_content_txt_container}>
-                                        <p className={styles.money_content_detail_txt} style={{marginTop: 25}}>총<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월 단위)</span> : {halleyInfo.reward * halleyInfo.period}원</p>
-                                        <p className={styles.money_content_detail_txt} style={{marginTop: -5}}>일일<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월/해당 월 날짜 수)</span> : {halleyInfo.reward}원</p>
+                                        <p className={styles.money_content_detail_txt} style={{marginTop: 25}}>총<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월 단위)</span> : {`${halleyInfo.reward * halleyInfo.period}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</p>
+                                        <p className={styles.money_content_detail_txt} style={{marginTop: -5}}>일일<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월/해당 월 날짜 수)</span> : {`${halleyInfo.reward}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</p>
                                     </div>
                                 </div>
                             </>

@@ -23,7 +23,7 @@ const Walking = function(){
     const moveToSockeForMember = function () {
         navigate(`/member/${currentMember.member_id}`)
     }
-    const [realtimeExerciseData, setRealtimeExerciseData] = useState({});
+    const [realtimeExerciseData, setRealtimeExerciseData] = useState({steps: 0, time: 0 });
     const [data, setData] = useState([
         {
           "id": "걸음수",
@@ -73,6 +73,7 @@ const Walking = function(){
                 }
               ]
             },
+            
             {
               "id": "걸은 시간",
               "data": [
@@ -95,6 +96,8 @@ const Walking = function(){
     }, [realtimeExerciseData])
 
    
+
+    
 
   return(
     <div className={styles.walking_container}>

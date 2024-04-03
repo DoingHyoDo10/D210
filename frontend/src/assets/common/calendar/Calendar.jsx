@@ -36,26 +36,28 @@ const Calendar = (props) => {
   };
 
   const getClassNames = (day, month) => {
-    let classNames = `${styles.day}`;
-    // if (day === currentDate.getDate() && month === currentDate.getMonth()) {
-      
-    // }
-    if (selectedDate && day === selectedDate.getDate() && month === selectedDate.getMonth()) {
-      classNames += ` ${styles.selected}`;
-    }
-    if (new Date(currentDate.getFullYear(), month, day).getDay() === 0) {
-      classNames += ` ${styles.sunday}`;
-    } else if (new Date(currentDate.getFullYear(), month, day).getDay() === 6) {
-      classNames += ` ${styles.saturday}`;
-    }
-    
-    exerciseData.forEach(data=>{
-      if(new Date(data.exerciseDay).getMonth() === month && new Date(data.exerciseDay).getDate() === day){
-        classNames += ` ${styles.exerciseDay}`;
+    if(props.type === 'detail'){
+      let classNames = `${styles.day}`;
+      // if (day === currentDate.getDate() && month === currentDate.getMonth()) {
+        
+      // }
+      if (selectedDate && day === selectedDate.getDate() && month === selectedDate.getMonth()) {
+        classNames += ` ${styles.selected}`;
       }
-    })
-    
-    return classNames;
+      if (new Date(currentDate.getFullYear(), month, day).getDay() === 0) {
+        classNames += ` ${styles.sunday}`;
+      } else if (new Date(currentDate.getFullYear(), month, day).getDay() === 6) {
+        classNames += ` ${styles.saturday}`;
+      }
+      
+      exerciseData.forEach(data=>{
+        if(new Date(data.exerciseDay).getMonth() === month && new Date(data.exerciseDay).getDate() === day){
+          classNames += ` ${styles.exerciseDay}`;
+        }
+      })
+      
+      return classNames;
+    }
   };
 
   const handleDateClick = (day) => {

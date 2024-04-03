@@ -116,7 +116,7 @@ export const putMission = async (data) => {
 
     return await instance.put(url, {memberIdList: data})
         .then((res) => {
-            return true;
+            return res.data.data;
         })
         .catch((err) => {console.log(err)});
 

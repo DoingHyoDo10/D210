@@ -105,8 +105,10 @@ const Friend = function(){
         }
     }
 
-    const handleFriendModalOpen = (memberId)=>{
+    const handleFriendModalOpen = ()=>{
         setFriendModalOpen(!friendModalOpen);
+        getFriendList()
+            .then(res=>setFriendList(res));
     }
     const tabArr=[{
         tabTitle:(
@@ -200,7 +202,7 @@ const Friend = function(){
     return(
         <>
             {friendModalOpen && 
-                <Mini type="friend" closeModal={setFriendModalOpen} memberId={memberId}></Mini>
+                <Mini type="friend" closeModal={handleFriendModalOpen} memberId={memberId}></Mini>
             }
             {searchModalOpen && 
                 <Mini type="search" closeModal={setSearchModalOpen} memberId={memberId}></Mini>

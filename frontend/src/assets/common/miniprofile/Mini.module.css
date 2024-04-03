@@ -76,6 +76,13 @@
 
 .strick_day{
     font-size: 1.5rem;
+    background-color: white;
+    border-radius: 1rem;
+    width: 10rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .delete_friend_btn{

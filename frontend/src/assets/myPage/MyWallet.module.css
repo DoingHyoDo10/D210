@@ -151,3 +151,30 @@
   font-size: 1.3rem;
   box-shadow: 0.01rem 0.01rem 0.5rem 0 rgba(0, 0, 0, 0.2);
 }
+
+.mywallet_receipt_container {
+  width: 90%;
+  height: 90%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.mywallet_receipt_title {
+  font-size: 1.7rem;
+  border-bottom: 3px solid #f2f2f2;
+  width: 95%;
+  text-align: center;
+  padding: 0.5rem 0;
+  margin: 1rem 0;
+}
+
+.mywallet_receipt_box {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  font-size: 1.3rem;
+  width: 90%;
+  height: 50%;
+  text-align: right;
+}

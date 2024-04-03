@@ -5,7 +5,7 @@ const ContractTest = function () {
   
   const handleSubmit1 = async (e) => {
     try {
-      await recordExercise(41, 1, 4409, 53, '2934.5', '2024-04-01', "2024-04-01T15:30:00", "2024-04-01T23:59:59.999999999", '607.7');
+      await recordExercise(42, 1, 4409, 53, '2934.5', '2024-04-01', "2024-04-01T15:30:00", "2024-04-01T23:59:59.999999999", '607.7');
       alert('기록 성공');
     } catch (error) {
       alert('기록 실패 : ', error);

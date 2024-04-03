@@ -10,6 +10,8 @@ export const GoogleMaps = ({location, className}) => {
    //⭐ 맵의 상태 
   const [map, setMap] = useState(null);
 
+
+
   // 지도 초기화 하는 useEffect
   useEffect(() => {
     if (ref.current && !map) { // Check if map is not initialized yet

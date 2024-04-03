@@ -6,6 +6,7 @@ import { getHalley } from "../../apis/halleygalley";
 import { useStore } from "../../stores/member";
 import Calendar from "../common/calendar/Calendar";
 import { getMonthlyExerciseData } from "../../apis/exercise";
+import Loading from "../common/loading/Loading";
 
 const Halli = function(){
     const {memberId, setMemberId} = useStore();
@@ -32,6 +33,10 @@ const Halli = function(){
 
     const openRestModal = function(){
         setRest(!rest);
+    }
+
+    if(!halleyInfo){
+        return(<Loading text="조회중..."></Loading>)
     }
 
     return(

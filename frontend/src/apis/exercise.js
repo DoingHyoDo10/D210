@@ -122,3 +122,25 @@ export const getMonthlyExerciseData = async (memberId) => {
         })
         .catch((err) => {console.log(err)})
 }
+
+// 유저 어제 운동정보 조회
+export const getDailyExerciseData = async (memberId) => {
+
+    // 현재 날짜를 가져오기
+    var today = new Date();
+
+    // 어제 날짜를 계산
+    var yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    // 날짜를 YYYY-MM-DD 형식으로 변환
+    var yesterdayFormatted = yesterday.toISOString().slice(0,10);
+
+    const url = `/walk/calendar/${memberId}/${yesterdayFormatted}`;
+    
+    return await instance.get(url)
+        .then((res) => {
+            return res.data.data;
+        })
+        .catch((err) => {console.log(err)})
+}

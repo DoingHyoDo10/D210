@@ -142,7 +142,7 @@
 
 .day_rank_container{
     width: 22.4rem;
-    height: 35rem;
+    height: 35.7rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -151,7 +151,7 @@
 
 .rank_day{
     width: 21.4rem;
-    height: 4rem;
+    height: 3rem;
     margin-top: 2%;
     border-radius: 0.938rem;
     background: #FFDD71;
@@ -191,7 +191,7 @@
 }
 
 .first_rank_title{
-    font-size: 1.7rem;
+    font-size: 1.6rem;
     margin: 0;
 }
 
@@ -210,7 +210,7 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
+    padding: 0.5rem 0;
 }
 
 .first_rank_img{
@@ -245,8 +245,8 @@
     justify-content: center;
     display: flex;
     background: #FFF2CB;
-    margin-top: 3%;
-    margin-bottom: 3%;
+    margin-top: 2%;
+    margin-bottom: 2%;
     box-shadow: 0.01rem 0.01rem 0.5rem 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -323,7 +323,7 @@
 
 .week_rank_container{
     width: 22.4rem;
-    height: 35rem;
+    height: 35.7rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -332,7 +332,7 @@
 
 .rank_week{
     width: 21.4rem;
-    height: 4rem;
+    height: 3rem;
     margin-top: 2%;
     border-radius: 0.938rem;
     background: #FFDD71;
@@ -346,7 +346,7 @@
 
 .month_rank_container{
     width: 22.4rem;
-    height: 35rem;
+    height: 35.7rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -355,7 +355,7 @@
 
 .rank_month{
     width: 21.4rem;
-    height: 4rem;
+    height: 3rem;
     margin-top: 2%;
     border-radius: 0.938rem;
     background: #FFDD71;
@@ -369,11 +369,12 @@
 
 .strick_rank_container{
     width: 22.4rem;
-    height: 35rem;
+    height: 35.7rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 1rem 0;
+    position: relative;
+    overflow: hidden;
 }
 
 .strick_top_rank_container{
@@ -403,7 +404,7 @@
 }
 
 .strick_first_rank_title{
-    font-size: 1.7rem;
+    font-size: 1.5rem;
     margin: 0;
 }
 
@@ -422,7 +423,6 @@
     flex-direction: column;
     justify-content: space-between;
     align-items: center;
-    padding: 1rem 0;
 }
 
 .strick_first_rank_img{
@@ -501,7 +501,7 @@
     justify-content: center;
     display: flex;
     background: #FFFEFC;
-    margin-top: 120.5%;
+    bottom: -1%;
     box-shadow: 0.01rem 0.01rem 0.5rem 0 rgba(0, 0, 0, 0.2);
 }
 

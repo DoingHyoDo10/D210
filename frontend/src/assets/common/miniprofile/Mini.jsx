@@ -30,6 +30,7 @@ function Mini(props) {
                 <p>친구 삭제</p>
                 </div>
             }
+            <p className={styles.strick_day}>2일째</p>
         </div>
       </div>
     </>

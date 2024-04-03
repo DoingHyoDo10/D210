@@ -18,30 +18,31 @@
 }
 
 .title_container{
-    width: 100%;
-    height: 5rem;
+    background-color: white;
     display: flex;
     align-items: center;
-    position: fixed;
-    background-color: white;
+    justify-content: center;
+    position: relative;
+    width: 100%;
+    height: 4rem;
 }
 
 .back_btn{
     height: 2.1rem;
-    margin-left: 3%;
     width: auto;
+    position: absolute;
+    left: 0.5rem;
     transform: rotate(180deg);
 }
 
 .title_txt{
     font-family: "bc_b";
     font-size: 1.5rem;
-    margin-left: 33%;
 }
 
 .alarm_list_container{
     background: #FFF2CB;
-    margin-top: 19.5%;
+    margin-top: 3%;
     width: 22.4rem;
     height: 49.5rem;
     border-radius: 1.5rem;

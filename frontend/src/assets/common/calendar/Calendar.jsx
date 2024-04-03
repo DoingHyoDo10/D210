@@ -1,9 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import styles from './Calendar.module.css';
+import styles2 from '../../halligalliPage/HalliGalli.module.css';
+import { getMonthlyExerciseData } from '../../../apis/exercise';
+import {useStore} from '../../../stores/member';
 
-const Calendar = () => {
+const Calendar = (props) => {
+  const {memberId, setMemberId} = useStore();
+  useEffect(()=>{
+    getMonthlyExerciseData(memberId).then(res=>{setExerciseData(res); console.log(res)});
+  },[])
   const [currentDate, setCurrentDate] = useState(new Date());
-  const [selectedDate, setSelectedDate] = useState(null);
+  const [selectedDate, setSelectedDate] = useState(new Date());
+  const [exerciseData, setExerciseData] = useState([{}]);
+  const [selectedDaysExercise, setSelectedDaysExercise] = useState({exerciseMinute:0, exerciseDistance:0, steps:0});
 
   const createCalendar = (year, month) => {
     const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
@@ -28,9 +37,9 @@ const Calendar = () => {
 
   const getClassNames = (day, month) => {
     let classNames = `${styles.day}`;
-    if (day === currentDate.getDate() && month === currentDate.getMonth()) {
-      classNames += ` ${styles.today}`;
-    }
+    // if (day === currentDate.getDate() && month === currentDate.getMonth()) {
+      
+    // }
     if (selectedDate && day === selectedDate.getDate() && month === selectedDate.getMonth()) {
       classNames += ` ${styles.selected}`;
     }
@@ -39,18 +48,37 @@ const Calendar = () => {
     } else if (new Date(currentDate.getFullYear(), month, day).getDay() === 6) {
       classNames += ` ${styles.saturday}`;
     }
+    
+    exerciseData.forEach(data=>{
+      if(new Date(data.exerciseDay).getMonth() === month && new Date(data.exerciseDay).getDate() === day){
+        classNames += ` ${styles.exerciseDay}`;
+      }
+    })
+    
     return classNames;
   };
 
   const handleDateClick = (day) => {
-    setSelectedDate(new Date(currentDate.getFullYear(), currentDate.getMonth(), day));
+    const selectedDay = new Date(currentDate.getFullYear(), currentDate.getMonth(), day);
+    setSelectedDate(selectedDay);
+    let flag = true;
+    exerciseData.forEach((data)=>{
+      if(new Date(data.exerciseDay).getDate() === selectedDay.getDate()){
+        // 여기
+        setSelectedDaysExercise(data);
+        flag = false;
+      }
+    })
+    if(flag){
+      setSelectedDaysExercise({exerciseMinute:0, exerciseDistance:0, steps:0});
+    }
   };
 
-  const changeMonth = (delta) => {
-    const newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + delta, 1);
-    setCurrentDate(newDate);
-    setSelectedDate(null); // Change month, reset selectedDate
-  };
+  // const changeMonth = (delta) => {
+  //   const newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + delta, 1);
+  //   setCurrentDate(newDate);
+  //   setSelectedDate(null); // Change month, reset selectedDate
+  // };
 
   return (
     <>
@@ -67,6 +95,43 @@ const Calendar = () => {
         </div>
       </div>
       {/* <div style={{marginTop:'20px'}}>Selected Date: {selectedDate && selectedDate.toLocaleDateString()}</div> */}
+
+      {props.type === 'detail'
+       ?
+      <div className={styles2.days_content_box_container}>
+        <div className={styles2.content_title_container}>
+            <p className={styles2.calen_title}>{selectedDate.toLocaleDateString()}</p>
+        </div>
+        <div className={styles2.ff_btn_container}>
+            <div className={styles2.walk_cnt_btn_container}>
+                <img src="/imgs/foot.png" alt="걸음 수 아이콘" className={styles2.foot_icon}></img>
+                <p className={styles2.base_walk_cnt}>걸음수</p>
+                <p className={styles2.record_walk_cnt}>{selectedDaysExercise.steps}보</p>
+            </div>
+            <div className={styles2.walk_time_btn_container}>
+                <img src="/imgs/clock_icon.png" alt="시간 아이콘" className={styles2.clock_icon}></img>
+                <p className={styles2.base_time_cnt}>걸은 시간</p>
+                <p className={styles2.record_time_cnt}>{selectedDaysExercise.exerciseMinute}분</p>
+            </div>
+            <div className={styles2.walk_road_btn_container}>
+                <img src="/imgs/map_icon.png" alt="맵 아이콘" className={styles2.road_icon}></img>
+                <p className={styles2.base_road_cnt}>걸은 거리</p>
+                <p className={styles2.record_road_cnt}>{selectedDaysExercise.exerciseDistance}Km</p>
+            </div>
+        </div>
+        <div className={styles2.sf_btn_container}>
+            <div className={styles2.mission_money_btn_container}>
+                <p className={styles2.base_money_cnt}>누적 미션 금액</p>
+                <p className={styles2.record_money_cnt}>10,000원 <span style={{color: "#727768", fontSize: 12}}>(1*10,000)</span></p>
+            </div>
+            <div className={styles2.mission_cp_btn_container}>
+                <p className={styles2.base_cp_cnt}>남은 휴식권</p>
+                <p className={styles2.record_cp_cnt}>4개</p>
+            </div>
+        </div>
+      </div>
+      : <></>
+    }
     </>
   );
 }

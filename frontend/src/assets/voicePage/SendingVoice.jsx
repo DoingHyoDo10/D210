@@ -176,9 +176,31 @@ const SendingVoice = function(){
         
     }
 
+    const [sending, setSending] = useState(false);
+
+    const openSendingModal = function(){
+        setSending(!sending);
+    }
+
 
     return(
         <>
+            {sending && (
+                <>
+                    <div className={styles.modal_background}>
+                        <div className={styles.sending_container}>
+                            <img src='/imgs/x.png' alt='x' className={styles.x} onClick={openSendingModal}></img>
+                            <p className={styles.sending_alarm}>전송 완료!</p>
+                            <img src="/imgs/ch1_bol_jump.gif" alt="오리 점프" className={styles.jump_ori}></img>
+
+                            <div className={styles.ok_btn} onClick={openSendingModal}>
+                                <p>확인</p>
+                            </div>
+                        </div>
+                    </div>
+                </>
+                )
+            }
             {galli && (
                 <>
                     <div className={styles.modal_background}></div>
@@ -234,11 +256,11 @@ const SendingVoice = function(){
 
                     <p className={styles.recieve_txt}>받는 사람</p>
                     <div className={styles.select_container}>
-                        <p className={styles.select_name}>{galliName} {receiverId}</p>
+                        <p className={styles.select_name}>{galliName}</p>
                         <img src="/imgs/search.png" alt="찾기" className={styles.galli_select_search_icon} onClick={openGalliListModal}></img>
                     </div>
                     
-                    <div className={styles.send_btn_container} onClick={handleUpload}>
+                    <div className={styles.send_btn_container} onClick={() => {handleUpload(); openSendingModal();}}>
                         <p>보내기</p>
                     </div>
 

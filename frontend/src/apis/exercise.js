@@ -106,3 +106,14 @@ export const updateExerciseCriteria = async (data) => {
         })
         .catch((err) => {console.log(err)})
 }
+
+// 유저 한달 운동정보 조회
+export const getMonthlyExerciseData = async (memberId) => {
+    const url = `/walk/calendar/${memberId}`;
+    
+    return await instance.get(url)
+        .then((res) => {
+            return res.data.data;
+        })
+        .catch((err) => {console.log(err)})
+}

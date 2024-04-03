@@ -172,19 +172,6 @@ font-face {
     bottom: 0%;
 }
 
-.modal_background{
-    top: 0;
-    bottom: 0;
-    width: 100%;
-    height: 100%;
-    max-width: 412px;
-    position: absolute;
-    background: rgba(0, 0, 0, 0.6);
-    z-index: 10;
-    overflow: hidden;
-
-}
-
 .galli_modal_container{
     width: 22rem;
     height: 30rem;
@@ -333,4 +320,64 @@ font-face {
     justify-content: center;
     display: flex;
     box-shadow: 0.01rem 0.01rem 0.5rem 0 rgba(0, 0, 0, 0.2);
+}
+
+
+.modal_background{
+    width: 100%;
+    height: 100%;
+    position: absolute;
+    background: rgba(0, 0, 0, 0.6);
+    z-index: 10;
+    top: 0;
+    max-width: 412px;
+    max-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+  
+.sending_container{
+    width: 20.4rem;
+    height: 24.5rem;
+    position: relative;
+    background: #FFF9EF;
+    border-radius: 1rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    overflow: auto;
+}
+
+.x{
+    height: 2rem;
+    width: auto;
+    position: absolute;
+    right: 3%;
+    top: 2%;
+}
+
+.sending_alarm{
+    font-size: 3rem;
+    margin-top: 20%;
+}
+
+.jump_ori{
+    height: 12rem;
+    width: auto;
+    margin-top: -20%;
+}
+
+.ok_btn{
+    width: 5.5rem;
+    height: 3rem;
+    background: #FFCB23;
+    border-radius: 0.5rem;
+    font-size: 1.4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-top: 4%;
+    box-shadow: 0.113rem 0.225rem 0.5rem 0 rgba(0, 0, 0, 0.3);
+
 }

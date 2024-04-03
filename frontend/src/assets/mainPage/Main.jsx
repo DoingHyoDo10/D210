@@ -256,7 +256,7 @@ const Main = function(){
                                 </div>
                                 <div className={styles.my_walk_number_base}>
                                     <p className={styles.my_walk_min}>0보</p>
-                                    <p className={styles.my_walk_min2}>{criteriaData.steps}보</p>
+                                    <p className={styles.my_walk_min2}>{`${criteriaData.steps}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}보</p>
                                 </div>
                             </div>
                         </div>
@@ -575,7 +575,7 @@ const Main = function(){
                         <p className={styles.week_title}>이번주 나의 기록</p>
                         <p className={styles.week_detail}>걸음 수 평균</p>
                         <div className={styles.avg_container}>
-                            <p className={styles.week_avg_number}>{weeklyExerciseData.avg}</p>
+                            <p className={styles.week_avg_number}>{`${weeklyExerciseData.avg}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
                             <p className={styles.week_avg_walk}>걸음</p>
                         </div>
                         <div className={styles.graph_container}>

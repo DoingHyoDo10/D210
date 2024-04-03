@@ -6,7 +6,6 @@ export const getDailyRank = async () => {
 
   return await instance.get(url)
       .then((res) => {
-          console.log('daily : ', res)
           return res.data.data
       })
       .catch((err) => {console.log(err)})
@@ -18,7 +17,6 @@ export const getWeeklyRank = async () => {
 
   return await instance.get(url)
       .then((res) => {
-          console.log('weekly : ', res)
           return res.data.data
       })
       .catch((err) => {console.log(err)})
@@ -30,7 +28,6 @@ export const getMonthlyRank = async () => {
 
   return await instance.get(url)
       .then((res) => {
-          console.log('monthly : ', res)
           return res.data.data
       })
       .catch((err) => {console.log(err)})
@@ -42,7 +39,6 @@ export const getStreakRank = async () => {
 
   return await instance.get(url)
       .then((res) => {
-          console.log('streak : ', res)
           return res.data.data
       })
       .catch((err) => {console.log(err)})

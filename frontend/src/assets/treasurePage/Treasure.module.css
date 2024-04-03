@@ -43,10 +43,54 @@
     width: 100%;
     height: fit-content;
     object-fit: cover;
-    overflow-y: auto;
+    overflow-y: hidden;
 }
 
 .map_img{
-    width: 100%;
+    width: 100vw;
+    max-width: 412px;
     height: auto;
+}
+
+.marker_container{
+    position: absolute;
+    width: 4rem;
+    height: 4rem;
+    border-radius: 3rem;
+    background-repeat: no-repeat;
+    z-index: 5;
+    background-size: contain;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    animation: anim1 2s infinite none;
+}
+
+.marker_container img{
+    width: 2.1rem;
+    height: 2.1rem;
+    border-radius: 3rem;
+    margin-top: 0.2rem;
+    margin-left: 3px;
+}
+
+.marker_inside{
+    background: white;
+    border-radius: 3rem;
+    width: 2.5rem;
+    height: 2.5rem;
+    margin: 0.4rem 
+    0 1rem -0.6rem;
+}
+
+@keyframes anim1 {
+    0%{
+        transform: translateY(0rem);
+    }
+    50%{
+        transform: translateY(1rem);
+    }
+    100%{
+        transform: translateY(0rem);
+    }
 }

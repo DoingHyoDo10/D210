@@ -2,10 +2,14 @@
     border: 1px solid #ccc;
     border-radius: 5px;
     opacity: 0;
+    
 }
 
 form input::file-selector-button {
     display: none;
   }
+
+
+
 
 

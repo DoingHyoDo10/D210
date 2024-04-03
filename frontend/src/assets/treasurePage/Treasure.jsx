@@ -18,6 +18,7 @@ const Treasure = function(){
           r.forEach(d=>{
             totalSteps += d.steps;
           })
+          setTotalSteps(totalSteps);
           let pos = 0;
           const arr = [10000,50000,100000,200000,300000,400000]
           for(let i=0; i<arr.length; i++){
@@ -38,6 +39,7 @@ const Treasure = function(){
     const [nickname, setNickname] = useState(JSON.parse(localStorage.getItem('tokens')).nickname);
     const [pos, setPos] = useState({});
     const [egg, setEgg] = useState(0);
+    const [totalsteps, setTotalSteps] = useState(0);
 
     const position = [
       {x:'24%', y:'13%'}, 
@@ -56,7 +58,7 @@ const Treasure = function(){
                     <p className={styles.title_txt}>보물찾기</p>
                 </div>
                 <div className={styles.map_container}>
-                <div style={{width:'100px', height:'50px', position:'absolute', background: 'orange', left:'1rem', top:'5rem', textAlign:'center'}}>보유 에그 {egg}</div>
+                <div style={{width:'200px', height:'54px', borderRadius:'1rem', position:'absolute', background: 'orange', left:'1rem', top:'5rem', textAlign:'center'}}>보유 에그 {egg}<br/>한달 걸음 수 {totalsteps} </div>
                   <div className={styles.marker_container} style={{left: `${pos.x}`, bottom: `${pos.y}`, backgroundImage: 'url(/imgs/yes_marker.png)'}}>
                     <div className={styles.marker_inside}>
                       <img src={profileUrl}/>

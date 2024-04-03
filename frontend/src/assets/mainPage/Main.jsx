@@ -28,6 +28,19 @@ const Main = function(){
               setRealtimeExerciseData(res);
             })
         updateHalliGalliList();
+        const tokensStr = localStorage.getItem('tokens');
+        if (tokensStr) {
+            try {
+              // JSON으로 파싱
+              const tokens = JSON.parse(tokensStr);
+              // member_id 추출
+              const memberId = tokens.member_id;
+              // Zustand 스토어의 상태 업데이트
+              setMemberId(memberId);
+            } catch (error) {
+              console.error("Parsing error:", error);
+            }
+          }
     }, [])
 
     const navigate = useNavigate();

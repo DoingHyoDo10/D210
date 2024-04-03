@@ -84,3 +84,15 @@ export const requestMoneyExchange = async (money) => {
       })
       .catch((err) => {console.log(err)})
 }
+
+// 거래내역 조회
+export const getWalletHistory = async () => {
+  const url = '/wallets/wallet-history'
+
+  return await instance.get(url)
+      .then((res) => {
+        console.log('api', res);
+        return res.data.data
+      })
+      .catch((err) => {console.log(err)})
+}

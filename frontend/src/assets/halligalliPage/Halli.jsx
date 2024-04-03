@@ -5,6 +5,7 @@ import { gray } from "d3-color";
 import { getHalley } from "../../apis/halleygalley";
 import { useStore } from "../../stores/member";
 import Calendar from "../common/calendar/Calendar";
+import { getMonthlyExerciseData } from "../../apis/exercise";
 
 const Halli = function(){
     const {memberId, setMemberId} = useStore();
@@ -19,6 +20,7 @@ const Halli = function(){
     useEffect(()=>{
         getHalley(memberId)
             .then(res=>{setHalleyInfo(res)})
+        getMonthlyExerciseData(memberId).then(res=>console.log("컴포넌트 내부: "+res))
     }, [])
     const navigate = useNavigate();
 

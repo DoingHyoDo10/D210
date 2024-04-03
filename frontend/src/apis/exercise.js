@@ -144,3 +144,14 @@ export const getDailyExerciseData = async (memberId) => {
         })
         .catch((err) => {console.log(err)})
 }
+
+// 운동 중인 유저 조회
+export const getWhetherExerciseStart = async (memberId) => {
+    const url = `/walk/decided/ing-check/${memberId}`;
+    
+    return await instance.get(url)
+        .then((res) => {
+            return res.data.data;
+        })
+        .catch((err) => {console.log(err)})
+}

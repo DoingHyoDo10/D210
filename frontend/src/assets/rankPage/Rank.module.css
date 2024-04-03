@@ -142,7 +142,7 @@
 
 .day_rank_container{
     width: 22.4rem;
-    height: 35rem;
+    height: 35.7rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -151,7 +151,7 @@
 
 .rank_day{
     width: 21.4rem;
-    height: 4rem;
+    height: 3rem;
     margin-top: 2%;
     border-radius: 0.938rem;
     background: #FFDD71;
@@ -169,63 +169,59 @@
     margin-top: 3%;
     border-radius: 0.938rem;
     background: #FFF2CB;
+    padding: 0.5rem 0;
     box-shadow: 0.013rem 0.013rem 0.2rem 0 rgba(0, 0, 0, 0.3);
-
 }
 
 .top3_ranks{
-    width: 21.4rem;
-    height: 12rem;
-    border-radius: 0.938rem;
+    width: 100%;
+    height: 100%;
+    border-radius: 1rem;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
 }
 
 .first_rank_container{
-    width: 7rem;
-    height: 12rem;
+    width: 30%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: "bc_b";
 }
 
 .first_rank_title{
-    font-size: 1.7rem;
-    font-family: "bc_b";
-    margin-top: 2%;
+    font-size: 1.6rem;
+    margin: 0;
 }
 
 .first_rank_crown{
-    width: auto;
+    width: 2rem;
     height: 2rem;
-    margin-top: -28%;
+    margin: 0;
 }
 
 .first_rank_profile_container{
-    width: 6.2rem;
-    height: 7rem;
+    width: 100%;
+    height: 100%;
     background: #FFFEFC;   
     border-radius: 0.938rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-
+    padding: 0.5rem 0;
 }
 
 .first_rank_img{
     width: 4rem;
     height: 4rem;
-    border-radius: 20rem;
-    margin-top: 25%;
+    border-radius: 50%;
 }
 
 .first_rank_name{
-    font-family: "bc_b";
     font-size: 1rem;
-    margin-top: 5%;
+    margin: 0;
 }
 
 .day_ranks_container{
@@ -249,8 +245,8 @@
     justify-content: center;
     display: flex;
     background: #FFF2CB;
-    margin-top: 3%;
-    margin-bottom: 3%;
+    margin-top: 2%;
+    margin-bottom: 2%;
     box-shadow: 0.01rem 0.01rem 0.5rem 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -327,7 +323,7 @@
 
 .week_rank_container{
     width: 22.4rem;
-    height: 35rem;
+    height: 35.7rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -336,7 +332,7 @@
 
 .rank_week{
     width: 21.4rem;
-    height: 4rem;
+    height: 3rem;
     margin-top: 2%;
     border-radius: 0.938rem;
     background: #FFDD71;
@@ -350,7 +346,7 @@
 
 .month_rank_container{
     width: 22.4rem;
-    height: 35rem;
+    height: 35.7rem;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -359,7 +355,7 @@
 
 .rank_month{
     width: 21.4rem;
-    height: 4rem;
+    height: 3rem;
     margin-top: 2%;
     border-radius: 0.938rem;
     background: #FFDD71;
@@ -373,77 +369,71 @@
 
 .strick_rank_container{
     width: 22.4rem;
-    height: 35rem;
+    height: 35.7rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    margin-top: 2.5%;
+    position: relative;
+    overflow: hidden;
 }
 
 .strick_top_rank_container{
     width: 21.4rem;
     height: 12rem;
-    margin-top: -20%;
     border-radius: 0.938rem;
     background: #FFF2CB;
+    padding: 0.5rem 0;
     box-shadow: 0.013rem 0.013rem 0.2rem 0 rgba(0, 0, 0, 0.3);
-
 }
 
 .strick_top3_ranks{
-    width: 21.4rem;
-    height: 12rem;
+    width: 100%;
+    height: 100%;
     border-radius: 0.938rem;
     display: flex;
     align-items: center;
-    justify-content: center;
+    justify-content: space-around;
 }
 
 .strick_first_rank_container{
-    width: 7rem;
-    height: 12rem;
+    width: 30%;
+    height: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
-    font-family: "bc_b";
 }
 
 .strick_first_rank_title{
-    font-size: 1.7rem;
-    font-family: "bc_b";
-    margin-top: 2%;
+    font-size: 1.5rem;
+    margin: 0;
 }
 
 .strick_first_rank_crown{
-    width: auto;
+    width: 2rem;
     height: 2rem;
-    margin-top: -28%;
+    margin: 0;
 }
 
 .strick_first_rank_profile_container{
-    width: 6.2rem;
-    height: 7rem;
+    width: 100%;
+    height: 100%;
     background: #FFFEFC;   
     border-radius: 0.938rem;
     display: flex;
     flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
     align-items: center;
-
 }
 
 .strick_first_rank_img{
     width: 4rem;
     height: 4rem;
-    border-radius: 20rem;
-    margin-top: 25%;
+    border-radius: 50%;
 }
 
 .strick_first_rank_name{
-    font-family: "bc_b";
     font-size: 1rem;
-    margin-top: 5%;
+    margin: 0;
 }
 
 .strick_ranks_container{
@@ -511,7 +501,7 @@
     justify-content: center;
     display: flex;
     background: #FFFEFC;
-    margin-top: 120.5%;
+    bottom: -1%;
     box-shadow: 0.01rem 0.01rem 0.5rem 0 rgba(0, 0, 0, 0.2);
 }
 

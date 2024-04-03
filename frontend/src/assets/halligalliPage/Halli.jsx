@@ -5,24 +5,38 @@ import { gray } from "d3-color";
 import { getHalley } from "../../apis/halleygalley";
 import { useStore } from "../../stores/member";
 import Calendar from "../common/calendar/Calendar";
+import { getMonthlyExerciseData } from "../../apis/exercise";
+import Loading from "../common/loading/Loading";
 
 const Halli = function(){
     const {memberId, setMemberId} = useStore();
+    // 현재 날짜 생성
+    var today = new Date();
+
+    // 이번 달의 마지막 날짜 구하기
+    var lastDayOfMonth = new Date(today.getFullYear(), today.getMonth() + 1, 0);
+
+    // 남은 일 수 계산
+    var remainingDays = lastDayOfMonth.getDate() - today.getDate();
     useEffect(()=>{
         getHalley(memberId)
-            .then(res=>{setHalleyInfo(res)})
+            .then(res=>{setHalleyInfo(res);})
     }, [])
     const navigate = useNavigate();
 
     const moveToMainPage = function () {
         navigate("/main")
     }
-    const [halleyInfo, setHalleyInfo] = useState({});
+    const [halleyInfo, setHalleyInfo] = useState(null);
     const[rest, setRest] = useState(false);
     
 
     const openRestModal = function(){
         setRest(!rest);
+    }
+
+    if(!halleyInfo){
+        return(<Loading text="조회중..."></Loading>)
     }
 
     return(
@@ -67,8 +81,8 @@ const Halli = function(){
                                 <div className={styles.content_container}>
                                     <img src="/imgs/ch2_bol_money.png" alt="할리 돈 오리" className={styles.ch2_money}></img>
                                     <div className={styles.content_txt_container}>
-                                        <p className={styles.content_detail_txt} style={{marginTop: 25}}>일일 목표 시간 : {halleyInfo.requestedTime}분</p>
-                                        <p className={styles.content_detail_txt} style={{marginTop: -5}}>총 휴일권 : {halleyInfo.dayoff}개</p>
+                                        <p className={styles.content_detail_txt} style={{marginTop: 25}}>일일 목표 시간 : {`${halleyInfo.requestedTime}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}분</p>
+                                        <p className={styles.content_detail_txt} style={{marginTop: -5}}>총 휴일권 : {`${halleyInfo.dayoff}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}개</p>
                                     </div>
                                 </div>
                                 <p className={styles.money_content_txt}>금액</p>
@@ -77,8 +91,8 @@ const Halli = function(){
 
                                     <img src="/imgs/money.png" alt="할리 돈 오리" className={styles.money}></img>
                                     <div className={styles.money_content_txt_container}>
-                                        <p className={styles.money_content_detail_txt} style={{marginTop: 25}}>총<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월 단위)</span> : {halleyInfo.reward}원</p>
-                                        <p className={styles.money_content_detail_txt} style={{marginTop: -5}}>일일<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월/해당 월 날짜 수)</span> : 10,000원</p>
+                                        <p className={styles.money_content_detail_txt} style={{marginTop: 25}}>총<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월 단위)</span> : {`${halleyInfo.reward * halleyInfo.period}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</p>
+                                        <p className={styles.money_content_detail_txt} style={{marginTop: -5}}>일일<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월/해당 월 날짜 수)</span> : {`${halleyInfo.reward}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</p>
                                     </div>
                                 </div>
                             </>
@@ -94,44 +108,9 @@ const Halli = function(){
                 </div>
 
                 <div className={styles.calendar_container}>
-                    <p className={styles.mission_title2}>회원님이 등록한 미션 현황</p>
-                    <Calendar></Calendar>
-                    <div className={styles.days_content_box_container}>
-                        <div className={styles.content_title_container}>
-                            <p className={styles.calen_title}>3월 12일</p>
-                            <div className={styles.rest_btn_container} onClick={openRestModal}>
-                                <p>휴식권 사용</p>
-                            </div>
-                        </div>
-                        <div className={styles.ff_btn_container}>
-                            <div className={styles.walk_cnt_btn_container}>
-                                <img src="/imgs/foot.png" alt="걸음 수 아이콘" className={styles.foot_icon}></img>
-                                <p className={styles.base_walk_cnt}>걸음수</p>
-                                <p className={styles.record_walk_cnt}>1231보</p>
-                            </div>
-                            <div className={styles.walk_time_btn_container}>
-                                <img src="/imgs/clock_icon.png" alt="시간 아이콘" className={styles.clock_icon}></img>
-                                <p className={styles.base_time_cnt}>걸은 시간</p>
-                                <p className={styles.record_time_cnt}>10분</p>
-                            </div>
-                            <div className={styles.walk_road_btn_container}>
-                                <img src="/imgs/map_icon.png" alt="맵 아이콘" className={styles.road_icon}></img>
-                                <p className={styles.base_road_cnt}>걸은 거리</p>
-                                <p className={styles.record_road_cnt}>0.2 Km</p>
-                            </div>
-                        </div>
-                        <div className={styles.sf_btn_container}>
-                            <div className={styles.mission_money_btn_container}>
-                                <p className={styles.base_money_cnt}>누적 미션 금액</p>
-                                <p className={styles.record_money_cnt}>10,000원 <span style={{color: "#727768", fontSize: 12}}>(1*10,000)</span></p>
-                            </div>
-                            <div className={styles.mission_cp_btn_container}>
-                                <p className={styles.base_cp_cnt}>남은 휴식권</p>
-                                <p className={styles.record_cp_cnt}>4개</p>
-                            </div>
-                        </div>
-  
-                    </div>
+                    <p className={styles.mission_title2}><span style={{color: "#186647", fontFamily: "bc_b"}}>{halleyInfo.nickname}</span>님이 등록한 미션현황</p>
+                    <Calendar type="detail" sort="halli" dayoff={halleyInfo.dayoff}></Calendar>
+                    
                 </div>
 
 

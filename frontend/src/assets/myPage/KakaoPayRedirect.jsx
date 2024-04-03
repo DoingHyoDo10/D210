@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { approveMoneyCharge } from "../../apis/wallet";
 import useWalletStore from "../../stores/wallet";
 import Loading from "../common/loading/Loading";
+import { getWalletHistory } from "../../apis/wallet";
 
 const KakaoPayRedirect = function () {
   const navigate = useNavigate();

@@ -347,7 +347,7 @@ const SocketPage4Member = () => {
         <div className={styles.socket_page_content}>
           <div className={styles.socket_box}>
                 <MyResponsiveRadialBar2 data={data}/>
-                <div style={{position: 'absolute', left: "45%", top: "32%"}}> 페이스 <br /> __"__ </div>
+                <div style={{position: 'absolute', left: "43%", top: "31%"}}> 페이스 <br /> __"__ </div>
                 <div style={{position: 'relative', left:"2%", bottom: "30%"}} >
                   <MapComponent location={position}/>
                 </div>

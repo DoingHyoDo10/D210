@@ -80,7 +80,19 @@ export const requestMoneyExchange = async (money) => {
 
   return await instance.put(url, {exchangeMoneyValue: money})
       .then((res) => {
-        return res.data.putMoneyValue
+        return res.data.data.putMoneyValue
+      })
+      .catch((err) => {console.log(err)})
+}
+
+// 거래내역 조회
+export const getWalletHistory = async () => {
+  const url = '/wallets/wallet-history'
+
+  return await instance.get(url)
+      .then((res) => {
+        console.log('api', res);
+        return res.data.data
       })
       .catch((err) => {console.log(err)})
 }

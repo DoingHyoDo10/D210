@@ -21,8 +21,9 @@
 
 .modal_background{
     width: 100%;
-    height: 100%;
-    position: absolute;
+    height: 100vh;
+    position: fixed;
+    max-width: 412px;
     background: rgba(0, 0, 0, 0.6);
     z-index: 10;
     top: 0;
@@ -35,7 +36,7 @@
     top: 50%;
     left: 50%;
     z-index: 11;
-    position: absolute;
+    position: fixed;
     border-radius: 30px;
     transform: translate(-50%, -50%);
     background: #FFDD71;
@@ -107,7 +108,9 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    position: relative;
+    position: fixed;
+    background: white;
+    max-width: 412px;
     width: 100%;
     height: 4rem;
 }
@@ -128,7 +131,7 @@
     width: 100%;
     height: 16rem;
     display: flex;
-    margin-top: -8%;
+    margin-top: 8%;
     flex-direction: column; /* 세로로 배치 */
     align-items: center;
     justify-content: center;
@@ -168,7 +171,7 @@
     text-align: left;
     margin-top: 5%;
     font-family: "bc_b";
-    margin-left: -48%
+    margin-left: 0%
 }
 
 .mission_title_h{
@@ -176,7 +179,7 @@
     text-align: left;
     margin-top: 5%;
     font-family: "bc_b";
-    margin-left: -6%
+    margin-left: 0%
 }
 
 .mission_back{
@@ -302,7 +305,7 @@
     margin-top: 5%;
     margin-bottom: 3%;
     font-family: "bc_b";
-    margin-left: -15%
+    margin-left: 0%
 }
 
 .days_content_box_container{
@@ -336,7 +339,8 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-left: 35%;
+    position: absolute;
+    right: 5%;
     box-shadow: 0.2rem 0.2rem 0.2rem 0 rgba(0, 0, 0, 0.2);
 }
 
@@ -352,7 +356,7 @@
 .walk_cnt_btn_container{
     width: 7.4rem;
     height: 7rem;
-    background: #E1D9CB;
+    background: rgb(255, 250, 222);
     border-radius: 1rem;
     margin-right: 0.5rem;
     display: flex;
@@ -414,7 +418,7 @@
 .walk_road_btn_container{
     width: 7.4rem;
     height: 7rem;
-    background: #E4EED0;
+    background: #fde8a0;
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
@@ -453,7 +457,7 @@
 .mission_money_btn_container{
     width: 14.2rem;
     height: 7rem;
-    background: #E4EED0;
+    background: #ffdf75;
     border-radius: 1rem;
     margin-right: 0.5rem;
     display: flex;
@@ -474,9 +478,9 @@
 }
 
 .mission_cp_btn_container{
-    width: 8.5rem;
+    width: 22.7rem;
     height: 7rem;
-    background: #E1D9CB;
+    background: #fadf86 ;
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
@@ -487,12 +491,13 @@
 
 .base_cp_cnt{
     font-size: 1.2rem;
-    margin-top: 25%;
+    margin-top: 8%;
+    margin-bottom: 0%;
 }
 
 .record_cp_cnt{
     font-size: 1.5rem;
-    margin-top: -10%;
+    margin-top: 0%;
 }
 
 .no_mission_container{

@@ -5,12 +5,15 @@ import { ResponsiveBar } from "@nivo/bar";
 import { color } from "d3-color";
 import { getGalleyList, getHalleyList, postGalleyRequest, getHalley, responseGalley, postMission, putMission } from "../../apis/halleygalley";
 import { searchGalleyMemberList } from "../../apis/friend";
-import { getRealtimeExerciseData, getWeeklyExerciseData, getExerciseCriteria } from "../../apis/exercise";
+import { getRealtimeExerciseData, getWeeklyExerciseData, getExerciseCriteria, getDailyExerciseData } from "../../apis/exercise";
 import { useStore } from "../../stores/member";
 import { useSignupStore } from "../../stores/member";
 import Lottie from 'react-lottie';
 import confetti from '../../lotties/confetti_full.json';
 import { useToolbar } from "../../stores/toolbar";
+import styles2 from "../alarmPage/Alarm.module.css";
+import Loading from "../common/loading/Loading";
+import LoadingModal from "../common/loading/LoadingModal";
 
 const Main = function(){
     const {memberId, setMemberId} = useStore();
@@ -56,6 +59,13 @@ const Main = function(){
         })
     }
 
+    
+    const onKeyDownHandler = (e)=>{
+        if(e.key == 'Enter'){
+            handleSearchClick();
+        }
+    }
+
     const [tabIndex, settabIndex] = useState(0);
     const [halli, setHalli] = useState(true);
     const [galli, setGalli] = useState(true);
@@ -69,11 +79,14 @@ const Main = function(){
     const [halliList, setHalliList] = useState([]);
     const [realtimeExerciseData, setRealtimeExerciseData] = useState({});
     const [halliRoadmapList, setHalliRoadmapList] = useState([]);
-    const [weeklyExerciseData, setWeeklyExerciseData] = useState({avg:0, content:[{steps:0},{steps:0},{steps:0},{steps:0},{steps:0},{steps:0},{steps:0},]});
+    const [weeklyExerciseData, setWeeklyExerciseData] = useState(null);
     const [criteriaData, setCriteriaData] = useState({steps:0, exerciseMinute:0});
     const [halliRequestList, setHalliRequestList] = useState([]);
     const [maxHalliVal, setMaxHalliVal] = useState(0);
     const [giveMeMoneyList, setGiveMeMoneyList] = useState({});
+    const [missionSuccess, setMissionSuccess] = useState(false);
+    const [finishedHallyList, setFinishedHallyList] = useState([{}]);
+    const [d, sd] = useState(0);
 
     const updateHalliGalliList = () => {
         getHalleyList()
@@ -98,14 +111,20 @@ const Main = function(){
                 calculateMaxValue(data1);
                 setGiveMeMoneyList(data1);
                 const hallyList = [];
+                const hallyFullList = [];
                 data1.forEach(d=>{
                     if(!d.getRewardAt && realtimeExerciseData.time >= d.requestedTime){
                         hallyList.push(d.memberId);
+                        hallyFullList.push(d);
                     }
                 })
+                setFinishedHallyList(hallyFullList);
                 putMission(hallyList)
                     .then(res=>{
-                        updateState();
+                        if(res === 'success'){
+                            setMissionSuccess(true);
+                            updateState();
+                        }
                     })
                 if(data2.length == 0){
                     setHalli(false);
@@ -244,12 +263,12 @@ const Main = function(){
                             <div className={styles.my_walk_progress_base}>
                                 <div className={styles.my_walk_progress_move} style={{width: 프로그래스바.calculatedSteps > 320 ? 320 : 프로그래스바.calculatedSteps}}></div>
                                 <div className={styles.my_walk_ori_container} style={{width: 프로그래스바.calculatedSteps > 320 ? 320 : 프로그래스바.calculatedSteps}}>
-                                    <p className={styles.my_walk_mine} style={{color: 프로그래스바.calculatedSteps > 320 ? 'red' : 'white'}}>{realtimeExerciseData.steps}보</p>
+                                    <p className={styles.my_walk_mine} style={{color: 프로그래스바.calculatedSteps > 320 ? 'red' : 'white'}}>{`${realtimeExerciseData.steps}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}보</p>
                                     <img src={프로그래스바.calculatedSteps > 320 ? "/imgs/ch1_bol_samerun.gif" : "/imgs/ch1_bol_samewalk.gif"} alt="제자리걸음 오리" className={styles.ch1_2}></img>
                                 </div>
                                 <div className={styles.my_walk_number_base}>
                                     <p className={styles.my_walk_min}>0보</p>
-                                    <p className={styles.my_walk_min2}>{criteriaData.steps}보</p>
+                                    <p className={styles.my_walk_min2}>{`${criteriaData.steps}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}보</p>
                                 </div>
                             </div>
                         </div>
@@ -343,21 +362,24 @@ const Main = function(){
                         </div>
                         <div className={styles.galli_expanded} style={{height: 240 * galliList.length, overflow: !expanded && 'scroll'}}>
                         {galliList.map((data, index) => {
+                            let flag = true;
+                            getDailyExerciseData(data.memberId)
+                                .then(res=>{
+                                    if(res.today == null){
+                                        flag = false;
+                                    }
+                                    else{
+                                        sd(res.exerciseMinute);
+                                    }
+                                })
                             return(
                                 <div key={index} className={styles.my_galli_list_container}>
                                     <p className={styles.galli_goal_title} onClick={()=>moveToGalliPage(data.memberId)}>나의 갈리 <span style={{color: "#186647", fontFamily: "bc_b"}}>{data.nickname}</span>님의 <br></br>운동기록</p>
                                     <div className={styles.galli_time_progress_container}>
-                                        {data.requestedTime == null ? <p>등록한 미션이 없습니다...</p> :<div className={styles.galli_time_progress_base}>
-                                            <div className={styles.galli_time_progress_move} style={{width: 프로그래스바2.calculatedTime > 300 ? 300 : 프로그래스바2.calculatedTime}}></div>
-                                            <div className={styles.galli_time_ori_container} style={{width: 프로그래스바2.calculatedTime > 300 ? 300 : 프로그래스바2.calculatedTime}}>
-                                                <p className={styles.galli_time_mine} style={{color: 프로그래스바2.calculatedTime > 300 ? 'red' : 'white'}}>{운동데이터.currentTime}분</p>
-                                                <img src={프로그래스바2.calculatedTime > 300 ? "/imgs/ch1_bol_samerun.gif" : "/imgs/ch1_bol_samewalk.gif"} alt="제자리걸음 오리" className={styles.ch1_2}></img>
-                                            </div>  
-                                            <div className={styles.galli_time_number_base}>
-                                                <p className={styles.galli_time_min}>0분</p>
-                                                <p className={styles.galli_time_min2}>{운동데이터.criteriaTime}분</p>
-                                            </div>
-                                        </div>}
+                                        {data.requestedTime == null 
+                                        ? <p>등록된 미션이 없어요!</p> 
+                                        : <div><p>세팅한 요구 운동시간 : {data.requestedTime}분</p> {flag ? <h3>어제 운동량: {d}분</h3>:<h3>어제 운동을 하지 않았어요...</h3>}</div>
+                                        }
                                     </div>
                                 </div>
                             )
@@ -385,6 +407,13 @@ const Main = function(){
     }    
     ]
 
+    const handleMissionSuccessModal = () =>{
+        if(missionSuccess){
+            setFinishedHallyList([{}]);
+        }
+        setMissionSuccess(!missionSuccess);
+    }
+
     const { isFirstVisit, setIsFirstVisit } = useSignupStore();
     const handleFirstVisit = (isGoing) => {
         // 이동 여부 상관없이 isFirstVisit 변경
@@ -411,10 +440,44 @@ const Main = function(){
             preserveAspectRatio: "xMidYMid slice"
         }
     }
-    
+    if(!memberList || !realtimeExerciseData || !weeklyExerciseData || !criteriaData){
+        return(<Loading text="로딩중..."></Loading>)
+    }
+    if(!halliList || !galliList || !halliRoadmapList || !halliRequestList){
+        return(<LoadingModal text="조회중..."></LoadingModal>)
+    }
     return(
         <>
         <div>
+        {missionSuccess && (
+            <>
+                <div className={styles2.modal_background}></div>
+                <div className={styles2.alarm_modal_container}>
+                    <div className={styles2.alarm_title_container}>
+                        <p className={styles2.alarm_modal_title}>알림</p>
+                        <img src="/imgs/x.png" alt="x" className={styles2.alarm_modal_x} onClick={handleMissionSuccessModal}></img>
+                    </div>
+                    <div className={styles2.alarm_content}>
+                        <img src="/imgs/money.png" alt="알림" className={styles2.alarm_img}></img>
+                        {
+                            finishedHallyList.map(element => {
+                                return(
+                                    <span>{element.nickname}님 </span>
+                                )  
+                            })
+                        }
+                        <span>의</span>
+                        <p className={styles2.alarm_detail}>미션을 달성했습니다!</p>
+                    </div>
+                    
+                </div>
+            </>
+        )}
+
+
+
+
+
             {isFirstVisit && (
                 <div className={styles.first_visit_container}>
                     <div className={styles.first_visit_lottie}>
@@ -483,7 +546,7 @@ const Main = function(){
                         </div>                                
                         
                         <div className={styles.galli_search_container}>
-                            <input className={styles.galli_search_box}  value={keyword} onChange={handleInputChange}></input>
+                            <input className={styles.galli_search_box}  value={keyword} onChange={handleInputChange} onKeyDown={onKeyDownHandler}></input>
                             <img className={styles.galli_search_icon} src="/imgs/search.png" alt="찾기 아이콘" onClick={handleSearchClick}></img>
                         </div>
 
@@ -568,7 +631,7 @@ const Main = function(){
                         <p className={styles.week_title}>이번주 나의 기록</p>
                         <p className={styles.week_detail}>걸음 수 평균</p>
                         <div className={styles.avg_container}>
-                            <p className={styles.week_avg_number}>{weeklyExerciseData.avg}</p>
+                            <p className={styles.week_avg_number}>{`${weeklyExerciseData.avg}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
                             <p className={styles.week_avg_walk}>걸음</p>
                         </div>
                         <div className={styles.graph_container}>

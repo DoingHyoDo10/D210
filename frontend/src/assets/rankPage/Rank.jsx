@@ -1,7 +1,7 @@
 import { useState, useEffect} from "react";
-import { useLocation, useNavigate } from "react-router-dom";
 import styles from "./Rank.module.css"
-import { instance } from "../../apis/axiosModule";
+import { getDailyRank, getWeeklyRank, getMonthlyRank, getStreakRank } from '../../apis/rank'
+import Loading from '../common/loading/Loading'
 
 const Rank = function(){
     const [month, setMonth] = useState('');
@@ -10,67 +10,26 @@ const Rank = function(){
     const [sundayDate, setSundayDate] = useState('');
 
     const [tabIndex, setTabIndex] = useState(0);
-    const [daily, setDaily] = useState([]);
-    const [weekly, setWeekly] = useState([]);
-    const [monthly, setMonthly] = useState([]);
-    const [streak, setStreak] = useState([]);
-
+    const [daily, setDaily] = useState();
+    const [weekly, setWeekly] = useState();
+    const [monthly, setMonthly] = useState();
+    const [streak, setStreak] = useState();
 
     const tabClickHandler = function(index){
         setTabIndex(index)
     }
 
-
-    // 1. Tab Bar 인덱스를 받아서 그때 그때 Ranking List를 
-    //    만드는 함수 
-   const getRanking = async (index) => {
-
-    var url; 
-
-    switch(index){
-        case 0:
-            url = `/walk/ranking/steps/daily`;
-            break;
-        case 1:
-            url = `/walk/ranking/steps/weekly`;
-            break;
-        case 2:
-            url = `/walk/ranking/steps/monthly`;
-            break;
-        case 3: 
-            url = `/walk/ranking/streak`;
-            break;
-    }
-
-
-    await instance.get(url)
-    .then((res) => {
-       switch(index){
-        case 0:
-            setDaily([...res.data.data.content]);
-            break;
-        case 1:
-            setWeekly([...res.data.data.content]);
-            break;
-        case 2:
-            setMonthly([...res.data.data.content]);
-            break;
-        case 3: 
-            setStreak([...res.data.data.content]);
-            break;
-    }
-       
-    })
-    .catch((error) => {console.log(error)});
-   }
-
     useEffect(() => {
         (async () => {
             try {
-                await getRanking(0);
-                await getRanking(1);
-                await getRanking(2);
-                await getRanking(3);
+                const resDaily = await getDailyRank();
+                setDaily(resDaily);
+                const resWeekly = await getWeeklyRank();
+                setWeekly(resWeekly);
+                const resMonthly = await getMonthlyRank();
+                setMonthly(resMonthly);
+                const resStreak = await getStreakRank();
+                setStreak(resStreak);
             } catch (error) {
                 console.error('랭킹 정보를 가져오는 중 에러 발생 : ', error)
             }
@@ -81,17 +40,15 @@ const Rank = function(){
         const differenceToMonday = dayOfWeek === 0 ? -6 : 1 - dayOfWeek; // 일요일이면 -6, 아니면 1에서 현재 요일을 뺀 값
         const differenceToSunday = 7 - dayOfWeek; // 일요일까지 남은 날짜
 
-        const monday = new Date(today);
-        monday.setDate(today.getDate() + differenceToMonday);
-
-        const sunday = new Date(today);
-        sunday.setDate(today.getDate() + differenceToSunday);
-
         setMonth(today.getMonth() + 1); // JavaScript는 월을 0부터 시작하므로 1을 더해줌
         setTodayDate(today.getDate());
-        setMondayDate(monday.getDate());
-        setSundayDate(sunday.getDate());
+        setMondayDate(today.getDate() + differenceToMonday);
+        setSundayDate(today.getDate() + differenceToSunday);
     },[])
+
+    if (!daily || !weekly || !monthly || !streak) {
+        return <Loading text="조회 중..."></Loading>;
+    }
 
     const tabArr=[{
         tabTitle:(
@@ -102,33 +59,33 @@ const Rank = function(){
         tabCont:(
             <div className={styles.day_rank_container}>
                 <div className={styles.rank_day}>
-                    <p>{month}월  {todayDate}일</p>
+                    <p>{month}월 {todayDate}일</p>
                 </div>
                 <div className={styles.top_rank_container}>
                     <div className={styles.top3_ranks}>
                         {
-                        daily.length === 0? "[daily] 데이터가 아직 최신화되지 않았습니다." :(daily.map((data, index) => {
-                            {if(index === 3) { return; }}
-                            {return (
-                                <div className={styles.first_rank_container}>
-                                <p className={styles.first_rank_title}>{index+1}등</p>
-                                <img src={'./imgs/crown'+ (index+1) +'.png'} alt="금 왕관" className={styles.first_rank_crown}></img>
-                                <div className={styles.first_rank_profile_container}>
-                                    <img src= {data.profileUrl} alt="프로필 사진" className={styles.first_rank_img}></img>
-                                    <p className={styles.first_rank_name}>{data.nickname}</p>
+                        daily.content.length === 0 ? "[daily] 데이터가 아직 최신화되지 않았습니다." : 
+                        (daily.content.slice(0, 3).map((data, index) => (
+                            (
+                                <div className={styles.first_rank_container} key={index}>
+                                    <p className={styles.first_rank_title}>{data.rank}등</p>
+                                    <img src={'./imgs/crown'+ (index+1) +'.png'} alt="왕관" className={styles.first_rank_crown}></img>
+                                    <div className={styles.first_rank_profile_container}>
+                                        <img src= {data.profileUrl} alt="프로필 사진" className={styles.first_rank_img}></img>
+                                        <p className={styles.first_rank_name}>{data.nickname.length > 6 ? `${data.nickname.slice(0,6)}...`: data.nickname}</p>
+                                    </div>
                                 </div>
-                                </div>
-                            )}
-                          }) ) 
+                            )
+                        ))) 
                         }
                     </div>
                 </div>
                 <div className={styles.day_ranks_container}>
-                    {daily.map((data, index) => {
+                    {daily.content.map((data, index) => {
                         return(
                             <>
                                 <div key={index} className={styles.day_rank_friend_container}>
-                                    <p className={styles.day_rank_txt}>{index + 1}</p>
+                                    <p className={styles.day_rank_txt}>{data.rank}</p>
                                     <img src={data.profileUrl} alt="프로필 사진" className={styles.day_rank_friend_img_container} ></img>
                                     <p className={styles.day_rank_friend_name_txt}>{data.nickname}</p>
                                     <p className={styles.day_rank_walk_num }>{data.value}보</p>
@@ -139,18 +96,10 @@ const Rank = function(){
                 
                 </div>
                 <div className={styles.day_rank_my_container}>
-                    {daily.map((data,index) => {
-                        {if(index === 1) {return}}
-                        return(
-                          <>
-                           <p className={styles.day_rank_my_txt}>{index + 1}</p>
-                            <img src={data.profileUrl} alt="프로필 사진" className={styles.day_rank_my_img_container} ></img>
-                            <p className={styles.day_rank_my_name_txt}>{data.nickname}</p>
-                            <p className={styles.day_rank_my_walk_num }>{data.value}</p>
-                          </>  
-                            
-                        )
-                    })}
+                    <p className={styles.day_rank_my_txt}>{daily.myExerciseInfo.rank}</p>
+                    <img src={daily.myExerciseInfo.profileUrl} alt="프로필 사진" className={styles.day_rank_my_img_container} ></img>
+                    <p className={styles.day_rank_my_name_txt}>{daily.myExerciseInfo.nickname}</p>
+                    <p className={styles.day_rank_my_walk_num }>{daily.myExerciseInfo.value}보</p>
                 </div>
             </div>
         )
@@ -168,34 +117,31 @@ const Rank = function(){
                 </div>
                 <div className={styles.top_rank_container}>
                     <div className={styles.top3_ranks}>
-
-                    { weekly.length === 0? "[weekly] 데이터가 쌓인 친구가 없습니다!" : (                          
-                        weekly.map((data, index) => {
-                            {if(index === 3) { return; }}
-                            {return (
+                    { weekly.content.length === 0? "[weekly] 데이터가 쌓인 친구가 없습니다!" : 
+                        (weekly.content.slice(0, 3).map((data, index) => 
+                            (
                                 <div className={styles.first_rank_container}>
-                                <p className={styles.first_rank_title}>{index+1}등</p>
-                                <img src={'./imgs/crown'+ (index+1) +'.png'} alt="금 왕관" className={styles.first_rank_crown}></img>
-                                <div className={styles.first_rank_profile_container}>
-                                    <img src= {data.profileUrl} alt="프로필 사진" className={styles.first_rank_img}></img>
-                                    <p className={styles.first_rank_name}>{data.nickname}</p>
+                                    <p className={styles.first_rank_title}>{data.rank}등</p>
+                                    <img src={'./imgs/crown'+ (index+1) +'.png'} alt="금 왕관" className={styles.first_rank_crown}></img>
+                                    <div className={styles.first_rank_profile_container}>
+                                        <img src= {data.profileUrl} alt="프로필 사진" className={styles.first_rank_img}></img>
+                                        <p className={styles.first_rank_name}>{data.nickname.length > 6 ? `${data.nickname.slice(0,6)}...`: data.nickname}</p>
+                                    </div>
                                 </div>
-                                </div>
-                            )}
-                          }))}
+                            )
+                            ))}
                     </div>
                 </div>
                 <div className={styles.day_ranks_container}>
-                    <br/>
-                    { weekly.length === 0? "" : (
-                        weekly.map((data, index) => {
+                    { weekly.content.length === 0? "" : (
+                        weekly.content.map((data, index) => {
                             return(
                                 <>
                                     <div key={index} className={styles.day_rank_friend_container}>
-                                        <p className={styles.day_rank_txt}>{index + 1}</p>
-                                        <img src={data.pimg} alt="프로필 사진" className={styles.day_rank_friend_img_container} ></img>
+                                        <p className={styles.day_rank_txt}>{data.rank}</p>
+                                        <img src={data.profileUrl} alt="프로필 사진" className={styles.day_rank_friend_img_container} ></img>
                                         <p className={styles.day_rank_friend_name_txt}>{data.nickname}</p>
-                                        <p className={styles.day_rank_walk_num }>{data.walk}보</p>
+                                        <p className={styles.day_rank_walk_num }>{data.value}보</p>
                                     </div>
                                 </>
                             )
@@ -204,18 +150,10 @@ const Rank = function(){
                 
                 </div>
                 <div className={styles.day_rank_my_container}>
-                { weekly.length === 0? "" : (weekly.map((data,index) => {
-                        {if(index === 1) {return}}
-                        return(
-                          <>
-                           <p className={styles.day_rank_my_txt}>{index + 1}</p>
-                            <img src={data.profileUrl} alt="프로필 사진" className={styles.day_rank_my_img_container} ></img>
-                            <p className={styles.day_rank_my_name_txt}>{data.nickname}</p>
-                            <p className={styles.day_rank_my_walk_num }>{data.value}</p>
-                          </>  
-                            
-                        )
-                    }))}
+                    <p className={styles.day_rank_my_txt}>{weekly.myExerciseInfo.rank}</p>
+                    <img src={weekly.myExerciseInfo.profileUrl} alt="프로필 사진" className={styles.day_rank_my_img_container} ></img>
+                    <p className={styles.day_rank_my_name_txt}>{weekly.myExerciseInfo.nickname}</p>
+                    <p className={styles.day_rank_my_walk_num }>{weekly.myExerciseInfo.value}보</p>
                 </div>
             </div>
         )
@@ -233,33 +171,29 @@ const Rank = function(){
                 </div>
                 <div className={styles.top_rank_container}>
                     <div className={styles.top3_ranks}>
-                    { monthly.length === 0? "[monthly] 데이터가 쌓인 친구가 없습니다!" : (                          
-                        monthly.map((data, index) => {
-                            {if(index === 3) { return; }}
-                            {return (
+                    { monthly.content.length === 0? "[monthly] 데이터가 쌓인 친구가 없습니다!" : (                          
+                        monthly.content.slice(0, 3).map((data, index) => (
                                 <div className={styles.first_rank_container}>
-                                <p className={styles.first_rank_title}>{index+1}등</p>
-                                <img src={'./imgs/crown'+ (index+1) +'.png'} alt="금 왕관" className={styles.first_rank_crown}></img>
-                                <div className={styles.first_rank_profile_container}>
-                                    <img src= {data.profileUrl} alt="프로필 사진" className={styles.first_rank_img}></img>
-                                    <p className={styles.first_rank_name}>{data.nickname}</p>
+                                    <p className={styles.first_rank_title}>{data.rank}등</p>
+                                    <img src={'./imgs/crown'+ (index+1) +'.png'} alt="금 왕관" className={styles.first_rank_crown}></img>
+                                    <div className={styles.first_rank_profile_container}>
+                                        <img src={data.profileUrl} alt="프로필 사진" className={styles.first_rank_img}></img>
+                                        <p className={styles.first_rank_name}>{data.nickname.length > 6 ? `${data.nickname.slice(0,6)}...`: data.nickname}</p>
+                                    </div>
                                 </div>
-                                </div>
-                            )}
-                          }))}
+                            )))}
                     </div>
                 </div>
                 <div className={styles.day_ranks_container}>
-                <br/>
-                    { monthly.length === 0? "" : (
-                        monthly.map((data, index) => {
+                    { monthly.content.length === 0? "" : (
+                        monthly.content.map((data, index) => {
                             return(
                                 <>
                                     <div key={index} className={styles.day_rank_friend_container}>
-                                        <p className={styles.day_rank_txt}>{index + 1}</p>
-                                        <img src={data.pimg} alt="프로필 사진" className={styles.day_rank_friend_img_container} ></img>
+                                        <p className={styles.day_rank_txt}>{data.rank}</p>
+                                        <img src={data.profileUrl} alt="프로필 사진" className={styles.day_rank_friend_img_container} ></img>
                                         <p className={styles.day_rank_friend_name_txt}>{data.nickname}</p>
-                                        <p className={styles.day_rank_walk_num }>{data.walk}보</p>
+                                        <p className={styles.day_rank_walk_num }>{data.value}보</p>
                                     </div>
                                 </>
                             )
@@ -268,18 +202,10 @@ const Rank = function(){
                 
                 </div>
                 <div className={styles.day_rank_my_container}>
-                { monthly.length === 0? "" : (monthly.map((data,index) => {
-                        {if(index === 1) {return}}
-                        return(
-                          <>
-                           <p className={styles.day_rank_my_txt}>{index + 1}</p>
-                            <img src={data.profileUrl} alt="프로필 사진" className={styles.day_rank_my_img_container} ></img>
-                            <p className={styles.day_rank_my_name_txt}>{data.nickname}</p>
-                            <p className={styles.day_rank_my_walk_num }>{data.value}</p>
-                          </>  
-                            
-                        )
-                    }))}
+                    <p className={styles.day_rank_my_txt}>{monthly.myExerciseInfo.rank}</p>
+                    <img src={monthly.myExerciseInfo.profileUrl} alt="프로필 사진" className={styles.day_rank_my_img_container} ></img>
+                    <p className={styles.day_rank_my_name_txt}>{monthly.myExerciseInfo.nickname}</p>
+                    <p className={styles.day_rank_my_walk_num }>{monthly.myExerciseInfo.value}보</p>
                 </div>
             </div>
         )
@@ -294,28 +220,25 @@ const Rank = function(){
             <div className={styles.strick_rank_container}>
                 <div className={styles.strick_top_rank_container}>
                     <div className={styles.strick_top3_ranks}>
-                    { streak.length === 0? "[Streak] 데이터가 쌓인 친구가 없습니다!" : (                          
-                        streak.map((data, index) => {
-                            {if(index === 3) { return; }}
-                            {return (
+                    { streak.content.length === 0? "[Streak] 데이터가 쌓인 친구가 없습니다!" : (                          
+                        streak.content.slice(0, 3).map((data, index) => (
                                 <div className={styles.first_rank_container}>
-                                <p className={styles.first_rank_title}>{index+1}등</p>
+                                <p className={styles.first_rank_title}>{data.rank}등</p>
                                 <img src={'./imgs/crown'+ (index+1) +'.png'} alt="금 왕관" className={styles.first_rank_crown}></img>
                                 <div className={styles.first_rank_profile_container}>
                                     <img src= {data.profileUrl} alt="프로필 사진" className={styles.first_rank_img}></img>
-                                    <p className={styles.first_rank_name}>{data.nickname}</p>
+                                    <p className={styles.first_rank_name}>{data.nickname.length > 6 ? `${data.nickname.slice(0,6)}...`: data.nickname}</p>
                                 </div>
                                 </div>
-                            )}
-                          }))}
+                            )))}
                     </div>
                 </div>
                 <div className={styles.strick_ranks_container}>
-                    {streak.map((data, index) => {
+                    {streak.content.map((data, index) => {
                         return(
                             <>
                                 <div key={index} className={styles.strick_rank_friend_container}>
-                                    <p className={styles.strick_rank_txt}>{index + 1}</p>
+                                    <p className={styles.strick_rank_txt}>{data.rank}</p>
                                     <img src={data.profileUrl} alt="프로필 사진" className={styles.strick_rank_friend_img_container} ></img>
                                     <p className={styles.strick_rank_friend_name_txt}>{data.nickname}</p>
                                     <p className={styles.strick_rank_walk_num }>{data.value + 1} 일째 </p>
@@ -326,18 +249,10 @@ const Rank = function(){
                 
                 </div>
                 <div className={styles.strick_rank_my_container}>
-                { streak.length === 0? "" : (streak.map((data,index) => {
-                        {if(index === 1) {return}}
-                        return(
-                          <>
-                           <p className={styles.day_rank_my_txt}>{index + 1}</p>
-                            <img src={data.profileUrl} alt="프로필 사진" className={styles.day_rank_my_img_container} ></img>
-                            <p className={styles.day_rank_my_name_txt}>{data.nickname}</p>
-                            <p className={styles.day_rank_my_walk_num }>{data.value + 1} 일째 </p>
-                          </>  
-                            
-                        )
-                    }))}
+                    <p className={styles.day_rank_my_txt}>{streak.myExerciseInfo.rank}</p>
+                    <img src={streak.myExerciseInfo.profileUrl} alt="프로필 사진" className={styles.day_rank_my_img_container} ></img>
+                    <p className={styles.day_rank_my_name_txt}>{streak.myExerciseInfo.nickname}</p>
+                    <p className={styles.day_rank_my_walk_num }>{streak.myExerciseInfo.value + 1} 일째 </p>
                 </div>
             </div>
         )

@@ -70,3 +70,13 @@ export const putFriendRequest = async (requestBody) => {
         })
         .catch((err) => {console.log(err)})
 }
+
+// 친구 삭제
+export const deleteFriend = async (friendId) => {
+    const url = `/friends/delete?friendId=${friendId}`
+    return await instance.delete(url)
+        .then((res) => {
+            return res.data.data;
+        })
+        .catch((err) => {console.log(err)})
+}

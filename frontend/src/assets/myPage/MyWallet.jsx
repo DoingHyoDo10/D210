@@ -1,8 +1,10 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./MyWallet.module.css";
-import { getEggMoney, requestMoneyCharge, requestMoneyExchange } from "../../apis/wallet";
+import { getEggMoney, requestMoneyCharge, requestMoneyExchange, getWalletHistory } from "../../apis/wallet";
 import useWalletStore from "../../stores/wallet";
+import WalletHistory from './WalletHistory';
+import LoadingModal from '../common/loading/LoadingModal';
 
 const MyWallet = function () {
   const navigate = useNavigate();
@@ -10,6 +12,10 @@ const MyWallet = function () {
   const [isChargeModalOpen, setChargeModalOpen] = useState(false);
   const [isExchangeModalOpen, setExchangeModalOpen] = useState(false);
   const { inputMoney, updateInputMoney, updateTid } = useWalletStore();
+  const [histories, setHistories] = useState();
+  const [isLoading, setIsLoading] = useState(false);
+  const [isReceiptModalOpen, setIsReceiptModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState(null);
 
   useEffect(() => {
     (async () => {
@@ -20,6 +26,7 @@ const MyWallet = function () {
         console.error('eggmoney 정보를 가져오는 중 에러 발생:', err);
       }
     })();
+    fetchWalletHistory();
   }, [])
 
   const handleInputChange = (e) => {
@@ -32,7 +39,8 @@ const MyWallet = function () {
 
   const isMobile = () => {
     // 터치 이벤트 지원 여부 및 화면 크기를 통한 모바일 환경 판별
-    return navigator.maxTouchPoints > 0 ;
+    return false;
+    // return navigator.maxTouchPoints > 0 ;
     // return ('ontouchstart' in window || navigator.maxTouchPoints > 1 );
   }
 
@@ -63,16 +71,35 @@ const MyWallet = function () {
       if (inputMoney === 0) {
         alert('환전할 금액을 입력해주세요!')
       } else {
+        setIsLoading(true);
         const response = await requestMoneyExchange(inputMoney);
-        setEggMoney((prevInfo) => ({...prevInfo, money: response}));
+        console.log(response)
+        setEggMoney((prevInfo) => ({...prevInfo, money: eggMoney.money - response}));
         updateInputMoney(0);
         setExchangeModalOpen(false);
         alert('환전 성공!');
+        fetchWalletHistory();
+        setIsLoading(false);
       }
     } catch (err) {
       console.error('머니 환전 실패 : ', err)
+      setIsLoading(false);
     }
   }
+
+  const fetchWalletHistory = async () => {
+    try {
+      const historyData = await getWalletHistory();
+      setHistories(historyData);
+    } catch (err) {
+      console.error('거래 내역 정보를 가져오는 중 에러 발생:', err);
+    }
+  };
+
+  const showModal = (content) => {
+    setModalContent(content);
+    setIsReceiptModalOpen(true);
+  };
 
   return(
     <div className={styles.mywallet_container}>
@@ -112,6 +139,11 @@ const MyWallet = function () {
 
               <div className={styles.mywallet_field_container}>
                 <div className={styles.mywallet_sub_title}>거래 내역</div>
+                { histories && (
+                  <>
+                    <WalletHistory histories={histories} onShowModal={showModal}/>
+                  </>
+                )}
               </div>
             </div>
           </>
@@ -140,6 +172,22 @@ const MyWallet = function () {
             </div>
           </div>
         </>
+      )}
+      {isLoading && <LoadingModal text="환전 중..."/>}
+      {isReceiptModalOpen && modalContent && (
+        <div className={styles.mywallet_modal_background}>
+          <div className={styles.mywallet_modal_container}>
+            <img className={styles.mywallet_close} src="/imgs/x.png" alt="" onClick={() => {setIsReceiptModalOpen(false)}}/>
+            <div className={styles.mywallet_receipt_container}>
+              <div className={styles.mywallet_receipt_title}>영수증</div>
+              <div className={styles.mywallet_receipt_box}>
+                <div>{new Date(modalContent.createdAt).toLocaleString()}</div>
+                <div>{modalContent.operator ? "+" : "-"} {modalContent.price? parseInt(modalContent.price._hex, 16).toString() : 'N/A'} {modalContent.walletType === "EGG" ? "에그" : "머니"}</div>
+                <div>{modalContent.description}</div>
+              </div>
+            </div>
+          </div>
+        </div>
       )}
     </div>
   )

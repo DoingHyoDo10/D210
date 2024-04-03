@@ -22,7 +22,10 @@ export const getRealtimeExerciseData = async () => {
         },
         {
         "dataSourceId":  "derived:com.google.active_minutes:com.google.android.gms:merge_active_minutes"
-        }
+        },
+        {
+        "dataSourceId":  "derived:com.google.distance.delta:com.google.android.gms:merge_distance_delta"
+        },
         ],
         "bucketByTime": { "durationMillis": currentMilliseconds - millisecondsSinceMidnight },
         "startTimeMillis": millisecondsSinceMidnight,
@@ -30,15 +33,16 @@ export const getRealtimeExerciseData = async () => {
     };
     let data = {
         'steps': 0,
-        'time': 0
+        'time': 0,
+        'distance' : 0
     };
     await axios.post(url, requestBody, {headers: {Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('tokens')).Google_access_token} })
         .then((res) => {
             data = {
                 'steps': res.data.bucket[0].dataset[0].point[0].value[0].intVal,
-                'time': res.data.bucket[0].dataset[1].point[0].value[0].intVal
+                'time': res.data.bucket[0].dataset[1].point[0].value[0].intVal,
+                'distance': res.data.bucket[0].dataset[2].point[0].value[0].fpVal,
             };
-            
             return data;
         })
         .catch((err)=>{
@@ -47,7 +51,8 @@ export const getRealtimeExerciseData = async () => {
             .then((res) => {
                 data = {
                     'steps': res.data.bucket[0].dataset[0].point[0].value[0].intVal,
-                    'time': res.data.bucket[0].dataset[1].point[0].value[0].intVal
+                    'time': res.data.bucket[0].dataset[1].point[0].value[0].intVal,
+                    'distance': res.data.bucket[0].dataset[2].point[0].value[0].intVal,
                 };
                 
                 return data;
@@ -101,6 +106,50 @@ export const updateExerciseCriteria = async (data) => {
     const url = `/walk/criteria/custom`;
     
     return await instance.post(url, data)
+        .then((res) => {
+            return res.data.data;
+        })
+        .catch((err) => {console.log(err)})
+}
+
+// 유저 한달 운동정보 조회
+export const getMonthlyExerciseData = async (memberId) => {
+    const url = `/walk/calendar/${memberId}`;
+    
+    return await instance.get(url)
+        .then((res) => {
+            return res.data.data;
+        })
+        .catch((err) => {console.log(err)})
+}
+
+// 유저 어제 운동정보 조회
+export const getDailyExerciseData = async (memberId) => {
+
+    // 현재 날짜를 가져오기
+    var today = new Date();
+
+    // 어제 날짜를 계산
+    var yesterday = new Date(today);
+    yesterday.setDate(today.getDate() - 1);
+
+    // 날짜를 YYYY-MM-DD 형식으로 변환
+    var yesterdayFormatted = yesterday.toISOString().slice(0,10);
+
+    const url = `/walk/calendar/${memberId}/${yesterdayFormatted}`;
+    
+    return await instance.get(url)
+        .then((res) => {
+            return res.data.data;
+        })
+        .catch((err) => {console.log(err)})
+}
+
+// 운동 중인 유저 조회
+export const getWhetherExerciseStart = async (memberId) => {
+    const url = `/walk/decided/ing-check/${memberId}`;
+    
+    return await instance.get(url)
         .then((res) => {
             return res.data.data;
         })

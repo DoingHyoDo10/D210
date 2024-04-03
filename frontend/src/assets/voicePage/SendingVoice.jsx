@@ -1,6 +1,8 @@
 import styles from "./SendingVoice.module.css"
 import { useState, useCallback  } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
+import { getGalleyList } from "../../apis/halleygalley";
+import { sendVoiceMessage } from "../../apis/voiceRecord";
 
 
 const SendingVoice = function(){
@@ -17,11 +19,7 @@ const SendingVoice = function(){
     const [audioUrl, setAudioUrl] = useState();
     const [currentIndex, setCurrentIndex] = useState(0);
     const chunks = []; // 오디오 청크 데이터를 저장할 배열
-    const texts = ['녹음기능',
-      '구현해보자',
-      '화이팅',
-      '모든 문장녹음을 완료하였습니다.'
-    ]
+    const [receiverId, setReceiverId] = useState(0);
 
     const [recordingTime, setRecordingTime] = useState(0);
     const [timer, setTimer] = useState(null);
@@ -114,28 +112,29 @@ const SendingVoice = function(){
       });
     }
   
-    
-  
-    const sound = new File([audioUrl], `${currentIndex}.wav`, { lastModified: new Date().getTime(), type: "aaudio/mpeg" });
+    const encodeAudioToBase64 = (audioUrl) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader();
+            reader.readAsDataURL(audioUrl);
 
-    // uploadFileToServer(sound);
-
-    const uploadFileToServer = (file) => {
-        const formData = new FormData();
-        formData.append('audioFile', file);
-      
-        // axios.post('http://127.0.0.1:8000/upload-audio/', formData, {
-        //   headers: {
-        //     'Content-Type': 'multipart/form-data',
-        //   },
-        // })
-        // .then(response => {
-        //   console.log(response.data.message);
-        // })
-        // .catch(error => {
-        //   console.error('파일 전송 중 오류 발생:', error);
-        // });
+            reader.onload = () => {
+                resolve(reader.result);
+            };
+            reader.onerror = reject;
+        });
     };
+
+    const handleUpload = async () => {
+        try {
+            const base64Audio = await encodeAudioToBase64(audioUrl);
+            console.log(base64Audio)
+            sendVoiceMessage(base64Audio, receiverId)
+            .then(res=>console.log(res))
+            .catch(err=>console.log(err))
+        } catch(err){
+            console.error(err);
+        }
+    }
 
     
     const formatTime = (seconds) => {
@@ -145,31 +144,15 @@ const SendingVoice = function(){
         return `${String(hours).padStart(2, '0')}:${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
     };
 
-    const galliList = [
-        {
-            profileUrl: "/imgs/profile_img1.jpg",
-            nickname : "우주최강세현"
-        },
-        {
-            profileUrl: "/imgs/profile_img1.jpg",
-            nickname : "지구최강세현"
-        },
-        {
-            profileUrl: "/imgs/profile_img1.jpg",
-            nickname : "지상최강세현"
-        },
-        {
-            profileUrl: "/imgs/profile_img1.jpg",
-            nickname : "지하최강세현"
-        },
-    ]
-
     const [galli, setGalli] = useState(false);
-    const [galliName, setGalliName] = useState("응원 메시지를 보낼 갈리찾기");
+    const [galliName, setGalliName] = useState('');
+    const [galliList, setGalliList] = useState([{profileUrl: '', nickname: ''}]);
     const [keyword, setKeyword] = useState('');
 
     const openGalliListModal = function(){
         setGalli(!galli);
+        getGalleyList()
+            .then(res=>{console.log(res); setGalliList(res)})
     }
     const handleInputChange = (e) => {
         const value = e.target.value;
@@ -178,18 +161,46 @@ const SendingVoice = function(){
         setKeyword(value);
       };
     const handleSearchClick = ()=>{
-        searchGalleyMemberList(keyword)
-        .then((res)=>{
-            setMemberList(res);
-        })  
-        .catch((err)=>{
-            console.log(err);
-        })
+        getGalleyList()
+            .then(res=>{
+                const result = [];
+                const regexPattern = new RegExp(keyword);
+                res.forEach(data=>{
+                    const wordsWithKeyword = regexPattern.test(data.nickname);
+                    if(wordsWithKeyword){
+                        result.push(data)
+                    }
+                })
+                setGalliList(result);
+            })
+        
+    }
+
+    const [sending, setSending] = useState(false);
+
+    const openSendingModal = function(){
+        setSending(!sending);
     }
 
 
     return(
         <>
+            {sending && (
+                <>
+                    <div className={styles.modal_background}>
+                        <div className={styles.sending_container}>
+                            <img src='/imgs/x.png' alt='x' className={styles.x} onClick={openSendingModal}></img>
+                            <p className={styles.sending_alarm}>전송 완료!</p>
+                            <img src="/imgs/ch1_bol_jump.gif" alt="오리 점프" className={styles.jump_ori}></img>
+
+                            <div className={styles.ok_btn} onClick={openSendingModal}>
+                                <p>확인</p>
+                            </div>
+                        </div>
+                    </div>
+                </>
+                )
+            }
             {galli && (
                 <>
                     <div className={styles.modal_background}></div>
@@ -214,7 +225,7 @@ const SendingVoice = function(){
                                             <p className={styles.galli_name_txt}>{data.nickname}</p>
                                             <div className={styles.galli_btn_container}>
                                                 <div className={styles.galli_put_btn}>
-                                                    <p className={styles.btn_txt} onClick={()=>{setGalliName(data.nickname)}}>선택</p>
+                                                    <p className={styles.btn_txt} onClick={()=>{setGalliName(data.nickname); setReceiverId(data.memberId); openGalliListModal();}}>선택</p>
                                                 </div>
                                             </div>
                                         </div>  
@@ -249,7 +260,7 @@ const SendingVoice = function(){
                         <img src="/imgs/search.png" alt="찾기" className={styles.galli_select_search_icon} onClick={openGalliListModal}></img>
                     </div>
                     
-                    <div className={styles.send_btn_container}>
+                    <div className={styles.send_btn_container} onClick={() => {handleUpload(); openSendingModal();}}>
                         <p>보내기</p>
                     </div>
 

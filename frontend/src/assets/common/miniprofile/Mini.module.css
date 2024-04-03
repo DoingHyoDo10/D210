@@ -15,8 +15,7 @@
   
 .mini_profile_container{
     width: 24.4rem;
-    height: 55rem;
-    height: fit-content;
+    height: 40rem;
     position: relative;
     background: #FFFBF3;
     border-radius: 1rem;
@@ -70,13 +69,20 @@
 .strick_line{
     width: 22.4rem;
     height: 0.5rem;
-    margin-top: -1%;
+    margin-top: -4%;
     background: #FFDD71;
     border-radius: 1rem;
 }
 
-.calen_container{
-    margin-top: 5%;
+.strick_day{
+    font-size: 1.5rem;
+    background-color: #FFF2CB;
+    border-radius: 1rem;
+    width: 10rem;
+    height: 4rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .delete_friend_btn{
@@ -88,7 +94,7 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    margin-top: 7%;
+    margin-top: 8%;
     margin-bottom: 5%;
     box-shadow: 0.2rem 0.2rem 0.4rem 0 rgba(0, 0, 0, 0.2);
 

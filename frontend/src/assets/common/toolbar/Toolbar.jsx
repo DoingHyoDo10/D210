@@ -87,11 +87,11 @@ const Toolbar = function(){
                     <div className={styles.all_money_container}>
                         <div className={styles.egg_container}>
                             <img src="/imgs/egg.png" alt="황금알" className={styles.egg}></img>
-                            <p className={styles.egg_txt}>{egg} 에그</p>
+                            <p className={styles.egg_txt}>{`${egg}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 에그</p>
                         </div>
                         <div className={styles.money_container}>
                             <img src="/imgs/money.png" alt="황금알" className={styles.money}></img>
-                            <p className={styles.money_txt}>{money} 머니</p>
+                            <p className={styles.money_txt}>{`${money}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")} 머니</p>
                         </div>
                     </div>
                 </div>
@@ -137,11 +137,11 @@ const Toolbar = function(){
                 <div className={styles.tool_all_money_container} >
                     <div className={styles.tool_egg_container}>
                         <img src="/imgs/egg.png" alt="황금알" className={styles.tool_egg}></img>
-                        <p className={styles.tool_egg_txt}>{egg}</p>
+                        <p className={styles.tool_egg_txt}>{`${egg}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
                     </div>
                     <div className={styles.tool_money_container}>
                         <img src="/imgs/money.png" alt="황금알" className={styles.tool_money}></img>
-                        <p className={styles.tool_money_txt}>{money}</p>
+                        <p className={styles.tool_money_txt}>{`${money}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}</p>
                     </div>
                 </div>
                 <img src="/imgs/bell.png" alt="알람" className={styles.bell} onClick={moveToAlarmPage}></img>

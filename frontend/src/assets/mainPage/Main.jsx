@@ -112,7 +112,9 @@ const Main = function(){
                 })
                 putMission(hallyList)
                     .then(res=>{
-                        updateState();
+                        if(res === 'success'){
+                            updateState();
+                        }
                     })
                 if(data2.length == 0){
                     setHalli(false);

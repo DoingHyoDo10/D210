@@ -39,7 +39,7 @@
   background-color: lightblue;
 }
 .selected{
-  background-color: rgba(255, 0, 0, 0.228);
+  background-color: #C2ED7B;
 }
 .sunday{
   color: #C86969;
@@ -56,4 +56,8 @@
 .calendar_bottom{
   width: 22.1rem;
 	margin: 1rem 0 -1.5rem -0.5rem;
+}
+
+.exerciseDay{
+  background-color: #FFCB23;
 }

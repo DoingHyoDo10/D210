@@ -99,40 +99,8 @@ const Galli = function(){
 
                 <div className={styles.calendar_container}>
                     <p className={styles.mission_title2}>회원님이 등록한 미션 현황</p>
-                    <Calendar></Calendar>
-                    <div className={styles.days_content_box_container}>
-                        <div className={styles.content_title_container}>
-                            <p className={styles.calen_title}>3월 12일</p>
-                        </div>
-                        <div className={styles.ff_btn_container}>
-                            <div className={styles.walk_cnt_btn_container}>
-                                <img src="/imgs/foot.png" alt="걸음 수 아이콘" className={styles.foot_icon}></img>
-                                <p className={styles.base_walk_cnt}>걸음수</p>
-                                <p className={styles.record_walk_cnt}>1231보</p>
-                            </div>
-                            <div className={styles.walk_time_btn_container}>
-                                <img src="/imgs/clock_icon.png" alt="시간 아이콘" className={styles.clock_icon}></img>
-                                <p className={styles.base_time_cnt}>걸은 시간</p>
-                                <p className={styles.record_time_cnt}>10분</p>
-                            </div>
-                            <div className={styles.walk_road_btn_container}>
-                                <img src="/imgs/map_icon.png" alt="맵 아이콘" className={styles.road_icon}></img>
-                                <p className={styles.base_road_cnt}>걸은 거리</p>
-                                <p className={styles.record_road_cnt}>0.2 Km</p>
-                            </div>
-                        </div>
-                        <div className={styles.sf_btn_container}>
-                            <div className={styles.mission_money_btn_container}>
-                                <p className={styles.base_money_cnt}>누적 미션 금액</p>
-                                <p className={styles.record_money_cnt}>10,000원 <span style={{color: "#727768", fontSize: 12}}>(1*10,000)</span></p>
-                            </div>
-                            <div className={styles.mission_cp_btn_container}>
-                                <p className={styles.base_cp_cnt}>남은 휴식권</p>
-                                <p className={styles.record_cp_cnt}>4개</p>
-                            </div>
-                        </div>
-  
-                    </div>
+                    <Calendar type="detail"></Calendar>
+                    
                 </div>
 
 

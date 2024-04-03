@@ -113,7 +113,6 @@ export const getMonthlyExerciseData = async (memberId) => {
     
     return await instance.get(url)
         .then((res) => {
-            // console.log(res);
             return res.data.data;
         })
         .catch((err) => {console.log(err)})

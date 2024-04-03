@@ -211,10 +211,10 @@
 }
 
 .buy_btn{
-    width: 5rem;
+    width: 5.5rem;
     height: 3rem;
     background: #FFCB23;
-    border-radius: 1rem;
+    border-radius: 0.5rem;
     font-size: 1.4rem;
     display: flex;
     align-items: center;

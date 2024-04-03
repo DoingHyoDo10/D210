@@ -22,7 +22,10 @@ export const getRealtimeExerciseData = async () => {
         },
         {
         "dataSourceId":  "derived:com.google.active_minutes:com.google.android.gms:merge_active_minutes"
-        }
+        },
+        {
+        "dataSourceId":  "derived:com.google.distance.delta:com.google.android.gms:merge_distance_delta"
+        },
         ],
         "bucketByTime": { "durationMillis": currentMilliseconds - millisecondsSinceMidnight },
         "startTimeMillis": millisecondsSinceMidnight,
@@ -30,15 +33,16 @@ export const getRealtimeExerciseData = async () => {
     };
     let data = {
         'steps': 0,
-        'time': 0
+        'time': 0,
+        'distance' : 0
     };
     await axios.post(url, requestBody, {headers: {Authorization: 'Bearer ' + JSON.parse(localStorage.getItem('tokens')).Google_access_token} })
         .then((res) => {
             data = {
                 'steps': res.data.bucket[0].dataset[0].point[0].value[0].intVal,
-                'time': res.data.bucket[0].dataset[1].point[0].value[0].intVal
+                'time': res.data.bucket[0].dataset[1].point[0].value[0].intVal,
+                'distance': res.data.bucket[0].dataset[2].point[0].value[0].fpVal,
             };
-            
             return data;
         })
         .catch((err)=>{
@@ -47,7 +51,8 @@ export const getRealtimeExerciseData = async () => {
             .then((res) => {
                 data = {
                     'steps': res.data.bucket[0].dataset[0].point[0].value[0].intVal,
-                    'time': res.data.bucket[0].dataset[1].point[0].value[0].intVal
+                    'time': res.data.bucket[0].dataset[1].point[0].value[0].intVal,
+                    'distance': res.data.bucket[0].dataset[2].point[0].value[0].intVal,
                 };
                 
                 return data;

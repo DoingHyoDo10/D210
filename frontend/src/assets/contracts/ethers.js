@@ -9,18 +9,19 @@ const wallet = new ethers.Wallet(privateKey, provider);
 const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
 const contract = new ethers.Contract(contractAddress, WalkWalk.abi, wallet);
 
-// 정보 기록 함수
-export async function recordExercise(memberId, date, steps, duration, distance) {
-    // addExerciseData 함수 호출을 위한 트랜잭션 생성
-    const tx = await contract.addExerciseData(memberId, date, steps, duration, distance);
-    await tx.wait(); // 트랜잭션 영수증 대기
-    console.log('기록 성공 func:', tx.hash); // 트랜잭션 해시 출력
+// 운동 기록 함수
+export async function recordExercise(id, memberId, steps, exerciseMinute, exerciseDistance, exerciseDay, exerciseStart, exerciseEnd, calorie) {
+  // addExerciseData 함수 호출을 위한 트랜잭션 생성
+  const tx = await contract.addExerciseData(id, memberId, steps, exerciseMinute, exerciseDistance, exerciseDay, exerciseStart, exerciseEnd, calorie);
+  await tx.wait(); // 트랜잭션 영수증 대기
+  console.log('기록 성공 func:', tx.hash); // 트랜잭션 해시 출력
 }
 
-export async function getExerciseData(memberId, date) {
-  const exerciseData = await contract.getExerciseDataByTimestamp(memberId, date);
-  console.log('조회 성공 func: ', exerciseData);
-  return exerciseData;
+// 운동 조회 함수
+export async function getExerciseData(id) {
+const exerciseData = await contract.getExerciseData(id);
+console.log('조회 성공 func: ', exerciseData);
+return exerciseData;
 }
 
 // 영수증 조회 함수

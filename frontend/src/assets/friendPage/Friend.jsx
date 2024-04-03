@@ -105,8 +105,10 @@ const Friend = function(){
         }
     }
 
-    const handleFriendModalOpen = (memberId)=>{
+    const handleFriendModalOpen = ()=>{
         setFriendModalOpen(!friendModalOpen);
+        getFriendList()
+            .then(res=>setFriendList(res));
     }
     const tabArr=[{
         tabTitle:(
@@ -155,7 +157,7 @@ const Friend = function(){
                             </div>  
                         )
                     })
-                    : <div className={styles.list_default}><img src="/imgs/ch1_bol_q.png"></img><h2>요청한 친구 요청이 없습니다...</h2></div>
+                    : <div className={styles.list_default}><img src="/imgs/ch1_bol_q.png"></img><h2>요청한 친구가 없습니다...</h2></div>
                 }
             </div>
         )
@@ -200,7 +202,7 @@ const Friend = function(){
     return(
         <>
             {friendModalOpen && 
-                <Mini type="friend" closeModal={setFriendModalOpen} memberId={memberId}></Mini>
+                <Mini type="friend" closeModal={handleFriendModalOpen} memberId={memberId}></Mini>
             }
             {searchModalOpen && 
                 <Mini type="search" closeModal={setSearchModalOpen} memberId={memberId}></Mini>

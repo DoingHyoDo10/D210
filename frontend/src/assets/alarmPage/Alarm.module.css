@@ -115,65 +115,48 @@
     background: rgba(0, 0, 0, 0.6);
     z-index: 10;
     top: 0;
-
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 
 .alarm_modal_container{
     width: 22rem;
     height: 25rem;
-    top: 50%;
-    left: 50%;
     z-index: 11;
-    position: absolute;
     border-radius: 30px;
-    transform: translate(-50%, -50%);
-    background: #FFDD71;
-
-}
-
-.alarm_title_container{
-    position: relative;
     display: flex;
-    top: 10%;
-    left: 50%;
-    width: 22rem;
-    height: 4rem ;
-    transform: translate(-50%, -50%);
+    position: relative;
+    flex-direction: column;
+    align-items: center;
+    background: #FFDD71;
 }
 
 .alarm_modal_title{
-    width: 13rem;
     font-family: "bc_b";
-    font-size: 1.6rem;
-    top: 17%;
-    left: 50%;
-    transform: translate(-50%, -50%);
-    position: absolute;
+    font-size: 1.8rem;
+    margin-top: 6%;
 }
 
 .alarm_modal_x{
     position: absolute;
-    top: 40%;
-    left: 90%;
-    transform: translate(-50%, -50%);
     width: auto;
+    top: 4%;
+    right: 5%;
     height: 2rem;
 }
 
 .alarm_content{
     width: 20rem;
     height: 19rem;
-    top: 57.5%;
-    left: 50%;
-    z-index: 11;
-    position: absolute;
     border-radius: 30px;
     overflow-y: auto;
     overflow-x: hidden;
     display: flex;
     flex-direction: column;
     align-items: center;
-    transform: translate(-50%, -50%);
+    justify-content: center;
+    margin-top: -4%;
     background: #FFFBF3;
 }
 
@@ -185,10 +168,11 @@
 
 .alarm_detail{
     width: 18rem;
-    height: 10rem;
+    height: fit-content;
     display: flex;
     flex-direction: column;
     align-items: center;
     font-family: "bc_b";
+    text-align: center;
     font-size: 1.7rem;
 }

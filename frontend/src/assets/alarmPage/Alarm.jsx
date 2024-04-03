@@ -36,17 +36,17 @@ const Alarm = function(){
         <> 
             {alarm && (
                 <>
-                    <div className={styles.modal_background}></div>
-                    <div className={styles.alarm_modal_container}>
-                        <div className={styles.alarm_title_container}>
+                    <div className={styles.modal_background}>
+                        <div className={styles.alarm_modal_container}>
                             <p className={styles.alarm_modal_title}>알림</p>
                             <img src="/imgs/x.png" alt="x" className={styles.alarm_modal_x} onClick={openAlarmModal}></img>
+                        
+                            <div className={styles.alarm_content}>
+                                <img src="/imgs/alarm.png" alt="알림" className={styles.alarm_img}></img>
+                                <p className={styles.alarm_detail}>{nowAlarm}</p>
+                            </div>
+                        
                         </div>
-                        <div className={styles.alarm_content}>
-                            <img src="/imgs/alarm.png" alt="알림" className={styles.alarm_img}></img>
-                            <p className={styles.alarm_detail}>{nowAlarm}</p>
-                        </div>
-                       
                     </div>
                 </>
             )}

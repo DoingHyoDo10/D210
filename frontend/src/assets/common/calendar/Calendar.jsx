@@ -161,10 +161,6 @@ const Calendar = (props) => {
             </div>
         </div>
         <div className={styles2.sf_btn_container}>
-            <div className={styles2.mission_money_btn_container}>
-                <p className={styles2.base_money_cnt}>누적 미션 금액</p>
-                <p className={styles2.record_money_cnt}>10,000원 <span style={{color: "#727768", fontSize: 12}}>(1*10,000)</span></p>
-            </div>
             <div className={styles2.mission_cp_btn_container}>
                 <p className={styles2.base_cp_cnt}>남은 휴식권</p>
                 <p className={styles2.record_cp_cnt}>{dayoff}개</p>

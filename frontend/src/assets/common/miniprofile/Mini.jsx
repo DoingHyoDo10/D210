@@ -3,10 +3,16 @@ import styles from "./Mini.module.css";
 import Calendar from "../calendar/Calendar";
 import { useStore } from "../../../stores/mini"
 import { getDailyExerciseData } from '../../../apis/exercise';
+import { deleteFriend } from '../../../apis/friend';
 
 function Mini(props) {
     const {friendProfileImg, friendName, friendIntro} = useStore();
     const [streak, setStreak] = useState(0);
+
+    const deleteFriendHandler = ()=>{
+      deleteFriend(props.memberId)
+        .then(res=>{alert('친구를 삭제했습니다.'); props.closeModal()})
+    }
     useEffect(()=>{
       getDailyExerciseData(props.memberId)
         .then(res=>{
@@ -26,8 +32,9 @@ function Mini(props) {
                 <p>{friendIntro}</p>
             </div>
             <p className={styles.strick_txt}>스트릭</p>
-            <p className={styles.strick_day}>{streak}일째</p>
             <div className={styles.strick_line}></div>
+            <p className={styles.strick_day}>{streak}일째</p>
+
             {props.type !== 'halli' && props.type !== 'galli'
               ? <div></div>
               : <div className={styles.calen_container}>
@@ -37,7 +44,7 @@ function Mini(props) {
             
             {props.type === 'search' 
               ? <div><br/></div>
-              : <div className={styles.delete_friend_btn}>
+              : <div className={styles.delete_friend_btn} onClick={deleteFriendHandler}>
                 <p>친구 삭제</p>
                 </div>
             }

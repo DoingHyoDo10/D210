@@ -5,7 +5,7 @@ import { ResponsiveBar } from "@nivo/bar";
 import { color } from "d3-color";
 import { getGalleyList, getHalleyList, postGalleyRequest, getHalley, responseGalley, postMission, putMission } from "../../apis/halleygalley";
 import { searchGalleyMemberList } from "../../apis/friend";
-import { getRealtimeExerciseData, getWeeklyExerciseData, getExerciseCriteria } from "../../apis/exercise";
+import { getRealtimeExerciseData, getWeeklyExerciseData, getExerciseCriteria, getDailyExerciseData } from "../../apis/exercise";
 import { useStore } from "../../stores/member";
 import { useSignupStore } from "../../stores/member";
 import Lottie from 'react-lottie';
@@ -86,6 +86,7 @@ const Main = function(){
     const [giveMeMoneyList, setGiveMeMoneyList] = useState({});
     const [missionSuccess, setMissionSuccess] = useState(false);
     const [finishedHallyList, setFinishedHallyList] = useState([{}]);
+    const [d, sd] = useState(0);
 
     const updateHalliGalliList = () => {
         getHalleyList()
@@ -361,21 +362,24 @@ const Main = function(){
                         </div>
                         <div className={styles.galli_expanded} style={{height: 240 * galliList.length, overflow: !expanded && 'scroll'}}>
                         {galliList.map((data, index) => {
+                            let flag = true;
+                            getDailyExerciseData(data.memberId)
+                                .then(res=>{
+                                    if(res.today == null){
+                                        flag = false;
+                                    }
+                                    else{
+                                        sd(res.exerciseMinute);
+                                    }
+                                })
                             return(
                                 <div key={index} className={styles.my_galli_list_container}>
                                     <p className={styles.galli_goal_title} onClick={()=>moveToGalliPage(data.memberId)}>나의 갈리 <span style={{color: "#186647", fontFamily: "bc_b"}}>{data.nickname}</span>님의 <br></br>운동기록</p>
                                     <div className={styles.galli_time_progress_container}>
-                                        {data.requestedTime == null ? <p>등록한 미션이 없습니다...</p> :<div className={styles.galli_time_progress_base}>
-                                            <div className={styles.galli_time_progress_move} style={{width: 프로그래스바2.calculatedTime > 300 ? 300 : 프로그래스바2.calculatedTime}}></div>
-                                            <div className={styles.galli_time_ori_container} style={{width: 프로그래스바2.calculatedTime > 300 ? 300 : 프로그래스바2.calculatedTime}}>
-                                                <p className={styles.galli_time_mine} style={{color: 프로그래스바2.calculatedTime > 300 ? 'red' : 'white'}}>{운동데이터.currentTime}분</p>
-                                                <img src={프로그래스바2.calculatedTime > 300 ? "/imgs/ch1_bol_samerun.gif" : "/imgs/ch1_bol_samewalk.gif"} alt="제자리걸음 오리" className={styles.ch1_2}></img>
-                                            </div>  
-                                            <div className={styles.galli_time_number_base}>
-                                                <p className={styles.galli_time_min}>0분</p>
-                                                <p className={styles.galli_time_min2}>{운동데이터.criteriaTime}분</p>
-                                            </div>
-                                        </div>}
+                                        {data.requestedTime == null 
+                                        ? <p>등록된 미션이 없어요!</p> 
+                                        : <div><p>세팅한 요구 운동시간 : {data.requestedTime}분</p> {flag ? <h3>어제 운동량: {d}분</h3>:<h3>어제 운동을 하지 않았어요...</h3>}</div>
+                                        }
                                     </div>
                                 </div>
                             )

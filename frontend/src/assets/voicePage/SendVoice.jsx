@@ -58,25 +58,6 @@ const SendVoice = function(){
             })
     }
 
-    // const galliList = [
-    //     {
-    //         profileUrl: "/imgs/profile_img1.jpg",
-    //         nickname : "우주최강세현"
-    //     },
-    //     {
-    //         profileUrl: "/imgs/profile_img1.jpg",
-    //         nickname : "지구최강세현"
-    //     },
-    //     {
-    //         profileUrl: "/imgs/profile_img1.jpg",
-    //         nickname : "지상최강세현"
-    //     },
-    //     {
-    //         profileUrl: "/imgs/profile_img1.jpg",
-    //         nickname : "지하최강세현"
-    //     },
-    // ]
-
 
     return(
         <>            

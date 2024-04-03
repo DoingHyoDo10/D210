@@ -3,7 +3,7 @@ import styles from "./Mini.module.css";
 import Calendar from "../calendar/Calendar";
 import { useStore } from "../../../stores/mini"
 
-function Mini() {
+function Mini(props) {
     const {friendName, setFriendName} = useStore();
     const {friendIntro, setFriendIntro} = useStore(); 
     const {friendProfileImg, setFriendProfileImg, friendModalOpen, setFriendModalOpen} = useStore();
@@ -20,10 +20,17 @@ function Mini() {
             </div>
             <p className={styles.strick_txt}>스트릭</p>
             <div className={styles.strick_line}></div>
-            <p className={styles.strick_day}>2일째</p>
-            <div className={styles.delete_friend_btn}>
-                <p>친구 삭제</p>
+            
+            <div className={styles.calen_container}>
+                <Calendar></Calendar>
             </div>
+            {props.type === 'search' 
+              ? <div><br/></div>
+              : <div className={styles.delete_friend_btn}>
+                <p>친구 삭제</p>
+                </div>
+            }
+            <p className={styles.strick_day}>2일째</p>
         </div>
       </div>
     </>

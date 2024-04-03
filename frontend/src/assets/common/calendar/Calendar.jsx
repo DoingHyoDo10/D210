@@ -84,7 +84,7 @@ const Calendar = (props) => {
 
   return (
     <>
-      <div className={styles.calendar}>
+      <div className={styles.calendar} style={{textAlign: 'center'}}>
         <div className={styles.month}>{currentDate.getMonth()+1}</div>
         <div className={styles.days}>
           {createCalendar(currentDate.getFullYear(), currentDate.getMonth())}
@@ -108,7 +108,7 @@ const Calendar = (props) => {
             <div className={styles2.walk_cnt_btn_container}>
                 <img src="/imgs/foot.png" alt="걸음 수 아이콘" className={styles2.foot_icon}></img>
                 <p className={styles2.base_walk_cnt}>걸음수</p>
-                <p className={styles2.record_walk_cnt}>{selectedDaysExercise.steps}보</p>
+                <p className={styles2.record_walk_cnt}>{`${selectedDaysExercise.steps}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}보</p>
             </div>
             <div className={styles2.walk_time_btn_container}>
                 <img src="/imgs/clock_icon.png" alt="시간 아이콘" className={styles2.clock_icon}></img>
@@ -118,7 +118,7 @@ const Calendar = (props) => {
             <div className={styles2.walk_road_btn_container}>
                 <img src="/imgs/map_icon.png" alt="맵 아이콘" className={styles2.road_icon}></img>
                 <p className={styles2.base_road_cnt}>걸은 거리</p>
-                <p className={styles2.record_road_cnt}>{selectedDaysExercise.exerciseDistance}Km</p>
+                <p className={styles2.record_road_cnt}>{`${Math.floor(selectedDaysExercise.exerciseDistance)}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}m</p>
             </div>
         </div>
         <div className={styles2.sf_btn_container}>

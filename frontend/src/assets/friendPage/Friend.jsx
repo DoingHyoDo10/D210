@@ -133,6 +133,7 @@ const Friend = function(){
             <div className={styles.send_list_content}>
                 {sentFriendList.length != 0
                     ? sentFriendList.map((data, index) => {
+                        console.log(data)
                         return(
                             <div key={index} className={styles.send_friend_container}>
                                 <img src={data.profileUrl} alt="프로필 사진" className={styles.send_friend_img_container} onClick={() => {setFriendName(data.nickname), setFriendProfileImg(data.profileUrl), setFriendIntro(data.comment != '' ? data.comment : '한 줄 소개가 없습니다.'), setFriendModalOpen(!friendModalOpen)}}></img>
@@ -187,7 +188,7 @@ const Friend = function(){
     return(
         <>
             {friendModalOpen && 
-                <Mini></Mini>
+                <Mini type="search"></Mini>
             }
             
             {findFriend && (

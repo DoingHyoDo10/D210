@@ -32,8 +32,9 @@ function Mini(props) {
                 <p>{friendIntro}</p>
             </div>
             <p className={styles.strick_txt}>스트릭</p>
-            <p className={styles.strick_day}>{streak}일째</p>
             <div className={styles.strick_line}></div>
+            <p className={styles.strick_day}>{streak}일째</p>
+
             {props.type !== 'halli' && props.type !== 'galli'
               ? <div></div>
               : <div className={styles.calen_container}>

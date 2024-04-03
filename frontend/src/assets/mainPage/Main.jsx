@@ -11,6 +11,7 @@ import { useSignupStore } from "../../stores/member";
 import Lottie from 'react-lottie';
 import confetti from '../../lotties/confetti_full.json';
 import { useToolbar } from "../../stores/toolbar";
+import styles2 from "../alarmPage/Alarm.module.css";
 
 const Main = function(){
     const {memberId, setMemberId} = useStore();
@@ -81,6 +82,8 @@ const Main = function(){
     const [halliRequestList, setHalliRequestList] = useState([]);
     const [maxHalliVal, setMaxHalliVal] = useState(0);
     const [giveMeMoneyList, setGiveMeMoneyList] = useState({});
+    const [missionSuccess, setMissionSuccess] = useState(false);
+    const [finishedHallyList, setFinishedHallyList] = useState([{}]);
 
     const updateHalliGalliList = () => {
         getHalleyList()
@@ -105,14 +108,18 @@ const Main = function(){
                 calculateMaxValue(data1);
                 setGiveMeMoneyList(data1);
                 const hallyList = [];
+                const hallyFullList = [];
                 data1.forEach(d=>{
                     if(!d.getRewardAt && realtimeExerciseData.time >= d.requestedTime){
                         hallyList.push(d.memberId);
+                        hallyFullList.push(d);
                     }
                 })
+                setFinishedHallyList(hallyFullList);
                 putMission(hallyList)
                     .then(res=>{
                         if(res === 'success'){
+                            setMissionSuccess(true);
                             updateState();
                         }
                     })
@@ -394,6 +401,13 @@ const Main = function(){
     }    
     ]
 
+    const handleMissionSuccessModal = () =>{
+        if(missionSuccess){
+            setFinishedHallyList([{}]);
+        }
+        setMissionSuccess(!missionSuccess);
+    }
+
     const { isFirstVisit, setIsFirstVisit } = useSignupStore();
     const handleFirstVisit = (isGoing) => {
         // 이동 여부 상관없이 isFirstVisit 변경
@@ -424,6 +438,35 @@ const Main = function(){
     return(
         <>
         <div>
+        {missionSuccess && (
+            <>
+                <div className={styles2.modal_background}></div>
+                <div className={styles2.alarm_modal_container}>
+                    <div className={styles2.alarm_title_container}>
+                        <p className={styles2.alarm_modal_title}>알림</p>
+                        <img src="/imgs/x.png" alt="x" className={styles2.alarm_modal_x} onClick={handleMissionSuccessModal}></img>
+                    </div>
+                    <div className={styles2.alarm_content}>
+                        <img src="/imgs/money.png" alt="알림" className={styles2.alarm_img}></img>
+                        {
+                            finishedHallyList.map(element => {
+                                return(
+                                    <span>{element.nickname}님 </span>
+                                )  
+                            })
+                        }
+                        <span>의</span>
+                        <p className={styles2.alarm_detail}>미션을 달성했습니다!</p>
+                    </div>
+                    
+                </div>
+            </>
+        )}
+
+
+
+
+
             {isFirstVisit && (
                 <div className={styles.first_visit_container}>
                     <div className={styles.first_visit_lottie}>

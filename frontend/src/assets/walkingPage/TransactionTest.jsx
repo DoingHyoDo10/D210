@@ -1,11 +1,11 @@
 
 import { recordExercise, getExerciseData, getReceiptData } from '../contracts/ethers'
 
-const ContractTest = function(){
+const ContractTest = function () {
   
   const handleSubmit1 = async (e) => {
     try {
-      await recordExercise(3, 20240402, 10000, 78, 4);
+      await recordExercise(41, 1, 4409, 53, '2934.5', '2024-04-01', "2024-04-01T15:30:00", "2024-04-01T23:59:59.999999999", '607.7');
       alert('기록 성공');
     } catch (error) {
       alert('기록 실패 : ', error);
@@ -14,7 +14,7 @@ const ContractTest = function(){
 
   const handleSubmit2 = async (e) => {
     try {
-      const response = await getExerciseData(3, 20240402);
+      const response = await getExerciseData(41);
       alert('조회 성공')
     } catch (error) {
       alert('조회 실패 : ', error);

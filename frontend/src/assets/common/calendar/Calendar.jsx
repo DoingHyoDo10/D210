@@ -3,16 +3,41 @@ import styles from './Calendar.module.css';
 import styles2 from '../../halligalliPage/HalliGalli.module.css';
 import { getMonthlyExerciseData } from '../../../apis/exercise';
 import {useStore} from '../../../stores/member';
+import { useDayoff } from '../../../apis/halleygalley';
+import { useToolbar } from '../../../stores/toolbar';
 
 const Calendar = (props) => {
   const {memberId, setMemberId} = useStore();
+  const {updateState} = useToolbar();
+
   useEffect(()=>{
     getMonthlyExerciseData(memberId).then(res=>{setExerciseData(res); console.log(res)});
+    console.log('dayoff: ' + props.dayoff)
   },[])
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [exerciseData, setExerciseData] = useState([{}]);
   const [selectedDaysExercise, setSelectedDaysExercise] = useState({exerciseMinute:0, exerciseDistance:0, steps:0});
+  const[rest, setRest] = useState(false);
+  const [dayoff, setDayoff] = useState(props.dayoff);
+
+  const openRestModal = function(){
+      setRest(!rest);
+      if(rest){
+        if(props.dayoff > 0){
+          useDayoff(memberId)
+            .then(res => {
+              updateState();
+              setDayoff(dayoff-1);
+              alert('휴식권을 사용했습니다.');
+
+            });
+        }
+        else{
+          alert('휴식권이 부족합니다..');
+        }
+      }
+  }
 
   const createCalendar = (year, month) => {
     const dayNames = ["일", "월", "화", "수", "목", "금", "토"];
@@ -84,7 +109,26 @@ const Calendar = (props) => {
 
   return (
     <>
-      <div className={styles.calendar}>
+      {rest && (
+            <>
+                <div className={styles2.modal_background}></div>
+                <div className={styles2.rest_modal_container}>
+                    <div className={styles2.rest_title_container}>
+                        <img src="/imgs/x.png" alt="x" className={styles2.rest_modal_x} onClick={openRestModal}></img>
+                    </div>
+                    <div className={styles2.rest_content}>
+                        <p className={styles2.rest_detail}>휴일권을 정말<br></br>사용하시겠습니까?</p>
+                        <img src="/imgs/ch2_bol_q.png" alt="할리 물음표" className={styles2.rest_img}></img>
+                    </div>
+                    <div className={styles2.rest_ok_container} onClick={openRestModal}>
+                        <p>확인</p>
+                    </div>
+                
+                </div>
+            </>
+        )}
+
+      <div className={styles.calendar} style={{textAlign: 'center'}}>
         <div className={styles.month}>{currentDate.getMonth()+1}</div>
         <div className={styles.days}>
           {createCalendar(currentDate.getFullYear(), currentDate.getMonth())}
@@ -101,14 +145,19 @@ const Calendar = (props) => {
       {props.type === 'detail'
        ?
       <div className={styles2.days_content_box_container}>
-        <div className={styles2.content_title_container}>
+        <div className={styles2.content_title_container}>{}
             <p className={styles2.calen_title}>{selectedDate.toLocaleDateString()}</p>
+            {props.sort === 'halli' &&
+                <div className={styles2.rest_btn_container} onClick={openRestModal}>
+                    <p>휴식권 사용</p>
+                </div>
+            }
         </div>
         <div className={styles2.ff_btn_container}>
             <div className={styles2.walk_cnt_btn_container}>
                 <img src="/imgs/foot.png" alt="걸음 수 아이콘" className={styles2.foot_icon}></img>
                 <p className={styles2.base_walk_cnt}>걸음수</p>
-                <p className={styles2.record_walk_cnt}>{selectedDaysExercise.steps}보</p>
+                <p className={styles2.record_walk_cnt}>{`${selectedDaysExercise.steps}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}보</p>
             </div>
             <div className={styles2.walk_time_btn_container}>
                 <img src="/imgs/clock_icon.png" alt="시간 아이콘" className={styles2.clock_icon}></img>
@@ -118,7 +167,7 @@ const Calendar = (props) => {
             <div className={styles2.walk_road_btn_container}>
                 <img src="/imgs/map_icon.png" alt="맵 아이콘" className={styles2.road_icon}></img>
                 <p className={styles2.base_road_cnt}>걸은 거리</p>
-                <p className={styles2.record_road_cnt}>{selectedDaysExercise.exerciseDistance}Km</p>
+                <p className={styles2.record_road_cnt}>{`${Math.floor(selectedDaysExercise.exerciseDistance)}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}m</p>
             </div>
         </div>
         <div className={styles2.sf_btn_container}>
@@ -128,7 +177,7 @@ const Calendar = (props) => {
             </div>
             <div className={styles2.mission_cp_btn_container}>
                 <p className={styles2.base_cp_cnt}>남은 휴식권</p>
-                <p className={styles2.record_cp_cnt}>4개</p>
+                <p className={styles2.record_cp_cnt}>{dayoff}개</p>
             </div>
         </div>
       </div>

@@ -260,7 +260,7 @@ const Main = function(){
                             <div className={styles.my_walk_progress_base}>
                                 <div className={styles.my_walk_progress_move} style={{width: 프로그래스바.calculatedSteps > 320 ? 320 : 프로그래스바.calculatedSteps}}></div>
                                 <div className={styles.my_walk_ori_container} style={{width: 프로그래스바.calculatedSteps > 320 ? 320 : 프로그래스바.calculatedSteps}}>
-                                    <p className={styles.my_walk_mine} style={{color: 프로그래스바.calculatedSteps > 320 ? 'red' : 'white'}}>{realtimeExerciseData.steps}보</p>
+                                    <p className={styles.my_walk_mine} style={{color: 프로그래스바.calculatedSteps > 320 ? 'red' : 'white'}}>{`${realtimeExerciseData.steps}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}보</p>
                                     <img src={프로그래스바.calculatedSteps > 320 ? "/imgs/ch1_bol_samerun.gif" : "/imgs/ch1_bol_samewalk.gif"} alt="제자리걸음 오리" className={styles.ch1_2}></img>
                                 </div>
                                 <div className={styles.my_walk_number_base}>

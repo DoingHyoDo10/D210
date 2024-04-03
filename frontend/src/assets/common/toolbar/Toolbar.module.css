@@ -15,7 +15,7 @@
 }
 
 .tool_all_money_container{
-    width: 5.5rem;
+    width: 6.4rem;
     height: 3rem;
     display: flex;
     flex-direction: column;
@@ -25,7 +25,7 @@
 }
 
 .tool_egg_container{
-    width: 5.5rem;
+    width: 6.4rem;
     height: 1.5rem;
     display: flex;
     align-items: center;
@@ -42,7 +42,7 @@
 }
 
 .tool_money_container{
-    width: 5.5rem;
+    width: 6.4rem;
     height: 1.5rem;
     display: flex;
     align-items: center;

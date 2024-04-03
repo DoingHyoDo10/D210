@@ -72,7 +72,7 @@ const Rank = function(){
                                     <img src={'./imgs/crown'+ (index+1) +'.png'} alt="왕관" className={styles.first_rank_crown}></img>
                                     <div className={styles.first_rank_profile_container}>
                                         <img src= {data.profileUrl} alt="프로필 사진" className={styles.first_rank_img}></img>
-                                        <p className={styles.first_rank_name}>{data.nickname}</p>
+                                        <p className={styles.first_rank_name}>{data.nickname.length > 6 ? `${data.nickname.slice(0,6)}...`: data.nickname}</p>
                                     </div>
                                 </div>
                             )
@@ -125,7 +125,7 @@ const Rank = function(){
                                     <img src={'./imgs/crown'+ (index+1) +'.png'} alt="금 왕관" className={styles.first_rank_crown}></img>
                                     <div className={styles.first_rank_profile_container}>
                                         <img src= {data.profileUrl} alt="프로필 사진" className={styles.first_rank_img}></img>
-                                        <p className={styles.first_rank_name}>{data.nickname}</p>
+                                        <p className={styles.first_rank_name}>{data.nickname.length > 6 ? `${data.nickname.slice(0,6)}...`: data.nickname}</p>
                                     </div>
                                 </div>
                             )
@@ -178,7 +178,7 @@ const Rank = function(){
                                     <img src={'./imgs/crown'+ (index+1) +'.png'} alt="금 왕관" className={styles.first_rank_crown}></img>
                                     <div className={styles.first_rank_profile_container}>
                                         <img src={data.profileUrl} alt="프로필 사진" className={styles.first_rank_img}></img>
-                                        <p className={styles.first_rank_name}>{data.nickname}</p>
+                                        <p className={styles.first_rank_name}>{data.nickname.length > 6 ? `${data.nickname.slice(0,6)}...`: data.nickname}</p>
                                     </div>
                                 </div>
                             )))}
@@ -227,7 +227,7 @@ const Rank = function(){
                                 <img src={'./imgs/crown'+ (index+1) +'.png'} alt="금 왕관" className={styles.first_rank_crown}></img>
                                 <div className={styles.first_rank_profile_container}>
                                     <img src= {data.profileUrl} alt="프로필 사진" className={styles.first_rank_img}></img>
-                                    <p className={styles.first_rank_name}>{data.nickname}</p>
+                                    <p className={styles.first_rank_name}>{data.nickname.length > 6 ? `${data.nickname.slice(0,6)}...`: data.nickname}</p>
                                 </div>
                                 </div>
                             )))}

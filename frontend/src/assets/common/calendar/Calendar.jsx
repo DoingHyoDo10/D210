@@ -3,20 +3,40 @@ import styles from './Calendar.module.css';
 import styles2 from '../../halligalliPage/HalliGalli.module.css';
 import { getMonthlyExerciseData } from '../../../apis/exercise';
 import {useStore} from '../../../stores/member';
+import { useDayoff } from '../../../apis/halleygalley';
+import { useToolbar } from '../../../stores/toolbar';
 
 const Calendar = (props) => {
   const {memberId, setMemberId} = useStore();
+  const {updateState} = useToolbar();
+
   useEffect(()=>{
     getMonthlyExerciseData(memberId).then(res=>{setExerciseData(res); console.log(res)});
+    console.log('dayoff: ' + props.dayoff)
   },[])
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [exerciseData, setExerciseData] = useState([{}]);
   const [selectedDaysExercise, setSelectedDaysExercise] = useState({exerciseMinute:0, exerciseDistance:0, steps:0});
   const[rest, setRest] = useState(false);
+  const [dayoff, setDayoff] = useState(props.dayoff);
 
   const openRestModal = function(){
       setRest(!rest);
+      if(rest){
+        if(props.dayoff > 0){
+          useDayoff(memberId)
+            .then(res => {
+              updateState();
+              setDayoff(dayoff-1);
+              alert('휴식권을 사용했습니다.');
+
+            });
+        }
+        else{
+          alert('휴식권이 부족합니다..');
+        }
+      }
   }
 
   const createCalendar = (year, month) => {
@@ -157,7 +177,7 @@ const Calendar = (props) => {
             </div>
             <div className={styles2.mission_cp_btn_container}>
                 <p className={styles2.base_cp_cnt}>남은 휴식권</p>
-                <p className={styles2.record_cp_cnt}>4개</p>
+                <p className={styles2.record_cp_cnt}>{dayoff}개</p>
             </div>
         </div>
       </div>

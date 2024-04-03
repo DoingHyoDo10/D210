@@ -121,3 +121,15 @@ export const putMission = async (data) => {
         .catch((err) => {console.log(err)});
 
 }
+
+// 휴식권 사용
+export const useDayoff = async (data) => {
+    const url = '/halleygalley/use-dayoff';
+
+    return await instance.put(url, {halleyId: data})
+        .then((res) => {
+            return res.data.data;
+        })
+        .catch((err) => {console.log(err)});
+
+}

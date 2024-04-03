@@ -104,7 +104,7 @@ const Halli = function(){
 
                 <div className={styles.calendar_container}>
                     <p className={styles.mission_title2}>회원님이 등록한 미션 현황</p>
-                    <Calendar type="detail" sort="halli"></Calendar>
+                    <Calendar type="detail" sort="halli" dayoff={halleyInfo.dayoff}></Calendar>
                     
                 </div>
 

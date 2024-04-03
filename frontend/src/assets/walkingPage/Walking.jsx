@@ -96,6 +96,8 @@ const Walking = function(){
 
    
 
+    
+
   return(
     <div className={styles.walking_container}>
         <div className={styles.walking_title}>

@@ -30,7 +30,7 @@ const Galli = function(){
     const moveToMissionPage = function () {
         navigate("/galli/mission")
     }
-    const [galleyInfo, setGalleyInfo] = useState({});
+    const [galleyInfo, setGalleyInfo] = useState({dayoff: 0, nickname:'', profileUrl:'',requestedTime:0, reward:0});
     const[rest, setRest] = useState(false);
     
 

@@ -4,6 +4,7 @@ import styles from "./HalliGalli.module.css";
 import { getGalley } from "../../apis/halleygalley";
 import { useStore } from "../../stores/member";
 import Calendar from "../common/calendar/Calendar";
+import Loading from "../common/loading/Loading";
 
 const Galli = function(){
 
@@ -30,12 +31,15 @@ const Galli = function(){
     const moveToMissionPage = function () {
         navigate("/galli/mission")
     }
-    const [galleyInfo, setGalleyInfo] = useState({dayoff: 0, nickname:'', profileUrl:'',requestedTime:0, reward:0});
+    const [galleyInfo, setGalleyInfo] = useState(null);
     const[rest, setRest] = useState(false);
     
 
     const openRestModal = function(){
         setRest(!rest);
+    }
+    if(!galleyInfo){
+        return(<Loading text="조회중..."></Loading>)
     }
 
     return(
@@ -99,7 +103,7 @@ const Galli = function(){
 
                 <div className={styles.calendar_container}>
                     <p className={styles.mission_title2}>회원님이 등록한 미션 현황</p>
-                    <Calendar type="detail"></Calendar>
+                    <Calendar type="detail" dayoff={galleyInfo.dayoff}></Calendar>
                     
                 </div>
 

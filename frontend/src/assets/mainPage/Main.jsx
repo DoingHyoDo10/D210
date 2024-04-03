@@ -12,6 +12,8 @@ import Lottie from 'react-lottie';
 import confetti from '../../lotties/confetti_full.json';
 import { useToolbar } from "../../stores/toolbar";
 import styles2 from "../alarmPage/Alarm.module.css";
+import Loading from "../common/loading/Loading";
+import LoadingModal from "../common/loading/LoadingModal";
 
 const Main = function(){
     const {memberId, setMemberId} = useStore();
@@ -77,7 +79,7 @@ const Main = function(){
     const [halliList, setHalliList] = useState([]);
     const [realtimeExerciseData, setRealtimeExerciseData] = useState({});
     const [halliRoadmapList, setHalliRoadmapList] = useState([]);
-    const [weeklyExerciseData, setWeeklyExerciseData] = useState({avg:0, content:[{steps:0},{steps:0},{steps:0},{steps:0},{steps:0},{steps:0},{steps:0},]});
+    const [weeklyExerciseData, setWeeklyExerciseData] = useState(null);
     const [criteriaData, setCriteriaData] = useState({steps:0, exerciseMinute:0});
     const [halliRequestList, setHalliRequestList] = useState([]);
     const [maxHalliVal, setMaxHalliVal] = useState(0);
@@ -434,7 +436,12 @@ const Main = function(){
             preserveAspectRatio: "xMidYMid slice"
         }
     }
-    
+    if(!memberList || !realtimeExerciseData || !weeklyExerciseData || !criteriaData){
+        return(<Loading text="로딩중..."></Loading>)
+    }
+    if(!halliList || !galliList || !halliRoadmapList || !halliRequestList){
+        return(<LoadingModal text="조회중..."></LoadingModal>)
+    }
     return(
         <>
         <div>

@@ -3,20 +3,41 @@ import styles from './Calendar.module.css';
 import styles2 from '../../halligalliPage/HalliGalli.module.css';
 import { getMonthlyExerciseData } from '../../../apis/exercise';
 import {useStore} from '../../../stores/member';
+import { useDayoff } from '../../../apis/halleygalley';
+import { useToolbar } from '../../../stores/toolbar';
 
 const Calendar = (props) => {
   const {memberId, setMemberId} = useStore();
+  const {updateState} = useToolbar();
+
   useEffect(()=>{
     getMonthlyExerciseData(memberId).then(res=>{setExerciseData(res); console.log(res)});
+    console.log('dayoff: ' + props.dayoff)
+    setDayoff(props.dayoff);
   },[])
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
   const [exerciseData, setExerciseData] = useState([{}]);
   const [selectedDaysExercise, setSelectedDaysExercise] = useState({exerciseMinute:0, exerciseDistance:0, steps:0});
   const[rest, setRest] = useState(false);
+  const [dayoff, setDayoff] = useState(props.dayoff);
 
   const openRestModal = function(){
       setRest(!rest);
+      if(rest){
+        if(dayoff > 0){
+          useDayoff(memberId)
+            .then(res => {
+              updateState();
+              setDayoff(dayoff-1);
+              alert('휴식권을 사용했습니다.');
+
+            });
+        }
+        else{
+          alert('휴식권이 부족합니다..');
+        }
+      }
   }
 
   const createCalendar = (year, month) => {
@@ -43,9 +64,6 @@ const Calendar = (props) => {
   const getClassNames = (day, month) => {
     if(props.type === 'detail'){
       let classNames = `${styles.day}`;
-      // if (day === currentDate.getDate() && month === currentDate.getMonth()) {
-        
-      // }
       if (selectedDate && day === selectedDate.getDate() && month === selectedDate.getMonth()) {
         classNames += ` ${styles.selected}`;
       }
@@ -81,11 +99,6 @@ const Calendar = (props) => {
     }
   };
 
-  // const changeMonth = (delta) => {
-  //   const newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + delta, 1);
-  //   setCurrentDate(newDate);
-  //   setSelectedDate(null); // Change month, reset selectedDate
-  // };
 
   return (
     <>
@@ -113,14 +126,11 @@ const Calendar = (props) => {
         <div className={styles.days}>
           {createCalendar(currentDate.getFullYear(), currentDate.getMonth())}
         </div>
-        {/* <button onClick={() => changeMonth(-1)}>Prev</button>
-        <button onClick={() => changeMonth(1)}>Next</button> */}
         <div style={{position:'relative'}}>
         <img className={styles.calendar_bottom} src='/imgs/calendar_bottom.png'/>
         <img className={styles.duck_img} src='/imgs/ch1_nobol_samewalk.gif'/>
         </div>
       </div>
-      {/* <div style={{marginTop:'20px'}}>Selected Date: {selectedDate && selectedDate.toLocaleDateString()}</div> */}
 
       {props.type === 'detail'
        ?
@@ -157,7 +167,7 @@ const Calendar = (props) => {
             </div>
             <div className={styles2.mission_cp_btn_container}>
                 <p className={styles2.base_cp_cnt}>남은 휴식권</p>
-                <p className={styles2.record_cp_cnt}>4개</p>
+                <p className={styles2.record_cp_cnt}>{dayoff}개</p>
             </div>
         </div>
       </div>

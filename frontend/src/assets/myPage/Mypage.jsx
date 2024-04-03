@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import styles from "./Mypage.module.css";
 import { getMypage } from "../../apis/member";
+import Loading from "../common/loading/Loading";
 
 const Mypage = function () {
   const navigate = useNavigate();
@@ -30,6 +31,10 @@ const Mypage = function () {
     { text: "내 금고", path: "/mywallet" },
     // { text: "내 배지", path: "/mybadge" }
   ];
+
+  if(!mypageInfo){
+    return(<Loading text='로딩중'></Loading>)
+  }
 
   return(
     <div className={styles.mypage_container}>

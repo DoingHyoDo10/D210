@@ -6,6 +6,7 @@ import { getHalley } from "../../apis/halleygalley";
 import { useStore } from "../../stores/member";
 import Calendar from "../common/calendar/Calendar";
 import { getMonthlyExerciseData } from "../../apis/exercise";
+import Loading from "../common/loading/Loading";
 
 const Halli = function(){
     const {memberId, setMemberId} = useStore();
@@ -19,19 +20,23 @@ const Halli = function(){
     var remainingDays = lastDayOfMonth.getDate() - today.getDate();
     useEffect(()=>{
         getHalley(memberId)
-            .then(res=>{setHalleyInfo(res)})
+            .then(res=>{setHalleyInfo(res);})
     }, [])
     const navigate = useNavigate();
 
     const moveToMainPage = function () {
         navigate("/main")
     }
-    const [halleyInfo, setHalleyInfo] = useState({});
+    const [halleyInfo, setHalleyInfo] = useState(null);
     const[rest, setRest] = useState(false);
     
 
     const openRestModal = function(){
         setRest(!rest);
+    }
+
+    if(!halleyInfo){
+        return(<Loading text="조회중..."></Loading>)
     }
 
     return(
@@ -104,7 +109,7 @@ const Halli = function(){
 
                 <div className={styles.calendar_container}>
                     <p className={styles.mission_title2}>회원님이 등록한 미션 현황</p>
-                    <Calendar type="detail" sort="halli"></Calendar>
+                    <Calendar type="detail" sort="halli" dayoff={halleyInfo.dayoff}></Calendar>
                     
                 </div>
 

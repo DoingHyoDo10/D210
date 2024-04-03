@@ -76,6 +76,7 @@ const Mission = function(){
         }).then(res=>{
             if(res){
                 alert('미션 등록에 성공했습니다!')
+                navigate(-1);
             }
             else{
                 alert('이미 등록된 미션이 존재합니다.')
@@ -139,7 +140,7 @@ const Mission = function(){
                         <div className={styles.money_content_container}>
                             <img src="/imgs/money.png" alt="할리 돈 오리" className={styles.money}></img>
                             <div className={styles.money_content_txt_container}>
-                                <p className={styles.money_content_detail_txt} style={{marginTop: 25}}>총<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월 단위)</span> : {totalMoney}원</p>
+                                <p className={styles.money_content_detail_txt} style={{marginTop: 25}}>총<span style={{fontSize : '0.7rem', color : "#7F7F7E"}}>(월 단위)</span> : {`${totalMoney}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")}원</p>
                                 <div className={styles.day_money_container}>
                                     <p className={styles.money_content_detail_txt} style={{marginTop: -5}}>일일 : </p>
                                     <input type="number" className={styles.input_money} style={{marginTop: -5}} value={questMoney} onChange={handleQuestMoneyChange}></input>

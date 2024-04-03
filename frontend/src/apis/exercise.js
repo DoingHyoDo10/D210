@@ -115,7 +115,7 @@ export const updateExerciseCriteria = async (data) => {
 // 유저 한달 운동정보 조회
 export const getMonthlyExerciseData = async (memberId) => {
     const url = `/walk/calendar/${memberId}`;
-    
+    console.log('memberId', memberId);
     return await instance.get(url)
         .then((res) => {
             return res.data.data;
@@ -152,6 +152,30 @@ export const getWhetherExerciseStart = async (memberId) => {
     return await instance.get(url)
         .then((res) => {
             return res.data.data;
+        })
+        .catch((err) => {console.log(err)})
+}
+
+// 리포트 조회
+export const getReport = async () => {
+    const url = '/walk/decided/report';
+    
+    return await instance.get(url)
+        .then((res) => {
+            console.log('리포트 api', res)
+            // return res.data.data;
+        })
+        .catch((err) => {console.log(err)})
+}
+
+// 리포트 조회
+export const getReport2 = async () => {
+    const url = '/walk/report';
+    
+    return await instance.get(url)
+        .then((res) => {
+            console.log('리포트 api', res)
+            // return res.data.data;
         })
         .catch((err) => {console.log(err)})
 }

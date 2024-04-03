@@ -23,6 +23,7 @@ import org.ssafy.d210._common.response.oauth2Google.GoogleOauthTokenInfo;
 import org.ssafy.d210._common.service.UserDetailsImpl;
 import org.ssafy.d210.members.dto.request.AdditionalInfo;
 import org.ssafy.d210.members.dto.request.VoiceMessageInfo;
+import org.ssafy.d210.members.dto.response.JustEoa;
 import org.ssafy.d210.members.dto.response.MemberBadgeInfo;
 import org.ssafy.d210.members.dto.response.ResMyPageDetailInfo;
 import org.ssafy.d210.members.entity.Badge;
@@ -32,6 +33,7 @@ import org.ssafy.d210.members.repository.BadgeRepository;
 import org.ssafy.d210.members.repository.MemberBadgeRepository;
 import org.ssafy.d210.members.repository.MembersRepository;
 import org.ssafy.d210.members.repository.VoiceMessageRepository;
+import org.ssafy.d210.walk.service.ExerciseCriteriaService;
 import org.ssafy.d210.wallets.entity.MemberAccount;
 import org.ssafy.d210.wallets.repository.MemberAccountRepository;
 
@@ -48,6 +50,7 @@ public class MemberDataService {
     private final MemberAccountRepository memberAccountRepository;
     private final VoiceMessageRepository voiceMessageRepository;
     private final BadgeRepository badgeRepository;
+    private final ExerciseCriteriaService exerciseCriteriaService;
     private final GrtRepository grtRepository;
     private final GatRepository gatRepository;
 
@@ -93,6 +96,7 @@ public class MemberDataService {
                 member = addInfo.toEntity(member, member.getMemberAccountId());
             }
 
+            exerciseCriteriaService.setDefaultExerciseCriteria(member);
 
 
        }
@@ -104,9 +108,11 @@ public class MemberDataService {
     public ResMyPageDetailInfo getMyPageDetail (UserDetailsImpl userDetails) throws CustomException {
         Members member = membersRepository.findById(userDetails.getMember().getId()).orElse(null);
 
+
         if(member == null){
             throw  new CustomException(ErrorType.NOT_FOUND_MEMBER);
         }
+
 
         return ResMyPageDetailInfo.of(member);
     }
@@ -149,6 +155,7 @@ public class MemberDataService {
         params.add("grant_type", "refresh_token");
         params.add("client_id", client_id);
         params.add("client_secret", client_secret);
+        log.info("RefreshToken : {} !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!", grt.getRefreshToken());
         params.add("refresh_token", grt.getRefreshToken());
 
         HttpEntity<MultiValueMap<String, String>> requestEntity = new HttpEntity<>(params, headers);
@@ -180,5 +187,16 @@ public class MemberDataService {
     }
 
 
+    public Members getTargetMemberDetail(Long id ){
+        return membersRepository.findById(id).orElse(null);
+    }
+
+
+    public JustEoa getJustEoa (UserDetailsImpl userDetails){
+
+       MemberAccount memberAccount = memberAccountRepository.findMemberAccountById(userDetails.getMember().getMemberAccountId().getId()).orElse(null);
+
+        return JustEoa.of(memberAccount.getEoa());
+    }
 
 }

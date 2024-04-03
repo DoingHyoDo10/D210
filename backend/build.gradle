@@ -38,8 +38,10 @@ dependencies {
     runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
 
     //⭐ AWS 설정
-    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE'
+    implementation 'org.springframework.cloud:spring-cloud-starter-aws:2.2.6.RELEASE' // S3
     implementation "com.amazonaws:aws-java-sdk-s3:1.12.395"
+    implementation group: 'com.amazonaws', name: 'aws-java-sdk-transcribe', version: '1.12.691' // Transcribe
+
 
     // ⭐ Spring boot 3.x이상에서 QueryDsl 패키지를 정의하는 방법
     implementation 'com.querydsl:querydsl-jpa:5.0.0:jakarta'
@@ -52,6 +54,7 @@ dependencies {
     annotationProcessor 'org.projectlombok:lombok'
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     implementation group: 'javax.xml.bind', name: 'jaxb-api', version: '2.4.0-b180830.0359'
+    implementation 'org.springframework.boot:spring-boot-starter-batch'
 
     // ⭐ SWAGGER 적용
     implementation 'org.springdoc:springdoc-openapi-starter-webmvc-ui:2.2.0'
@@ -60,6 +63,15 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-websocket'
     implementation 'com.google.code.gson:gson:2.8.9'
     implementation 'org.webjars:sockjs-client:1.5.1'
+
+    // ⭐ RestTemplate 직렬화 용
+    implementation group: 'com.google.code.gson', name: 'gson', version: '2.10.1'
+
+    // ⭐json-simple
+    implementation group: 'com.googlecode.json-simple', name: 'json-simple', version: '1.1.1'
+
+
+
 
 }
 

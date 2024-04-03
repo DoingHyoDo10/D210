@@ -14,10 +14,12 @@ import org.ssafy.d210._common.service.UserDetailsImpl;
 import org.ssafy.d210.members.dto.request.AdditionalInfo;
 import org.ssafy.d210.members.dto.request.LastLoginInfo;
 import org.ssafy.d210.members.dto.request.ReqMyPageDetailInfo;
+import org.ssafy.d210.members.dto.response.JustEoa;
 import org.ssafy.d210.members.dto.response.ResMyPageDetailInfo;
 import org.ssafy.d210.members.dto.request.MyPageInfo;
 import org.ssafy.d210.members.dto.response.ResAdditionalInfo;
 import org.ssafy.d210.members.entity.Members;
+import org.ssafy.d210.members.repository.MembersRepository;
 import org.ssafy.d210.members.service.MemberDataService;
 import org.ssafy.d210.members.service.MemberService;
 
@@ -32,6 +34,9 @@ public class MemberDataController {
 
     private final MemberService memberService;
     private final MemberDataService memberDataService;
+    private final MembersRepository membersRepository;
+
+
     @GetMapping("/check-duplicated")
     public ApiResponseDto<Map<String, Boolean>> checkDuplicated (@RequestParam("nickname")String nickname) {
         boolean isDuplicated = memberService.isDuplicatedID(nickname);
@@ -95,7 +100,9 @@ public class MemberDataController {
         }
 
 
-        rmdl.ToEntity(userDetails.getMember());
+        Members me = rmdl.ToEntity(userDetails.getMember());
+
+        membersRepository.save(me);
 
         return ResponseUtils.ok(rmdl, MsgType.ADD_INFO_SUCCESSFULLY);
     }
@@ -115,6 +122,18 @@ public class MemberDataController {
     public ApiResponseDto<?> getAccessToken(@AuthenticationPrincipal UserDetailsImpl userDetails) {
 
         return ResponseUtils.ok(memberDataService.refreshAccessToken(userDetails.getMember()), MsgType.GENERATE_TOKEN_SUCCESSFULLY);
+    }
+
+    @GetMapping("/{id}")
+    public ApiResponseDto<?> getTargetMemberDetails(@PathVariable("id") Long id){
+
+        return ResponseUtils.ok(memberDataService.getTargetMemberDetail(id), MsgType.SEARCH_SUCCESSFULLY);
+    }
+
+    @GetMapping("/eoa")
+    public ApiResponseDto<?> getMyAccountId(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        JustEoa ans = memberDataService.getJustEoa(userDetails);
+        return ResponseUtils.ok(ans, MsgType.SEARCH_SUCCESSFULLY);
     }
 
 

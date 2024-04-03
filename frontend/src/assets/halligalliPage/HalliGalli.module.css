@@ -356,7 +356,7 @@
 .walk_cnt_btn_container{
     width: 7.4rem;
     height: 7rem;
-    background: #E1D9CB;
+    background: rgb(255, 250, 222);
     border-radius: 1rem;
     margin-right: 0.5rem;
     display: flex;
@@ -418,7 +418,7 @@
 .walk_road_btn_container{
     width: 7.4rem;
     height: 7rem;
-    background: #E4EED0;
+    background: #fde8a0;
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
@@ -457,7 +457,7 @@
 .mission_money_btn_container{
     width: 14.2rem;
     height: 7rem;
-    background: #E4EED0;
+    background: #ffdf75;
     border-radius: 1rem;
     margin-right: 0.5rem;
     display: flex;
@@ -478,9 +478,9 @@
 }
 
 .mission_cp_btn_container{
-    width: 8.5rem;
+    width: 22.7rem;
     height: 7rem;
-    background: #E1D9CB;
+    background: #fadf86 ;
     border-radius: 1rem;
     display: flex;
     flex-direction: column;
@@ -491,12 +491,13 @@
 
 .base_cp_cnt{
     font-size: 1.2rem;
-    margin-top: 25%;
+    margin-top: 8%;
+    margin-bottom: 0%;
 }
 
 .record_cp_cnt{
     font-size: 1.5rem;
-    margin-top: -10%;
+    margin-top: 0%;
 }
 
 .no_mission_container{

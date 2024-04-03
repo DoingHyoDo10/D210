@@ -24,6 +24,16 @@ spring:
       host: ${REDIS_HOST}
       port: 6379
       password: ${REDIS_PASSWORD}
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+
+#  batch:
+#    job:
+#      enabled: false # 키자마자 자동 실행 방지
+##      name: ${job.name:NONE}
+#    jdbc:
+#      initialize-schema: always
 
 
 
@@ -36,7 +46,7 @@ google:
   token-uri: https://oauth2.googleapis.com/token
   user-info-uri: https://www.googleapis.com/oauth2/v2/userinfo
   authorization-uri: https://accounts.google.com/o/oauth2/auth?client_id=${GOOGLE_CLIENT_ID}&redirect_uri=${GOOGLE_REDIRECT_URI}&response_type=code&scope=https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile
-
+  Text-to-Speech-key: ${Google_TTS_CLOUD_API_KEY}
 server:
   port: 8081
 
@@ -91,3 +101,5 @@ pay:
 blockchain:
   auth: ${BLOCKCHAIN_AUTH}
   chain-id: ${BLOCKCHAIN_CHAIN_ID}
+
+

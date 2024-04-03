@@ -78,4 +78,9 @@ public class ExerciseCriteriaService {
         }
         return responseDto;
     }
+
+    public void deleteCustomCriteria(Members member) {
+        Optional<ExerciseCriteria> customCriteria = exerciseCriteriaRepository.findExerciseCriteriaByMemberAndIsCustomIsTrue(member);
+        customCriteria.ifPresent(exerciseCriteriaRepository::delete);
+    }
 }

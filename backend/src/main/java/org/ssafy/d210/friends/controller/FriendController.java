@@ -1,6 +1,7 @@
 package org.ssafy.d210.friends.controller;
 
 import lombok.RequiredArgsConstructor;
+import org.apache.catalina.User;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
 import org.ssafy.d210._common.response.ApiResponseDto;
@@ -31,6 +32,16 @@ public class FriendController {
     @PostMapping("/request")
     public ApiResponseDto<?> postFriend(@AuthenticationPrincipal UserDetailsImpl userDetails, @RequestBody PostFriendRequest request){
         return ApiResponseDto.of(MsgType.POST_FRIEND_REQUEST_SUCCESSFULLY, friendService.postFriend(userDetails.getMember(), request));
+    }
+
+    @GetMapping("/sent-list")
+    public ApiResponseDto<?> getSentList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return ApiResponseDto.of(MsgType.GET_FRIEND_SENT_LIST_SUCCESSFULLY, friendService.getSentList(userDetails.getMember()));
+    }
+
+    @GetMapping("/received-list")
+    public ApiResponseDto<?> getReceivedList(@AuthenticationPrincipal UserDetailsImpl userDetails){
+        return ApiResponseDto.of(MsgType.GET_FRIEND_RECEIVED_LIST_SUCCESSFULLY, friendService.getReceivedList(userDetails.getMember()));
     }
 
     @PutMapping("/response")

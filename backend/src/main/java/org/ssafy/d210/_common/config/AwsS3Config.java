@@ -4,6 +4,8 @@ import com.amazonaws.auth.AWSStaticCredentialsProvider;
 import com.amazonaws.auth.BasicAWSCredentials;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.AmazonS3ClientBuilder;
+import com.amazonaws.services.transcribe.AmazonTranscribe;
+import com.amazonaws.services.transcribe.AmazonTranscribeClientBuilder;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -43,6 +45,16 @@ public class AwsS3Config {
         return (AmazonS3Client) AmazonS3ClientBuilder.standard()
                 .withRegion(region) // 가용지역 -> 필수 인수
                 .withCredentials(new AWSStaticCredentialsProvider(awsCreds)) // 허가증 받았니? -> 필수 요소
+                .build();
+    }
+
+    @Bean
+    public AmazonTranscribe amazonTranscribe() {
+        BasicAWSCredentials awsCreds = new BasicAWSCredentials(accessKey, secretKey);
+
+        return AmazonTranscribeClientBuilder.standard()
+                .withRegion(region)
+                .withCredentials(new AWSStaticCredentialsProvider(awsCreds))
                 .build();
     }
 

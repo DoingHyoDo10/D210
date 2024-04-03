@@ -61,7 +61,7 @@ const SocketPage4Member = () => {
   const [tabIndex, setTabIndex] = useState(0);
   
   // K. 모달 창 용
-  const [isModal, setIsModal] = useState(true)
+  const [isModal, setIsModal] = useState(false)
 
   // L. CountDown 
   const [time, setTime] = useState(5);
@@ -178,7 +178,7 @@ const SocketPage4Member = () => {
     // 메세지 스택에 저장 
     console.log("들어온 메세지:", receivedMsg);
     if(Number(pageOwnerId) === Number(currentMember.member_id) && receivedMsg.voiceURL === ''){
-      getSpeech(`${currentMember.member_nickname} 님의 응원메세지!:  `+receivedMsg.textContent);
+      getSpeech(`${receivedMsg.senderNickname} 님의 응원메세지!:  `+receivedMsg.textContent);
     }
     setMessages((preMessages) => [...preMessages, receivedMsg]);
   }
@@ -190,7 +190,7 @@ const SocketPage4Member = () => {
     
     const NowGPS =  {lat: receivedGPS.latitude, lng: receivedGPS.longitude};
 
-    console.log(NowGPS)
+    console.log("현재 GPS",NowGPS)
 
     setPosition({...NowGPS})
   }
@@ -245,11 +245,16 @@ const SocketPage4Member = () => {
 
     }
 
+    if(Number(currentMember.member_id) === Number(pageOwnerId)){
+      setIsModal(true);
+    }
+
     setTimeout(() => {
       setIsModal(false);
-
     }, 6500)
 
+
+    getLocation();
 
     return () => {
       setTimeout(() => {
@@ -407,12 +412,14 @@ const SocketPage4Member = () => {
               {time !== 0? (<span style={{"--value": time}}></span>) : "시작!"}
             </div>
           </div>
-        </div>
-      )}
-      
-      <audio style={{display: "none"}} controls autoPlay>
+          <audio style={{display: "none"}} controls autoPlay>
         <source src='https://d210.s3.ap-northeast-2.amazonaws.com/WALK_WALK.mp3' type='audio/mpeg'/>
       </audio>
+        </div>
+        
+      )}
+      
+
 
       <div className={styles.main_container}>
         <div className={styles.tab_container}>

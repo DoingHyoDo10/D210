@@ -148,6 +148,9 @@ public class MemberService {
         ans.add(jwtAccessToken);
         ans.add(String.valueOf(isNew));
         ans.add(jwtRefreshToken);
+        ans.add(String.valueOf(member.getId()));
+        ans.add(member.getNickname());
+        ans.add(member.getProfileUrl());
         // C-10) [REDIS]에 Member 의 PK(식별자), RefreshToken, AccessToken 을 저장
         refreshTokenInRedisRepository.save(new RefreshTokenInRedis(String.valueOf(member.getId()), jwtRefreshToken, jwtAccessToken));
         gatRepository.save(new GatRedis(member.getId(), gat.getAccess_token()));

@@ -2,10 +2,7 @@ package org.ssafy.d210.walk.entity;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.*;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 import org.hibernate.annotations.ColumnDefault;
 import org.ssafy.d210.members.entity.Members;
 
@@ -14,6 +11,7 @@ import java.time.LocalDate;
 @Entity
 @Getter
 @NoArgsConstructor
+@ToString
 public class ExerciseCriteria { // 운동 기준
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY) // 1)
@@ -42,6 +40,18 @@ public class ExerciseCriteria { // 운동 기준
     @Column(name = "heart_rate")
     @ColumnDefault("0")
     private Long heartRate;
+
+    @Override
+    public String toString() {
+        return "ExerciseCriteria{" +
+                "id=" + id +
+                ", isCustom=" + isCustom +
+                ", steps=" + steps +
+                ", exerciseMinute=" + exerciseMinute +
+                ", heartRate=" + heartRate +
+                '}';
+    }
+
 
     @Builder
     public ExerciseCriteria(Members member, Boolean isCustom, Long steps, Long exerciseMinute, Long heartRate) {

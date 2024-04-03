@@ -4,9 +4,11 @@ import { useEffect, useState } from "react"
 import { ResponsiveRadialBar } from '@nivo/radial-bar'
 import { getRealtimeExerciseData, getExerciseCriteria } from "../../apis/exercise"
 import Calendar from "../common/calendar/Calendar"
+import { useStore } from '../../stores/member';
 
 const Walking = function () {
   const navigate = useNavigate();
+  const {memberId, setMemberId} = useStore();
   const [realtimeExerciseData, setRealtimeExerciseData] = useState({steps:0, time:0, distance:0});  
   const [myCriteria, setMyCriteria] = useState({steps:0, time:0, distance:0});
 
@@ -138,7 +140,13 @@ const Walking = function () {
             <img className={styles.go_exercise_btn_img} src="/imgs/ch1_bol_walk.gif"/>
             <p className={styles.go_exercise_btn_txt}>운동 측정</p>
         </div>
-        <Calendar/>
+
+        <div className={styles.walking_title}>어제의 운동</div> 
+        { memberId && (
+          <div className={styles.calendar_container}>
+            <Calendar type="detail" dayoff={0}></Calendar>
+          </div> 
+        )}
     </div>
 )};
 

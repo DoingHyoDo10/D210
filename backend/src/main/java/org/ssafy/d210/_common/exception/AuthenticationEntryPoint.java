@@ -29,6 +29,8 @@ public class AuthenticationEntryPoint implements org.springframework.security.we
 
         String exception = (String) request.getAttribute("exception");
 
+        log.error(request.getRequestURI());
+
         // 소켓 헤더 확인하기
         Enumeration<String> headerNames = request.getHeaderNames();
 
@@ -73,6 +75,7 @@ public class AuthenticationEntryPoint implements org.springframework.security.we
         response.setStatus(error.getCode());
         response.setContentType("application/json");
         response.setCharacterEncoding("UTF-8");
+
 
         try {
             // B-2 에러가 무엇인지에 대한 Body를 Response에 쓴다.

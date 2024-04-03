@@ -27,6 +27,7 @@ import org.ssafy.d210.members.service.MemberService;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 
 @RestController
@@ -91,6 +92,9 @@ public class MemberOauth2Controller {
         List<String> ans = memberService.SaveUserAndGetToken(gti.getAccess_token(),response,gat,grt);
         String jwtAccessToken = ans.get(0);
         String jwtRefreshToken = ans.get(2);
+        String memberId = ans.get(3);
+        String memberNickname= ans.get(4);
+        String memberProfileUrl = ans.get(5);
         boolean isNew = ans.get(1).equals("true");
         log.info("해당 사용자는 첫번째 가입 입니까?={}",isNew? "Yes" : "NO");
         log.info("해당 사용자의 AccessToken: {}", jwtAccessToken);
@@ -99,11 +103,19 @@ public class MemberOauth2Controller {
         ret.put("Authorization", jwtAccessToken);
         ret.put("Refresh_Token", jwtRefreshToken);
         ret.put("Google_access_token", gti.getAccess_token());
-        ret.put("Google_refresh_token",gti.getRefresh_token());
+        ret.put("member_id", memberId);
+        ret.put("member_nickname", memberNickname);
+        ret.put("member_profile_url",memberProfileUrl);
+
 
         if(gti.getRefresh_token() == null){
-            ret.put("Google_refresh_token", grt.getRefresh_token());
+            ret.put("Google_refresh_token", Objects.requireNonNull(grtRepository.findById(Long.parseLong(memberId)).orElse(null)).getRefreshToken());
+        }else{
+            ret.put("Google_refresh_token",gti.getRefresh_token());
         }
+
+        log.info("입력으로 들어온 GRT가 NULL 인가요? {}", gti.getRefresh_token() == null);
+        log.info("Response Body의 내용 {}", ret.values());
 
         return ResponseUtils.ok(ret, MsgType.GENERATE_TOKEN_SUCCESSFULLY);
     }

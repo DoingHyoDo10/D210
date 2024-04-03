@@ -4,6 +4,7 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.Setter;
 import org.ssafy.d210.members.entity.Members;
+import org.ssafy.d210.wallets.entity.MemberAccount;
 
 @Getter
 @Setter
@@ -34,8 +35,10 @@ public class ResMyPageDetailInfo {
 
     String phoneNumber;
 
+    String eoa;
+
     @Builder
-    public ResMyPageDetailInfo(String profileUrl, String nickname, Long birthYear, double height, double weight, String gender, String location, double longitude, double latitude, String comment, Long dailyCriteria, String phoneNumber) {
+    public ResMyPageDetailInfo(String profileUrl, String nickname, Long birthYear, double height, double weight, String gender, String location, double longitude, double latitude, String comment, Long dailyCriteria, String phoneNumber, String eoa) {
         this.profileUrl = profileUrl;
         this.nickname = nickname;
         this.birthYear = birthYear;
@@ -48,6 +51,7 @@ public class ResMyPageDetailInfo {
         this.comment = comment;
         this.dailyCriteria = dailyCriteria;
         this.phoneNumber = phoneNumber;
+        this.eoa = eoa;
     }
 
     public static ResMyPageDetailInfo of (Members me) {
@@ -64,6 +68,7 @@ public class ResMyPageDetailInfo {
                 .comment(me.getComment())
                 .dailyCriteria(me.getDailyCriteria())
                 .phoneNumber(me.getPhoneNumber())
+                .eoa(me.getMemberAccountId().getEoa())
                 .build();
     }
 }

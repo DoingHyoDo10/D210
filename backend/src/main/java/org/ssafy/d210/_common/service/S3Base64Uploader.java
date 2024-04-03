@@ -52,7 +52,13 @@ public class S3Base64Uploader {
                 extension = "wav";
             } else if (strings[0].equals("data:audio/mp3;base64")) {
                 extension = "mp3";
-            }  else if (strings[0].equals("data:audio/3gpp;base64")) {
+            } else if (strings[0].equals("data:audio/mpeg;base64")) {
+                extension = "mp3";
+            } else if (strings[0].equals("data:audio/3gpp;base64")) {
+                extension = "m4a";
+            } else if (strings[0].equals("data:audio/webm;base64")) {
+                extension = "webm";
+            } else if (strings[0].equals("data:audio/x-m4a;base64")){
                 extension = "m4a";
             }
 
@@ -73,7 +79,7 @@ public class S3Base64Uploader {
             log.info(tempFile.getAbsolutePath());
 
             // 1-6) 파일 이름은 유일 해야 한다.
-            String originalName = UUID.randomUUID().toString();
+            String originalName = UUID.randomUUID() +"."+extension;
 
             // 1-7) S3에 tempFile을 저장하고 URL을 받는다.
             //      여기서 사용하는 S3 저장 방식은 Stream 방식이다.

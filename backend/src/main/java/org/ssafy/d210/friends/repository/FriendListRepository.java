@@ -20,12 +20,16 @@ public interface FriendListRepository extends JpaRepository<FriendList, Long> {
     Optional<List<FriendList>> findFriendListsBySenderIdAndIsFriendIsTrue(Members member);
     Optional<FriendList> findFriendListBySenderIdAndReceiverId(Members member1, Members member2);
 
+    Optional<List<FriendList>> findFriendListsBySenderIdAndIsAcceptedIsTrueAndIsFriendIsFalse(Members member);
+
+    Optional<List<FriendList>> findFriendListsByReceiverIdAndIsAcceptedIsTrueAndIsFriendIsFalse(Members member);
+
     @Query(value =
             "SELECT m.member_id as memberId, m.profile_url as profileUrl, m.nickname as nickname, f.is_friend as isFriend, f.is_accepted as isAccepted " +
                     "FROM members m LEFT JOIN friend_list f " +
                     "ON m.member_id = f.receiver_id AND f.sender_id = :memberId " +
-                    "WHERE m.nickname LIKE CONCAT('%', :keyword, '%') AND m.member_id <> :memberId", nativeQuery = true)
-    List<MemberListDto> findAllBySenderId(@Param("memberId") Long memberId, @Param("keyword") String keyword);
+                    "WHERE m.nickname LIKE CONCAT('%', :keyword, '%') AND m.member_id <> :memberId AND (f.is_accepted = false OR f.is_accepted IS NULL)", nativeQuery = true)
+    List<MemberListDto> findAllByKeyword(@Param("memberId") Long memberId, @Param("keyword") String keyword);
 
     @Query(value =
             "SELECT m.member_id as memberId, m.profile_url as profileUrl, m.nickname as nickname, h.is_accepted as isAccepted " +

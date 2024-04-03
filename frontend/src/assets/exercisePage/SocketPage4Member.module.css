@@ -1,16 +1,16 @@
 @font-face {
     font-family: "bc_b";
-    src: url(/public/fonts/BCcardB.ttf);
+    src: url(/fonts/BCcardB.ttf);
 }
 
 @font-face {
     font-family: "bc_l";
-    src: url(/public/fonts/BCcardL.ttf);
+    src: url(/fonts/BCcardL.ttf);
 }
 
 @font-face {
     font-family: "bp_r";
-    src: url(/public/fonts/BagelFat.ttf);
+    src: url(/fonts/BagelFat.ttf);
     font-weight: normal;
     font-style: normal;
 }

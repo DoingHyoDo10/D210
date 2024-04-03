@@ -73,6 +73,7 @@ const MyGoalUpdate = function () {
               <div className={styles.mygoalupdate_byage_content_container}>
                 <div>걸음수 {myCriteriaByAge.steps} 보</div>
                 <div>운동시간 {myCriteriaByAge.exerciseMinute} 분</div>
+                <div>이동거리 {myCriteriaByAge.exerciseDistance} km</div>
               </div>
             </div>
           )}
@@ -85,6 +86,10 @@ const MyGoalUpdate = function () {
               <div className={styles.mygoalupdate_field_container}>
                 <div className={styles.mygoalupdate_sub_title}>목표 운동시간 (분)</div>
                 <input className={styles.mygoalupdate_input} type="number" placeholder='운동시간을 입력해주세요' name="exerciseMinute" value={myCriteria.exerciseMinute} onChange={handleChange}/>
+              </div>
+              <div className={styles.mygoalupdate_field_container}>
+                <div className={styles.mygoalupdate_sub_title}>목표 이동거리 (km)</div>
+                <input className={styles.mygoalupdate_input} type="number" placeholder='이동거리를 입력해주세요' name="exerciseDistance" value={myCriteria.exerciseDistance} onChange={handleChange}/>
               </div>
               <button className={styles.mygoalupdate_btn} onClick={handleSubmit}>설 정</button>
             </>

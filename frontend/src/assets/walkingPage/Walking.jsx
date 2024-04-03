@@ -2,157 +2,162 @@ import styles from "./Walking.module.css"
 import { useNavigate } from "react-router-dom"
 import { useEffect, useState } from "react"
 import { ResponsiveRadialBar } from '@nivo/radial-bar'
-import { getRealtimeExerciseData } from "../../apis/exercise"
+import { getRealtimeExerciseData, getExerciseCriteria } from "../../apis/exercise"
 import Calendar from "../common/calendar/Calendar"
 
+const Walking = function () {
+  const navigate = useNavigate();
+  const [realtimeExerciseData, setRealtimeExerciseData] = useState({steps:0, time:0, distance:0});  
+  const [myCriteria, setMyCriteria] = useState({steps:0, time:0, distance:0});
 
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await getRealtimeExerciseData();
 
-const Walking = function(){
+        // 거리 단위 m -> km로 변환 & 소수점 첫 번째 자리까지 반올림
+        const distanceInKm = (response.distance / 1000).toFixed(1);
 
+        setRealtimeExerciseData({...response, distance: parseFloat(distanceInKm)});
+
+        const criteriaRes = await getExerciseCriteria();
+        setMyCriteria({steps: criteriaRes.steps, time: criteriaRes.exerciseMinute, distance: criteriaRes.exerciseDistance});
+        console.log(criteriaRes);
+      } catch (error) {
+        console.log('운동 정보 조회 실패 :', error)
+      }
+    })();
+  },[]);
+
+  const [data, setData] = useState([
+    {
+      "id": "걸음 수",
+      "data": [
+        {
+          "x": '현재',
+          "y":  0
+        }
+      ]
+    },
+    {
+      "id": "운동시간",
+      "data": [
+        {
+          "x": '현재',  
+          "y": 0
+        }
+      ]
+    },
+    {
+      "id": "이동거리",
+      "data": [
+        {
+          "x": '현재',  
+          "y": 0
+        }
+      ]
+    }
+  ]);
+
+  useEffect(() => {
+    setData([
+      {
+        "id": "걸음 수",
+        "data": [
+          {
+            "x": '현재',
+            "y":  myCriteria.steps > 0 ? (realtimeExerciseData.steps / myCriteria.steps) * 100 : 0
+          }
+        ]
+      },
+      {
+        "id": "운동시간",
+        "data": [
+          {
+            "x": '현재',  
+            "y": myCriteria.time > 0 ? (realtimeExerciseData.time / myCriteria.time) * 100 : 0
+          }
+        ]
+      },
+      {
+        "id": "이동거리",
+        "data": [
+          {
+            "x": '현재',  
+            "y": myCriteria.distance > 0 ? (realtimeExerciseData.distance / myCriteria.distance) * 100 : 0
+          }
+        ]
+      }
+    ]);
+    }, [realtimeExerciseData, myCriteria])
 
     const currentMember =  JSON.parse(localStorage.getItem('tokens')) || {
-        member_id: 1000,
-        member_nickname: "지나가는 오리 1 ",
-        member_profile_url: "https://d210.s3.ap-northeast-2.amazonaws.com/duck.gif",
-        Authorization: null
+      member_id: 1000,
+      member_nickname: "지나가는 오리 1 ",
+      member_profile_url: "https://d210.s3.ap-northeast-2.amazonaws.com/duck.gif",
+      Authorization: null    
       };
 
-    const navigate = useNavigate(); 
-   
-
-    const moveToSockeForMember = function () {
-        navigate(`/member/${currentMember.member_id}`)
+    const moveToSockeForMember = () => {
+      navigate(`/member/${currentMember.member_id}`)
     }
-    const [realtimeExerciseData, setRealtimeExerciseData] = useState({steps: 0, time: 0 });
-    const [data, setData] = useState([
-        {
-          "id": "걸음수",
-          "data": [
-            {
-              "x": '진행 정도',  
-              "y":  6432
-            }
-          ]
-        },
-        {
-          "id": "걸은 시간",
-          "data": [
-            {
-              "x": '진행 정도',  
-              "y": 44
-            }
-          ]
-        },
-        {
-          "id": "거리",
-          "data": [
-            {
-              "x": '진행 정도',  
-              "y": 2
-            }
-          ]
-        }
-      ]);
-
-    useEffect(() => {
-
-        getRealtimeExerciseData()
-        .then((res) => {
-            setRealtimeExerciseData(res);
-        })
-    },[])
-
-    useEffect(() => {
-        setData([
-            {
-              "id": "걸음수",
-              "data": [
-                {
-                  "x": "진행 정도",  
-                  "y": realtimeExerciseData.steps
-                }
-              ]
-            },
-            
-            {
-              "id": "걸은 시간",
-              "data": [
-                {
-                  "x": "진행 정도",  
-                  "y": realtimeExerciseData.time
-                }
-              ]
-            },
-            {
-              "id": "거리",
-              "data": [
-                {
-                  "x": "진행 정도",  
-                  "y": 34
-                }
-              ]
-            }
-          ]);
-    }, [realtimeExerciseData])
-
-   
-
-    
 
   return(
     <div className={styles.walking_container}>
-        <div className={styles.walking_title}>
-            <p>오늘의 운동</p>
-        </div>  
+        <div className={styles.walking_title}>오늘의 운동</div>  
         <div className={styles.walking_content_container} >
-           <div className={styles.walking_graph_container}>
+          <div className={styles.walking_graph_container}>
             <MyResponsiveRadialBar data={data}/>
-           </div>
-            <div className={styles.walking_info_box}>
-                <div className="m-2 w-20">
-                    <div>걸음 수</div>
+          </div>
+            <div className={styles.walking_info_container}>
+              <div className={styles.walking_info_sub_container}>
+                <div className={styles.info_title}>걸음 수</div>
+                <div className={styles.info_box}>
+                  <div>{realtimeExerciseData.steps} /</div>
+                  <div>{myCriteria.steps} 보</div>
+                </div>
+              </div>
+                <div className={styles.walking_info_sub_container}>
+                    <div className={styles.info_title}>운동 시간</div>
                     <div className={styles.info_box}>
-                        6000/ 
-                        <br/> 
-                        100000
+                      <div>{realtimeExerciseData.time} /</div>
+                      <div>{myCriteria.time} 분</div>
                     </div>
                 </div>
-                <div className="ml-2 mr-2  w-20">
-                    <div>걸은 시간</div>
-                    <div className={styles.info_box}>60/<br/> 100분</div>
-                </div>
-                <div className="ml-2 mr-2  w-20">
-                    <div>거리</div>
-                    <div className={styles.info_box}>4.5 <br/> / 7km</div>
+                <div className={styles.walking_info_sub_container}>
+                    <div className={styles.info_title}>이동 거리</div>
+                    <div className={styles.info_box}>
+                      <div>{realtimeExerciseData.distance} /</div>
+                      <div>{myCriteria.distance} km</div>
+                    </div>
                 </div>  
             </div>
         </div>
         
         <div className={styles.go_exercise_btn} onClick={moveToSockeForMember}>
-             <img src="https://d210.s3.ap-northeast-2.amazonaws.com/walking_duck.gif" width={"50rem"}/>
-             <p className={styles.go_exercise_btn_txt}>운동 하러 가볼껴?</p>
+            <img className={styles.go_exercise_btn_img} src="/imgs/ch1_bol_walk.gif"/>
+            <p className={styles.go_exercise_btn_txt}>운동 측정</p>
         </div>
-         <Calendar/>
+        <Calendar/>
     </div>
-  )
-}
+)};
 
 const MyResponsiveRadialBar = ({ data }) => (
     <ResponsiveRadialBar
         data={data}
-        valueFormat=" >-0,.2~r"
+        valueFormat=" >-0,.2f"
         startAngle={0}
         endAngle={359}
         padding={0.2}
         cornerRadius={7}
         margin={{ top: 40, right: 40, bottom: 40, left: 40 }}
         colors={['#FFCB23']} 
-        tracksColor={["#F9DD84"]}
+        tracksColor={["#FFEFBC"]}
         enableRadialGrid={false}
         enableCircularGrid={false}
         radialAxisStart={null}
         circularAxisOuter={null}
-        maxValue={1000}
+        maxValue={100}
         legends={[
             {
                 anchor: 'right',
@@ -178,6 +183,6 @@ const MyResponsiveRadialBar = ({ data }) => (
             }
         ]}
     />
-)
+);
 
 export default Walking;

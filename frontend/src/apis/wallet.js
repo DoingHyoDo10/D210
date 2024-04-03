@@ -80,7 +80,7 @@ export const requestMoneyExchange = async (money) => {
 
   return await instance.put(url, {exchangeMoneyValue: money})
       .then((res) => {
-        return res.data.putMoneyValue
+        return res.data.data.putMoneyValue
       })
       .catch((err) => {console.log(err)})
 }

@@ -64,7 +64,8 @@ const MyWallet = function () {
         alert('환전할 금액을 입력해주세요!')
       } else {
         const response = await requestMoneyExchange(inputMoney);
-        setEggMoney((prevInfo) => ({...prevInfo, money: response}));
+        console.log(response)
+        setEggMoney((prevInfo) => ({...prevInfo, money: eggMoney.money - response}));
         updateInputMoney(0);
         setExchangeModalOpen(false);
         alert('환전 성공!');

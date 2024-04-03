@@ -1,5 +1,5 @@
 import { ethers } from 'ethers';
-import FitnessTracker from './FitnessTracker.json';
+import WalkWalk from './WalkWalk.json';
 
 // 환경 설정
 const endPoint = 'https://eth-sepolia.g.alchemy.com/v2/7mSBp_od0HOmQy9s-vLF4k5NnrohXhc5';
@@ -7,7 +7,7 @@ const privateKey = import.meta.env.VITE_PRIVATE_KEY;
 const provider = new ethers.providers.JsonRpcProvider(endPoint);
 const wallet = new ethers.Wallet(privateKey, provider);
 const contractAddress = import.meta.env.VITE_CONTRACT_ADDRESS;
-const contract = new ethers.Contract(contractAddress, FitnessTracker.abi, wallet);
+const contract = new ethers.Contract(contractAddress, WalkWalk.abi, wallet);
 
 // 정보 기록 함수
 export async function recordExercise(memberId, date, steps, duration, distance) {
@@ -18,7 +18,7 @@ export async function recordExercise(memberId, date, steps, duration, distance) 
 }
 
 export async function getExerciseData(memberId, date) {
-  const exerciseData = await contract.getExerciseDataByDate(memberId, date);
+  const exerciseData = await contract.getExerciseDataByTimestamp(memberId, date);
   console.log('조회 성공 func: ', exerciseData);
   return exerciseData;
 }

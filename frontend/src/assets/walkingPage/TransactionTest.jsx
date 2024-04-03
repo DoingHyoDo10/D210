@@ -1,12 +1,8 @@
-import { useEffect, useState } from "react"
-import { useNavigate } from "react-router-dom"
+
 import { recordExercise, getExerciseData } from '../contracts/ethers'
 
 const ContractTest = function(){
-  const [steps, setSteps] = useState('');
-  const [duration, setDuration] = useState('');
-  const [distance, setDistance] = useState('');
-
+  
   const handleSubmit1 = async (e) => {
     try {
       await recordExercise(3, 20240402, 10000, 78, 4);

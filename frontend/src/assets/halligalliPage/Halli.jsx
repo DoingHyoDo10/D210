@@ -20,14 +20,14 @@ const Halli = function(){
     var remainingDays = lastDayOfMonth.getDate() - today.getDate();
     useEffect(()=>{
         getHalley(memberId)
-            .then(res=>{setHalleyInfo(res)})
+            .then(res=>{setHalleyInfo(res);})
     }, [])
     const navigate = useNavigate();
 
     const moveToMainPage = function () {
         navigate("/main")
     }
-    const [halleyInfo, setHalleyInfo] = useState({});
+    const [halleyInfo, setHalleyInfo] = useState(null);
     const[rest, setRest] = useState(false);
     
 

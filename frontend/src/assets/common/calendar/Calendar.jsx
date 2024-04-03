@@ -13,6 +13,7 @@ const Calendar = (props) => {
   useEffect(()=>{
     getMonthlyExerciseData(memberId).then(res=>{setExerciseData(res); console.log(res)});
     console.log('dayoff: ' + props.dayoff)
+    setDayoff(props.dayoff);
   },[])
   const [currentDate, setCurrentDate] = useState(new Date());
   const [selectedDate, setSelectedDate] = useState(new Date());
@@ -24,7 +25,7 @@ const Calendar = (props) => {
   const openRestModal = function(){
       setRest(!rest);
       if(rest){
-        if(props.dayoff > 0){
+        if(dayoff > 0){
           useDayoff(memberId)
             .then(res => {
               updateState();
@@ -63,9 +64,6 @@ const Calendar = (props) => {
   const getClassNames = (day, month) => {
     if(props.type === 'detail'){
       let classNames = `${styles.day}`;
-      // if (day === currentDate.getDate() && month === currentDate.getMonth()) {
-        
-      // }
       if (selectedDate && day === selectedDate.getDate() && month === selectedDate.getMonth()) {
         classNames += ` ${styles.selected}`;
       }
@@ -101,11 +99,6 @@ const Calendar = (props) => {
     }
   };
 
-  // const changeMonth = (delta) => {
-  //   const newDate = new Date(currentDate.getFullYear(), currentDate.getMonth() + delta, 1);
-  //   setCurrentDate(newDate);
-  //   setSelectedDate(null); // Change month, reset selectedDate
-  // };
 
   return (
     <>
@@ -133,14 +126,11 @@ const Calendar = (props) => {
         <div className={styles.days}>
           {createCalendar(currentDate.getFullYear(), currentDate.getMonth())}
         </div>
-        {/* <button onClick={() => changeMonth(-1)}>Prev</button>
-        <button onClick={() => changeMonth(1)}>Next</button> */}
         <div style={{position:'relative'}}>
         <img className={styles.calendar_bottom} src='/imgs/calendar_bottom.png'/>
         <img className={styles.duck_img} src='/imgs/ch1_nobol_samewalk.gif'/>
         </div>
       </div>
-      {/* <div style={{marginTop:'20px'}}>Selected Date: {selectedDate && selectedDate.toLocaleDateString()}</div> */}
 
       {props.type === 'detail'
        ?

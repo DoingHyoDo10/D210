@@ -103,7 +103,7 @@ const Galli = function(){
 
                 <div className={styles.calendar_container}>
                     <p className={styles.mission_title2}>회원님이 등록한 미션 현황</p>
-                    <Calendar type="detail"></Calendar>
+                    <Calendar type="detail" dayoff={galleyInfo.dayoff}></Calendar>
                     
                 </div>
 

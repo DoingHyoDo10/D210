@@ -73,6 +73,7 @@ const Walking = function(){
                 }
               ]
             },
+            
             {
               "id": "걸은 시간",
               "data": [

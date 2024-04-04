@@ -24,7 +24,7 @@ const Treasure = function(){
           })
           setTotalSteps(totalSteps);
           let pos = 0;
-          const arr = [10000,50000,100000,200000,300000,400000]
+          const arr = [0, 10000,50000,100000,300000,500000]
           for(let i=0; i<arr.length; i++){
             if(totalSteps<arr[i]){
               if(i==0){

@@ -49,7 +49,7 @@
 .map_img{
     width: 100vw;
     max-width: 412px;
-    height: auto;
+    height: 100%;
 }
 
 .marker_container{

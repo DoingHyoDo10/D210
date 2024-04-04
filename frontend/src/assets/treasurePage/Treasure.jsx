@@ -29,7 +29,7 @@ const Treasure = function(){
               else{
               pos = i-1;
               }
-              setPos(position[i]);
+              setPos(position[i-1]);
               break;
             }
           }

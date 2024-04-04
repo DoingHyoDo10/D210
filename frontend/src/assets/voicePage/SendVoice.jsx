@@ -12,20 +12,22 @@ const SendVoice = function(){
                 const list = [];
                 console.log(res)
                 // 각 갈리가 운동중인지 체크
-                res.forEach(data => {
-                    getWhetherExerciseStart(data.memberId)
-                        .then(r=>{
-                            if(r){
-                                list.push(data);
-                            }
-                        })
-                })
-                setGalliList(list);
+                // res.forEach(data => {
+                //     getWhetherExerciseStart(data.memberId)
+                //         .then(r=>{
+                //             if(r){
+                //                 list.push(data);
+                //             }
+                //         })
+                // })
+                if(res){
+                    setGalliList(res);
+                }
             })
     },[])
     const navigate = useNavigate();
     const [galli, setGalli] = useState(false);
-    const [galliList, setGalliList] = useState({});
+    const [galliList, setGalliList] = useState({profileUrl:'', nickname:'',memberId:0});
 
     const moveToVoicePage = function(){
         navigate("/voice")
@@ -43,18 +45,21 @@ const SendVoice = function(){
         setGalli(!galli);
         getGalleyList()
             .then(res=>{
-                const list = [];
-                console.log(res)
-                // 각 갈리가 운동중인지 체크
-                res.forEach(data => {
-                    getWhetherExerciseStart(data.memberId)
-                        .then(r=>{
-                            if(r){
-                                list.push(data);
-                            }
-                        })
-                })
-                setGalliList(list);
+                // const list = [];
+                // console.log(res)
+                // // 각 갈리가 운동중인지 체크
+                // res.forEach(data => {
+                //     getWhetherExerciseStart(data.memberId)
+                //         .then(r=>{
+                //             if(r){
+                //                 list.push(data);
+                //             }
+                //         })
+                // })
+                // setGalliList(list);
+                if(res){
+                    setGalliList(res);
+                }
             })
     }
 

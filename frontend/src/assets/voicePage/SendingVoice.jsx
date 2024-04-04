@@ -219,7 +219,7 @@ const SendingVoice = function(){
                         <div className={styles.galli_list_container}>
                             <div className={styles.galli_names_container}>
 
-                                {galliList != null && galliList.map((data, index) => {
+                                {galliList != null ? galliList.map((data, index) => {
                                     return(
                                         <div key={index} className={styles.galli_name_container}>
                                             <img src={data.profileUrl} alt="프로필 사진" className={styles.galli_img_container} ></img>
@@ -231,7 +231,9 @@ const SendingVoice = function(){
                                             </div>
                                         </div>  
                                     )
-                                })}
+                                })
+                                :<h2 style={{textAlign:'center'}}>갈리가 존재하지 않아요...</h2>
+                            }
                             </div>
                         </div>
                     </div>

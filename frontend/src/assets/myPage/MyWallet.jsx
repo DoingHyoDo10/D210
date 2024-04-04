@@ -48,6 +48,8 @@ const MyWallet = function () {
     try {
       if (inputMoney === 0) {
         alert('충전할 금액을 입력해주세요!')
+      } else if (inputMoney > 100000000) {
+        alert('입력값이 너무 큽니다. 다시 입력해주세요.');
       } else {
         const res = await requestMoneyCharge(inputMoney);
         updateTid(res.tid);
@@ -70,6 +72,8 @@ const MyWallet = function () {
     try {
       if (inputMoney === 0) {
         alert('환전할 금액을 입력해주세요!')
+      } else if (!eggMoney || inputMoney > eggMoney.money) {
+        alert('보유한 머니보다 많은 금액은 환전할 수 없습니다.');
       } else {
         setIsLoading(true);
         const response = await requestMoneyExchange(inputMoney);

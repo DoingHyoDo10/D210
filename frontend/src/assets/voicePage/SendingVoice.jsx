@@ -146,13 +146,14 @@ const SendingVoice = function(){
 
     const [galli, setGalli] = useState(false);
     const [galliName, setGalliName] = useState('');
-    const [galliList, setGalliList] = useState([{profileUrl: '', nickname: ''}]);
+    const [galliList, setGalliList] = useState([{profileUrl: '', nickname: '', memberId: 0}]);
     const [keyword, setKeyword] = useState('');
 
     const openGalliListModal = function(){
         setGalli(!galli);
         getGalleyList()
-            .then(res=>{console.log(res); setGalliList(res)})
+            .then(res=>{if(res) 
+                setGalliList(res)})
     }
     const handleInputChange = (e) => {
         const value = e.target.value;

@@ -83,7 +83,7 @@ const Treasure = function(){
                   
                   {
                     boxPosition.map((data, index)=>{
-                      return(<img className={`${styles.box} ${index>idx ? styles.animation1 : ''}`} src={index>idx ?"/imgs/box_closed.png":"/imgs/box_opened.png"} style={{left: data.x, bottom: data.y}}/>)
+                      return(index != 0 && <img className={`${styles.box} ${index>idx ? styles.animation1 : ''}`} src={index>idx ?"/imgs/box_closed.png":"/imgs/box_opened.png"} style={{left: data.x, bottom: data.y}}/>)
                     })
                   }
                   <div className={styles.marker_container} style={{left: `${pos.x}`, bottom: `${pos.y}`, backgroundImage: 'url(/imgs/yes_marker.png)'}}>

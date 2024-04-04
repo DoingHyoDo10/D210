@@ -65,8 +65,6 @@ SSAFY 10기 2학기 특화 프로젝트 - WALKWALK
 - Nodejs
 - Vite
 - Tailwind CSS
-- Web3js
-- Solidity
 - 사용한 외부 API
     - Web Speech API
     - Google Fitness API
@@ -91,10 +89,20 @@ SSAFY 10기 2학기 특화 프로젝트 - WALKWALK
 - AWS Transcribe
 - AWS Lambda
 - Spring Batch
-- Web3j
 - Google TTS Cloud AI
 - 사용한 외부 API
     - Google fitness API
+
+### BLOCKCHAIN
+
+- Solidity
+- Remix IDE
+- MetaMask
+- Ethereum
+- Sepolia TestNet
+- ethersjs
+- Web3j
+- Klaytn API Service
 
 ### CI/CD
 

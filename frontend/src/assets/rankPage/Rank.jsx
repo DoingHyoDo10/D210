@@ -59,7 +59,7 @@ const Rank = function(){
         tabCont:(
             <div className={styles.day_rank_container}>
                 <div className={styles.rank_day}>
-                    <p>{month}월 {todayDate}일</p>
+                    <p>{month}월 {todayDate-1}일</p>
                 </div>
                 <div className={styles.top_rank_container}>
                     <div className={styles.top3_ranks}>

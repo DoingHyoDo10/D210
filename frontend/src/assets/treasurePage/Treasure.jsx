@@ -18,6 +18,7 @@ const Treasure = function(){
           r.forEach(d=>{
             totalSteps += d.steps;
           })
+          setTotalSteps(totalSteps);
           let pos = 0;
           const arr = [10000,50000,100000,200000,300000,400000]
           for(let i=0; i<arr.length; i++){
@@ -38,6 +39,7 @@ const Treasure = function(){
     const [nickname, setNickname] = useState(JSON.parse(localStorage.getItem('tokens')).nickname);
     const [pos, setPos] = useState({});
     const [egg, setEgg] = useState(0);
+    const [totalsteps, setTotalSteps] = useState(0);
 
     const position = [
       {x:'24%', y:'13%'}, 

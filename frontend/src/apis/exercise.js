@@ -168,14 +168,26 @@ export const getReport = async () => {
         .catch((err) => {console.log(err)})
 }
 
-// 리포트 조회
-export const getReport2 = async () => {
-    const url = '/walk/report';
+// 작정한 운동 시작
+export const startExercise = async (time) => {
+    const url = `/walk/decided/start?start-time=${time}`;
     
     return await instance.get(url)
         .then((res) => {
-            console.log('리포트 api', res)
+            console.log('운동시작 api', res)
             // return res.data.data;
+        })
+        .catch((err) => {console.log(err)})
+}
+
+// 작정한 운동 시작
+export const closeExercise = async (time) => {
+    const url = `/walk/decided/end?end-time=${time}`;
+    
+    return await instance.get(url)
+        .then((res) => {
+            console.log('운동종료 api', res)
+            return res.data.data;
         })
         .catch((err) => {console.log(err)})
 }

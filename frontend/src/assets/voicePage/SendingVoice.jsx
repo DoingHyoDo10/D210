@@ -146,13 +146,14 @@ const SendingVoice = function(){
 
     const [galli, setGalli] = useState(false);
     const [galliName, setGalliName] = useState('');
-    const [galliList, setGalliList] = useState([{profileUrl: '', nickname: ''}]);
+    const [galliList, setGalliList] = useState(null);
     const [keyword, setKeyword] = useState('');
 
     const openGalliListModal = function(){
         setGalli(!galli);
         getGalleyList()
-            .then(res=>{console.log(res); setGalliList(res)})
+            .then(res=>{if(res) 
+                setGalliList(res)})
     }
     const handleInputChange = (e) => {
         const value = e.target.value;
@@ -218,7 +219,7 @@ const SendingVoice = function(){
                         <div className={styles.galli_list_container}>
                             <div className={styles.galli_names_container}>
 
-                                {galliList.map((data, index) => {
+                                {galliList != null && galliList.map((data, index) => {
                                     return(
                                         <div key={index} className={styles.galli_name_container}>
                                             <img src={data.profileUrl} alt="프로필 사진" className={styles.galli_img_container} ></img>

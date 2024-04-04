@@ -16,6 +16,7 @@ import { MapComponent } from './MapComponent';
 import GeolocationComponent from './GeolocationComponent';
 import { getRealtimeExerciseData, getExerciseCriteria, startExercise, closeExercise } from "../../apis/exercise"
 import { recordExercise } from '../contracts/ethers'
+import LoadingModal from '../common/loading/LoadingModal';
 
 let stompClient;
 var pageOwnerId;
@@ -387,28 +388,50 @@ let chainValue = {
   calorie: ''
 }
 
+const [isSavingModalOpen, setIsSavingModalOpen] = useState(false);
+// 데이터에서 null 값을 기본값으로 변환하는 함수
+function transformDataWithDefaults(data) {
+  return {
+    id: data.id || 0,
+    memberId: data.member?.id || 0,
+    steps: data.steps || 0,
+    exerciseMinute: data.exerciseMinute || 0,
+    exerciseDistance: data.exerciseDistance || '',
+    exerciseDay: data.exerciseDay || '',
+    exerciseStart: data.exerciseStart || '',
+    exerciseEnd: data.exerciseEnd || '',
+    calorie: data.calorie || ''
+  };
+}
+
 const handleCloseBtn = async () => {
   try {
+    setIsSavingModalOpen(true);
     const closeTime = formatCurrentDateTime();
     const closeRes = await closeExercise(closeTime);
     console.log('운동 화면', closeRes);
-    // chainValue = { ...closeRes };
-    // const chainRes = await recordExercise(
-    //   chainValue.id,
-    //   chainValue.member.id,
-    //   chainValue.steps,
-    //   chainValue.exerciseMinute,
-    //   chainValue.exerciseDistance,
-    //   chainValue.exerciseDay,
-    //   chainValue.exerciseStart,
-    //   chainValue.exerciseEnd,
-    //   chainValue.calorie
-    // )
-    // alert('블록체인 저장 성공!')
-    console.log(closeRes);
+
+    // 함수 호출 전에 데이터 변환
+    const transformedData = transformDataWithDefaults(closeRes);
+    // 변환된 데이터를 사용하여 함수 호출
+    const chainRes = await recordExercise(
+      transformedData.id,
+      transformedData.memberId,
+      transformedData.steps,
+      transformedData.exerciseMinute,
+      transformedData.exerciseDistance,
+      transformedData.exerciseDay,
+      transformedData.exerciseStart,
+      transformedData.exerciseEnd,
+      transformedData.calorie
+    );
+    alert('블록체인 저장 성공!')
+    console.log('블록체인 저장 내용', chainRes);
+    setIsSavingModalOpen(false);
     navigate('/walking')
   } catch (err) {
     console.log('운동 종료 중 문제 발생 : ', err)
+    setIsSavingModalOpen(false);
   }
 }
 
@@ -485,6 +508,7 @@ const handleCloseBtn = async () => {
 
   return (
     <>
+    {isSavingModalOpen && <LoadingModal text="저장 중..." />}
       {isModal && (
         <div className={styles.modal_background}>
           <div className={styles.lets_start_modal_container}>

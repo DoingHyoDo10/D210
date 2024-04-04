@@ -25,11 +25,14 @@ const Treasure = function(){
             if(totalSteps<arr[i]){
               if(i==0){
                 pos = 0;
+                setPos(position[0]);
+                setIdx(pos)
               }
               else{
-              pos = i-1;
+                pos = i-1;
+                setPos(position[i-1]);
+                setIdx(pos);
               }
-              setPos(position[i-1]);
               break;
             }
           }
@@ -43,6 +46,7 @@ const Treasure = function(){
     const [profileUrl, setProfileUrl] = useState(JSON.parse(localStorage.getItem('tokens')).member_profile_url);
     const [nickname, setNickname] = useState(JSON.parse(localStorage.getItem('tokens')).nickname);
     const [pos, setPos] = useState({});
+    const [idx, setIdx] = useState(0);
     const [egg, setEgg] = useState(0);
     const [totalsteps, setTotalSteps] = useState(0);
 
@@ -54,6 +58,14 @@ const Treasure = function(){
       {x:'28%', y:'68%'},
       {x:'65%', y:'80%'},
     ]
+    const boxPosition = [
+      {x:'5%', y:'13%'}, 
+      {x:'78.5%', y:'27%'}, 
+      {x:'4%', y:'40%'},
+      {x:'78%', y:'55%'},
+      {x:'10%', y:'68%'},
+      {x:'76%', y:'80%'},
+    ]
 
     return(
         <>
@@ -64,6 +76,12 @@ const Treasure = function(){
                 </div>
                 <div className={styles.map_container}>
                 <div style={{width:'200px', height:'54px', borderRadius:'1rem', position:'absolute', background: 'orange', left:'1rem', top:'5rem', textAlign:'center'}}>보유 에그 {egg}<br/>한달 걸음 수 {totalsteps} </div>
+                  
+                  {
+                    boxPosition.map((data, index)=>{
+                      return(<img className={`${styles.box} ${index>idx ? styles.animation1 : ''}`} src={index>idx ?"/imgs/box_closed.png":"/imgs/box_opened.png"} style={{left: data.x, bottom: data.y}}/>)
+                    })
+                  }
                   <div className={styles.marker_container} style={{left: `${pos.x}`, bottom: `${pos.y}`, backgroundImage: 'url(/imgs/yes_marker.png)'}}>
                     <div className={styles.marker_inside}>
                       <img src={profileUrl}/>

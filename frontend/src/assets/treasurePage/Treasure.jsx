@@ -12,6 +12,10 @@ const Treasure = function(){
         navigate("/main")
     }
     useEffect(()=>{
+      const profile_url = JSON.parse(localStorage.getItem('tokens')).member_profile_url;
+      const nickname = JSON.parse(localStorage.getItem('tokens')).nickname;
+      setProfileUrl(profile_url);
+      setNickname(nickname);
       getMonthlyExerciseData(JSON.parse(localStorage.getItem('tokens')).member_id)
         .then(r=>{
           let totalSteps = 0;

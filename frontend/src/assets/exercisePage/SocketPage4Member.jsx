@@ -1,7 +1,7 @@
 import React, { useState, useEffect, useRef } from 'react';
 import "./SocketPage4Member.css";
 import TypeIt from 'typeit-react';
-import { useLocation, useParams} from "react-router-dom";
+import { useLocation, useParams, useNavigate} from "react-router-dom";
 import { Stomp } from "@stomp/stompjs";
 import SockJS from "sockjs-client/dist/sockjs";
 import MessageList from './MessageList';
@@ -14,7 +14,8 @@ import styles from "./SocketPage4Member.module.css"
 import { ResponsiveRadialBar } from '@nivo/radial-bar'
 import { MapComponent } from './MapComponent';
 import GeolocationComponent from './GeolocationComponent';
-
+import { getRealtimeExerciseData, getExerciseCriteria, startExercise, closeExercise } from "../../apis/exercise"
+import { recordExercise } from '../contracts/ethers'
 
 let stompClient;
 var pageOwnerId;
@@ -29,6 +30,27 @@ const currentMember =  JSON.parse(localStorage.getItem('tokens')) || {
 
 
 const SocketPage4Member = () => {
+  const navigate = useNavigate();
+  const [realtimeExerciseData, setRealtimeExerciseData] = useState({steps:0, time:0, distance:0});  
+  const [myCriteria, setMyCriteria] = useState({steps:0, time:0, distance:0});
+  useEffect(() => {
+    (async () => {
+      try {
+        const response = await getRealtimeExerciseData();
+
+        // 거리 단위 m -> km로 변환 & 소수점 첫 번째 자리까지 반올림
+        const distanceInKm = (response.distance / 1000).toFixed(1);
+
+        setRealtimeExerciseData({...response, distance: parseFloat(distanceInKm)});
+
+        const criteriaRes = await getExerciseCriteria();
+        setMyCriteria({steps: criteriaRes.steps, time: criteriaRes.exerciseMinute, distance: criteriaRes.exerciseDistance});
+        console.log(criteriaRes);
+      } catch (error) {
+        console.log('운동 정보 조회 실패 :', error)
+      }
+    })();
+  },[]);
 
   //⭐ VARIABLES 
   
@@ -73,7 +95,7 @@ const SocketPage4Member = () => {
       "data": [
         {
           "x": '진행 정도',  
-          "y":  6432
+          "y":  realtimeExerciseData.steps
         }
       ]
     }
@@ -92,10 +114,30 @@ const SocketPage4Member = () => {
 
   // ⭐ 카운트 다운 함수 
   useEffect(() => {
-    time > 0 && setTimeout(() => setTime(time -1), 1000)
+    if (time > 0) {
+      const timerId = setTimeout(() => setTime(time -1), 1000)
+      return () => clearTimeout(timerId);
+    } else {
+      const startTime = formatCurrentDateTime();
+      const startRes = startExercise(startTime);
+      console.log(startRes);
+    }
   }, [time]);
 
+  function formatCurrentDateTime() {
+    const now = new Date();
   
+    // 날짜와 시간 구성 요소를 추출합니다.
+    const year = now.getFullYear();
+    const month = String(now.getMonth() + 1).padStart(2, '0'); // getMonth()는 0부터 시작하기 때문에 1을 더합니다.
+    const day = String(now.getDate()).padStart(2, '0');
+    const hours = String(now.getHours()).padStart(2, '0');
+    const minutes = String(now.getMinutes()).padStart(2, '0');
+    const seconds = String(now.getSeconds()).padStart(2, '0');
+  
+    // 추출한 구성 요소를 원하는 형식의 문자열로 결합합니다.
+    return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}`;
+  }
 
 
   //⭐ CHAT FOCUS ALWAYS ON BOTTOM
@@ -331,7 +373,44 @@ const SocketPage4Member = () => {
 
 };
 
+let chainValue = {
+  id: 0,
+  member: {
+    id: 0,
+  },
+  steps: 0,
+  exerciseMinute: 0,
+  exerciseDistance: '',
+  exerciseDay: '',
+  exerciseStart: '',
+  exerciseEnd: '',
+  calorie: ''
+}
 
+const handleCloseBtn = async () => {
+  try {
+    const closeTime = formatCurrentDateTime();
+    const closeRes = await closeExercise(closeTime);
+    console.log('운동 화면', closeRes);
+    // chainValue = { ...closeRes };
+    // const chainRes = await recordExercise(
+    //   chainValue.id,
+    //   chainValue.member.id,
+    //   chainValue.steps,
+    //   chainValue.exerciseMinute,
+    //   chainValue.exerciseDistance,
+    //   chainValue.exerciseDay,
+    //   chainValue.exerciseStart,
+    //   chainValue.exerciseEnd,
+    //   chainValue.calorie
+    // )
+    // alert('블록체인 저장 성공!')
+    console.log(closeRes);
+    navigate('/walking')
+  } catch (err) {
+    console.log('운동 종료 중 문제 발생 : ', err)
+  }
+}
 
   if(currentMember.member_id === pageOwnerId){
     useEffect(() => {
@@ -345,18 +424,20 @@ const SocketPage4Member = () => {
     {
       tabTitle:(
         <div className={tabIndex===0 ? styles.mode_choose : styles.mode_other_list} onClick={()=>tabClickHandler(0)}>
-          <p className={styles.mode_friend_list_txt}>현재 페이스</p>
+          <p className={styles.mode_friend_list_txt}>실시간 운동</p>
         </div>
       ),  
       tabCont:(
         <div className={styles.socket_page_content}>
           <div className={styles.socket_box}>
-                <MyResponsiveRadialBar2 data={data}/>
-                <div style={{position: 'absolute', left: "43%", top: "31%"}}> 페이스 <br /> __"__ </div>
-                <div style={{position: 'relative', left:"2%", bottom: "30%"}} >
+                {/* <MyResponsiveRadialBar2 data={data}/> */}
+                <div style={{position: 'relative', marginBottom: '2rem'}} >
                   <MapComponent location={position}/>
                 </div>
-          
+                <div className={styles.close_btn_box}>
+                  <div className={styles.distance_title}>총 운동거리 : {realtimeExerciseData.distance} km</div>
+                  <button className={styles.close_btn} onClick={handleCloseBtn}>종료</button>
+                </div>
           </div>
           
         </div>
@@ -373,7 +454,7 @@ const SocketPage4Member = () => {
     tabCont:(
       <div className={styles.socket_page_content}>
           <div className={styles.socket_box}>
-              <div style={{fontWeight: 'bold', alignSelf: 'center'}}> 🏃{pageOwner.nickname}🤸님 응원하기</div> 
+              <div style={{fontWeight: 'bold', alignSelf: 'center', fontSize: '1.5rem'}}> 🏃{pageOwner.nickname}🤸님 응원하기</div> 
 
               {/* 전송된 메세지들이 보이는 공간 messages => 메세지 배열, currentTypingId => 현재 타이핑 중인 메세지 ID, onEndTyping => 메세지 입력이 끝났을 때 호출하는 함수  */}
               <MessageList

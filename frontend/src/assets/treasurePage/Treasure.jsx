@@ -55,12 +55,12 @@ const Treasure = function(){
     const [totalsteps, setTotalSteps] = useState(0);
 
     const position = [
-      {x:'24%', y:'13%'}, 
-      {x:'67.5%', y:'26%'}, 
-      {x:'18%', y:'37%'},
-      {x:'65%', y:'53%'},
-      {x:'28%', y:'68%'},
-      {x:'65%', y:'80%'},
+      {x:'24%', y:'15%'}, 
+      {x:'67.5%', y:'28%'}, 
+      {x:'18%', y:'39%'},
+      {x:'65%', y:'55%'},
+      {x:'28%', y:'70%'},
+      {x:'65%', y:'82%'},
     ]
     const boxPosition = [
       {x:'5%', y:'13%'}, 

@@ -97,15 +97,14 @@ const Toolbar = function(){
                 </div>
                 <div className={styles.bar}></div>
                 <div className={styles.page_container}>
-                    <div className={styles.report_container} onClick={moveReportPage}>
+                    {/* <div className={styles.report_container} onClick={moveReportPage}>
                         <img src='/imgs/report_icon.png' alt='리포트 아이콘' className={styles.report_icon}></img>
                         <p className={styles.report_txt}>운동 리포트</p>
                     </div>
                     <div className={styles.yesterday_container} onClick={moveYesterdayPage}>
                         <img src='/imgs/yesterday_me_icon.png' alt='어제의 나 아이콘' className={styles.yesterday_icon}></img>
                         <p className={styles.yesterday_txt}>어제의 나</p>
-
-                    </div>
+                    </div> */}
                     <div className={styles.treasure_container} onClick={moveTreasurePage}>
                         <img src='/imgs/treasure_icon.png' alt='보물찾기 아이콘' className={styles.treasure_icon}></img>
                         <p className={styles.treasure_txt}>보물찾기</p>

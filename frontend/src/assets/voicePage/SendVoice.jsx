@@ -27,7 +27,7 @@ const SendVoice = function(){
     },[])
     const navigate = useNavigate();
     const [galli, setGalli] = useState(false);
-    const [galliList, setGalliList] = useState({profileUrl:'', nickname:'',memberId:0});
+    const [galliList, setGalliList] = useState(null);
 
     const moveToVoicePage = function(){
         navigate("/voice")
@@ -76,7 +76,8 @@ const SendVoice = function(){
                         </div>
                         <div className={styles.my_galli_list_list_container}>
                             <div className={styles.my_galli_list_names_container}>
-                                {galliList.map((data, index) => {
+
+                                {galliList != null &&galliList.map((data, index) => {
                                     console.log(data)
                                     return(
                                         <div key={index} className={styles.my_galli_list_name_container} onClick={()=>moveToRealTimeVoicePage(data.memberId)}>

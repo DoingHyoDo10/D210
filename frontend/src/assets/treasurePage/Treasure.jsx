@@ -56,7 +56,7 @@ const Treasure = function(){
                     <p className={styles.title_txt}>보물찾기</p>
                 </div>
                 <div className={styles.map_container}>
-                <div style={{width:'100px', height:'50px', position:'absolute', background: 'orange', left:'1rem', top:'5rem', textAlign:'center'}}>보유 에그 {egg}</div>
+                <div style={{width:'120px', height:'50px', position:'absolute', background: '#FFCB23', left:'1rem', top:'5rem', textAlign:'center', borderRadius: 10, display: 'flex', alignItems: 'center', justifyContent: 'center'}}>보유 에그 {egg}</div>
                   <div className={styles.marker_container} style={{left: `${pos.x}`, bottom: `${pos.y}`, backgroundImage: 'url(/imgs/yes_marker.png)'}}>
                     <div className={styles.marker_inside}>
                       <img src={profileUrl}/>

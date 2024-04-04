@@ -77,7 +77,7 @@ const SendVoice = function(){
                         <div className={styles.my_galli_list_list_container}>
                             <div className={styles.my_galli_list_names_container}>
 
-                                {galliList != null &&galliList.map((data, index) => {
+                                {galliList != null ?galliList.map((data, index) => {
                                     console.log(data)
                                     return(
                                         <div key={index} className={styles.my_galli_list_name_container} onClick={()=>moveToRealTimeVoicePage(data.memberId)}>
@@ -88,7 +88,8 @@ const SendVoice = function(){
                                             </div>
                                         </div>  
                                     )
-                                })}
+                                })
+                            :<h2 style={{textAlign:'center'}}>갈리가 존재하지 않아요...</h2>}
                             </div>
                         </div>
                     

@@ -13,7 +13,6 @@ import MyWallet from "./assets/myPage/MyWallet";
 import UserInfoUpdate from "./assets/myPage/UserInfoUpdate";
 import Alarm from "./assets/alarmPage/Alarm";
 import Report from "./assets/reportPage/Report";
-import Yesterday from "./assets/yesterdayPage/Yesterday";
 import Treasure from "./assets/treasurePage/Treasure";
 import Voice from "./assets/voicePage/Voice";
 import Store from "./assets/storePage/Store";
@@ -29,7 +28,6 @@ import SendingVoice from "./assets/voicePage/SendingVoice";
 import Mission from "./assets/halligalliPage/Mission";
 import { useEffect, useState } from "react";
 import { EventSourcePolyfill } from "event-source-polyfill";
-import TransactionTest from "./assets/walkingPage/TransactionTest";
 
 function App() {
   const [alarmFlag, setAlarmFlag] = useState(false);
@@ -102,7 +100,6 @@ function App() {
         <Route path="/userinfo/update" element={<UserInfoUpdate />}></Route>
         <Route path="/alarm" element={<Alarm />}></Route>
         <Route path="/report" element={<Report />}></Route>
-        <Route path="/yesterday" element={<Yesterday />}></Route>
         <Route path="/treasure" element={<Treasure />}></Route>
         <Route path="/voice" element={<Voice />}></Route>
         <Route path="/store" element={<Store />}></Route>
@@ -114,7 +111,6 @@ function App() {
         <Route path="/member/:id" element={<SocketPage4Member/>}></Route>
         <Route path="/voice/sendvoice/sendingvoice" element={<SendingVoice />}></Route>
         <Route path="/galli/mission" element={<Mission />}></Route>
-        <Route path="/transaction" element={<TransactionTest />}></Route>
       </Routes>
     </BrowserRouter>
   )

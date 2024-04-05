@@ -14,7 +14,8 @@ const UserInfoUpdate = function () {
   const startYear = 1900;
   const currentYear = new Date().getFullYear();
   const years = Array.from({length: currentYear - startYear + 1}, (val, index) => currentYear - index);
-  
+  const [profilePreview, setProfilePreview] = useState('');
+
   useEffect(() => {
     (async () => {
       try {
@@ -22,6 +23,7 @@ const UserInfoUpdate = function () {
         const { dailyCriteria, ...rest } = data;
         setNewInfo(rest);
         setOriginalNickname(rest.nickname);
+        setProfilePreview(rest.profileUrl);
         console.log('기존 유저 정보 : ', rest)
       } catch (err) {
         console.error('userInfo 정보를 가져오는 중 에러 발생:', err);
@@ -42,7 +44,6 @@ const UserInfoUpdate = function () {
   };
 
   const handleSubmit = async () => {
-    const formData = new FormData();
     const validNumberRegex = /^\d{0,3}(\.\d)?$/; // 최대 세 자리 정수와 최대 한자리 소수점 정규 표현식
     const validPhoneRegex = /^\d{11}$/; // 숫자 11자리 정규 표현식
 
@@ -64,9 +65,10 @@ const UserInfoUpdate = function () {
       return; // 함수 종료
     }
 
-    let imgUrl = newInfo.profileUrl; 
+    let imgUrl = profilePreview; 
 
     if (profileImage) {
+      const formData = new FormData();
       formData.append('file', profileImage);
 
       try {
@@ -92,7 +94,12 @@ const UserInfoUpdate = function () {
 
   // 프로필 사진
   const handleFileChange = (e) => {
-    setProfileImage(e.target.files[0]);
+    const file = e.target.files[0]
+    if (file) {
+      setProfileImage(file);
+      const previewUrl = URL.createObjectURL(file); // 파일을 읽어 미리보기 URL 생성
+      setProfilePreview(previewUrl); // 미리보기 이미지 상태 업데이트
+    }
     console.log('이미지 정보', e.target.files[0]);
   }
 
@@ -172,7 +179,7 @@ const UserInfoUpdate = function () {
             <div className={styles.userinfoupdate_profile_container}>
               <div className={styles.userinfoupdate_img_container}>
                 <label htmlFor="profileInput">
-                  <img className={styles.userinfoupdate_profile_img} src={newInfo.profileUrl} alt="profile_img"/>
+                  <img className={styles.userinfoupdate_profile_img} src={profilePreview || newInfo.profileUrl} alt="profile_img"/>
                 </label>
               </div>
               <img className={styles.userinfoupdate_camera_img} src="/imgs/camera.png" alt="camera_img" />

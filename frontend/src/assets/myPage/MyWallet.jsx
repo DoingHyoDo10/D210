@@ -39,7 +39,7 @@ const MyWallet = function () {
 
   const isMobile = () => {
     // 터치 이벤트 지원 여부 및 화면 크기를 통한 모바일 환경 판별
-    return false;
+    return false; // PC 버전 
     // return navigator.maxTouchPoints > 0 ;
     // return ('ontouchstart' in window || navigator.maxTouchPoints > 1 );
   }

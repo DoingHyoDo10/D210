@@ -491,12 +491,12 @@ const handleCloseBtn = async () => {
               {/* 메세지가 쳐지는 INPUT FORM onSendMessage => 새로운 메세지가 전송될 때 호출하는 함수  */}
               <div style={{display: 'flex'}}>
                 {/* 모바일 환경인지 아닌지에 따라 버튼 다르게 구현 */}
-                {isMobile?(
+                {/* {isMobile?(
                   <FileUploader currentMember = {currentMember} clientHeader={clientHeader} pageOwnerId={pageOwnerId}/>
                 ):(
                   <AudioRecord stompClient={stompClient} currentMember = {currentMember} pageOwnerId={pageOwnerId}/>
-                )}
-                
+                )} */}
+                  <AudioRecord stompClient={stompClient} currentMember = {currentMember} pageOwnerId={pageOwnerId}/>
               
               </div>
               <MessageForm onSendMessage={handleSendMessage} clientHeader={clientHeader} currentMember = {currentMember}  pageOwnerId={pageOwnerId}/>
